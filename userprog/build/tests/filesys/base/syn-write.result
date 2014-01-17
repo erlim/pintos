@@ -1,15 +1,15 @@
 FAIL
 Kernel panic in run: PANIC at ../../lib/kernel/list.c:84 in list_next(): assertion `is_head (elem) || is_interior (elem)' failed.
-Call stack: 0xc00285ec 0xc0028a23 0xc002a5d9 0xc002bafe 0xc002bdc9 0xc0021a86 0xc0021bbd 0x804a3cd 0x80487b9 0x8048102 0x8048963 0x804898e
+Call stack: 0xc00285fc 0xc0028a33 0xc002a595 0xc002ba6e 0xc002bd39 0xc0021a96 0xc0021bcd 0x804a3cd 0x80487b9 0x8048102 0x8048963 0x804898e
 Translation of call stack:
 In kernel.o:
-0xc00285ec: debug_panic (.../../lib/kernel/debug.c:38)
-0xc0028a23: is_sorted (.../../lib/kernel/list.c:343)
-0xc002a5d9: process_get_child (...../userprog/process.c:270)
-0xc002bafe: exec (...../userprog/syscall.c:127)
-0xc002bdc9: syscall_handler (.../../userprog/syscall.c:52)
-0xc0021a86: intr_handler (..../threads/interrupt.c:367)
-0xc0021bbd: intr_entry (threads/intr-stubs.S:38)
+0xc00285fc: debug_panic (.../../lib/kernel/debug.c:38)
+0xc0028a33: is_sorted (.../../lib/kernel/list.c:343)
+0xc002a595: process_get_child (...../userprog/process.c:270)
+0xc002ba6e: exec (...../userprog/syscall.c:127)
+0xc002bd39: syscall_handler (.../../userprog/syscall.c:52)
+0xc0021a96: intr_handler (..../threads/interrupt.c:367)
+0xc0021bcd: intr_entry (threads/intr-stubs.S:38)
 In tests/filesys/base/syn-write:
 0x0804a3cd: exec (.../../lib/user/syscall.c:81)
 0x080487b9: exec_children (...uild/../../tests/lib.c:88)

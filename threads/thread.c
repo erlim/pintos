@@ -219,7 +219,8 @@ thread_create (const char *name, int priority,
   t->parent = parent;
   list_push_back(&parent->child, &t->child_elem);
 #endif
-  
+ 
+  t->fd_tbl = palloc_get_page(0); 
   /* Add to run queue. */
   thread_unblock (t);
  
@@ -316,7 +317,7 @@ thread_exit (void)
   list_remove (&t->allelem);
   //list_remove( &t->child_elem);
   t->status = THREAD_DYING;
-  sema_up(&t->sema_exit);
+  palloc_free_page(t->fd_tbl);
   //palloc_free_page(t);
   schedule ();
   NOT_REACHED ();
@@ -501,7 +502,6 @@ init_thread (struct thread *t, const char *name, int priority)
   sema_init(&t->sema_exit,0); 
 #endif
   
-  list_init(&t->fd_tbl);
   t->last_fd = FD_DEFINE;
   t->file_exec = NULL; 
 

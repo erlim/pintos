@@ -279,54 +279,30 @@ void
 process_remove_child(struct thread *t)
 {
   list_remove(&t->child_elem);
- // palloc_free_page(t);
+  //palloc_free_page(t);
 }
 
 int 
 process_add_file(struct file *f)
 {
   struct thread *t = thread_current();
-  struct fd_node *node = malloc(sizeof(struct fd_node));
-  node->fd = t->last_fd++;
-  node->file = f; 
-  list_push_back(&t->fd_tbl, &node->elem);
- 
-  return node->fd;
+  t->fd_tbl[++t->last_fd] =f;
+
+  return t->last_fd; 
 }
 
 struct file*
 process_get_file(int fd)
 {
   struct thread *t= thread_current();
-  struct list *fd_tbl = &t->fd_tbl;
-  struct list_elem *e;
-  for( e = list_begin(fd_tbl); e != list_end(fd_tbl); e = list_next(e) )
-  {
-    struct fd_node *node = list_entry(e, struct fd_node, elem);
-    if(node->fd == fd)
-      return node->file;
-  }
-  return NULL;
+  return t->fd_tbl[fd];
 }
 
 void
 process_close_file(int fd)
 {
   struct thread *t = thread_current();
-  struct list *fd_tbl = &t->fd_tbl;
-  struct list_elem *next, *e = list_begin(fd_tbl);
-  while( e!= list_end(fd_tbl) )
-  {
-    next = list_next(e);
-    struct fd_node *node = list_entry(e, struct fd_node, elem);
-    if(node->fd == fd )
-    {
-      file_close(node->file);
-      list_remove(&node->elem);
-      free(node);
-    }
-    e = next;
-  }
+  t->fd_tbl[fd]= NULL; 
 }
 
 /* We load ELF binaries.  The following definitions are taken

@@ -24,18 +24,10 @@ typedef int pid_t;
 #define PRI_MIN 0                       /* Lowest priority. */
 #define PRI_DEFAULT 31                  /* Default priority. */
 #define PRI_MAX 63                      /* Highest priority. */
-
-
-// 1.10 add ryoung file descriptor (file/process/threads..)
-struct fd_node
- {
-    int fd;
-    struct file *file;
-    struct list_elem elem;
- };
  
 #define FD_DEFINE 2
 #define FD_USER 3 
+#define FD_BUFFER_SIZE 10
 
 /* A kernel thread or user process.
 
@@ -120,7 +112,8 @@ struct thread
 #endif
 
     /* 1.10 add Ryoung file descriptor */ 
-    struct list fd_tbl;
+    //struct file* fd_tbl[FD_BUFFER_SIZE];
+    struct file **fd_tbl;
     int last_fd; 
     struct file *file_exec; // running file
      

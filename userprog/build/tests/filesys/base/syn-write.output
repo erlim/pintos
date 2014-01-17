@@ -30,13 +30,13 @@ child-syn-wrt: exit(0)
 child-syn-wrt: exit(1)
 (syn-write) exec child 3 of 10: "child-syn-wrt 2"
 Kernel PANIC at ../../lib/kernel/list.c:84 in list_next(): assertion `is_head (elem) || is_interior (elem)' failed.
-Call stack: 0xc00285ec 0xc0028a23 0xc002a5d9 0xc002bafe 0xc002bdc9 0xc0021a86 0xc0021bbd 0x804a3cd 0x80487b9 0x8048102 0x8048963 0x804898e.
+Call stack: 0xc00285fc 0xc0028a33 0xc002a595 0xc002ba6e 0xc002bd39 0xc0021a96 0xc0021bcd 0x804a3cd 0x80487b9 0x8048102 0x8048963 0x804898e.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 508 ticks
-Thread: 0 idle ticks, 328 kernel ticks, 180 user ticks
-hda2 (filesys): 193 reads, 458 writes
+Timer: 507 ticks
+Thread: 0 idle ticks, 331 kernel ticks, 176 user ticks
+hda2 (filesys): 192 reads, 458 writes
 hda3 (scratch): 217 reads, 2 writes
 Console: 1499 characters output
 Keyboard: 0 keys pressed

@@ -23,8 +23,8 @@ Executing 'bad-jump':
 (bad-jump) begin
 bad-jump: exit(-1)
 Execution of 'bad-jump' complete.
-Timer: 256 ticks
-Thread: 0 idle ticks, 233 kernel ticks, 30 user ticks
+Timer: 255 ticks
+Thread: 0 idle ticks, 232 kernel ticks, 30 user ticks
 hda2 (filesys): 63 reads, 204 writes
 hda3 (scratch): 99 reads, 2 writes
 Console: 863 characters output

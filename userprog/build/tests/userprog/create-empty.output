@@ -25,8 +25,8 @@ Executing 'create-empty':
 (create-empty) end
 create-empty: exit(0)
 Execution of 'create-empty' complete.
-Timer: 270 ticks
-Thread: 0 idle ticks, 236 kernel ticks, 41 user ticks
+Timer: 269 ticks
+Thread: 0 idle ticks, 235 kernel ticks, 41 user ticks
 hda2 (filesys): 64 reads, 208 writes
 hda3 (scratch): 99 reads, 2 writes
 Console: 934 characters output

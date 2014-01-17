@@ -31,9 +31,9 @@ Executing 'lg-full':
 (lg-full) end
 lg-full: exit(0)
 Execution of 'lg-full' complete.
-Timer: 635 ticks
-Thread: 0 idle ticks, 236 kernel ticks, 406 user ticks
-hda2 (filesys): 240 reads, 512 writes
+Timer: 629 ticks
+Thread: 0 idle ticks, 236 kernel ticks, 400 user ticks
+hda2 (filesys): 239 reads, 512 writes
 hda3 (scratch): 103 reads, 2 writes
 Console: 1067 characters output
 Keyboard: 0 keys pressed

@@ -25,8 +25,8 @@ Executing 'create-normal':
 (create-normal) end
 create-normal: exit(0)
 Execution of 'create-normal' complete.
-Timer: 278 ticks
-Thread: 0 idle ticks, 234 kernel ticks, 51 user ticks
+Timer: 277 ticks
+Thread: 0 idle ticks, 232 kernel ticks, 52 user ticks
 hda2 (filesys): 83 reads, 208 writes
 hda3 (scratch): 99 reads, 2 writes
 Console: 944 characters output

@@ -18,7 +18,7 @@
 #include "threads/thread.h"
 #include "threads/vaddr.h"
 
-static thread_func start_process NO_RETURN;
+static thread_func process_start NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
 
 /* Starts a new thread running a user program loaded from
@@ -28,43 +28,93 @@ static bool load (const char *cmdline, void (**eip) (void), void **esp);
 tid_t
 process_execute (const char *file_name) 
 {
-  char *fn_copy;
-  tid_t tid;
+  //printf("process_execute file: %s\n", file_name);
+  char *file_name_ = palloc_get_page(0) ; 
+  strlcpy( file_name_ , file_name , PGSIZE) ;   
 
   /* Make a copy of FILE_NAME.
      Otherwise there's a race between the caller and load(). */
-  fn_copy = palloc_get_page (0);
+  char *fn_copy = palloc_get_page (0);
   if (fn_copy == NULL)
-    return TID_ERROR;
-  strlcpy (fn_copy, file_name, PGSIZE);
+  {
+    printf("palloc_null\n");
 
+    palloc_free_page(fn_copy);  
+    return TID_ERROR;
+  }
+  strlcpy (fn_copy, file_name_, PGSIZE);
+
+  // 12.27 modify Ryoung
+  char *save_ptr; 
+  file_name = strtok_r(file_name_, " ",&save_ptr); 		  
+ 
   /* Create a new thread to execute FILE_NAME. */
-  tid = thread_create (file_name, PRI_DEFAULT, start_process, fn_copy);
+  tid_t tid = thread_create (file_name_, PRI_DEFAULT, process_start,  fn_copy);
   if (tid == TID_ERROR)
     palloc_free_page (fn_copy); 
+ 
+  palloc_free_page(file_name_);
   return tid;
 }
 
 /* A thread function that loads a user process and starts it
    running. */
 static void
-start_process (void *file_name_)
+process_start (void *file_name_)
 {
+  //printf("start process\n");
   char *file_name = file_name_;
   struct intr_frame if_;
   bool success;
+
+  //{ 12.27 +Ryoung token, count token
+  char **argv = palloc_get_page(0);
+  int argc = 0;
+  char *token, *temp=NULL;
+
+  for( token = strtok_r(file_name, " ", &temp); token!= NULL;
+      token = strtok_r(NULL, " ",&temp))
+  {
+    int slen = strlen(token) +1;
+    argv[argc] = malloc(slen);
+    memcpy(argv[argc], token, slen);
+    argc++;  
+  } //}
 
   /* Initialize interrupt frame and load executable. */
   memset (&if_, 0, sizeof if_);
   if_.gs = if_.fs = if_.es = if_.ds = if_.ss = SEL_UDSEG;
   if_.cs = SEL_UCSEG;
   if_.eflags = FLAG_IF | FLAG_MBS;
-  success = load (file_name, &if_.eip, &if_.esp);
 
-  /* If load failed, quit. */
-  palloc_free_page (file_name);
-  if (!success) 
-    thread_exit ();
+  // 1.4 modify Ryoung
+  struct thread *cur = thread_current(); 
+  if(true == load (file_name, &if_.eip, &if_.esp))
+  {
+    //printf("load ok, name:%s\n", file_name);
+    cur->status_load = true;
+  }
+  else //false ==load
+  {
+    cur->status_load = -1;
+    //printf("load fail, name:%s\n", file_name);
+    palloc_free_page(file_name);
+    palloc_free_page(argv);
+    thread_exit();
+  }
+    argument_stack(argv, argc, &if_.esp);
+  //hex_dump(if_.esp, if_.esp, PHYS_BASE-if_.esp, true);
+
+  
+  /*int idx = 0;
+  for(; idx<argc; ++idx)
+  {
+    free(argv[idx]);
+  }*/ 
+  
+  palloc_free_page(file_name);
+  palloc_free_page(argv);
+  
 
   /* Start the user process by simulating a return from an
      interrupt, implemented by intr_exit (in
@@ -74,6 +124,61 @@ start_process (void *file_name_)
      and jump to it. */
   asm volatile ("movl %0, %%esp; jmp intr_exit" : : "g" (&if_) : "memory");
   NOT_REACHED ();
+}
+
+// 12.27 add Ryoung
+void 
+argument_stack(char **argv, int argc, void **esp)
+{  
+  char** argv_addr;
+  argv_addr = malloc( argc  * sizeof(char*)); //palloc_get_page(0);
+
+  int slen, buffer_size = 0;
+  int num =0;
+  for( num = argc-1; num >=0; --num)
+  {
+    //stack arguments
+    slen = strlen(argv[num])+1;
+    *esp -= slen; 
+    memcpy(*esp, argv[num], slen);
+
+    //save arguments_address
+    argv_addr[num] = *esp; 
+    buffer_size += slen;
+  }
+
+  //word-align(1Byte = 8bit, word=4Byte)
+  if( !(buffer_size % sizeof(uint32_t)== 0) )
+  {
+    *esp -=1;
+    memset(*esp, 0,1);
+  }
+
+  //stack argv address
+  const int ptr_size = 4, zero_val =0;
+  for(num = argc; num>=0; --num)
+  {
+    *esp -=ptr_size; 
+    if(num == argc)
+      memset(*esp, zero_val, ptr_size); //argv[*]
+    else
+      memcpy(*esp, &argv_addr[num], ptr_size); //argv[*-1.....0]  
+  }
+
+  //stack argv
+  memcpy(*esp -ptr_size, esp, ptr_size);
+  *esp -=ptr_size;
+ 
+  //stack argc
+  *esp -=ptr_size;
+  memcpy(*esp, &argc, ptr_size); 
+  
+  //stack fake address
+  *esp -=ptr_size;
+  memset(*esp, zero_val ,ptr_size);
+  
+  free(argv_addr);  
+  //palloc_free_page(argv_addr);
 }
 
 /* Waits for thread TID to die and returns its exit status.  If
@@ -86,21 +191,44 @@ start_process (void *file_name_)
    This function will be implemented in problem 2-2.  For now, it
    does nothing. */
 int
-process_wait (tid_t child_tid UNUSED) 
+process_wait (pid_t child_pid UNUSED) 
 {
-  return -1;
+  //printf("process_wait %d\n", child_pid);
+  struct thread *child = process_get_child(child_pid);
+  if(!child)  
+    return -1;
+  if(!child->exit)
+    {
+      //printf("sema caller thread:%d",child->tid);
+      sema_down(&child->sema_proc);  //thread_current()->block, parent push waiters
+    }
+  if(child->exit)
+    process_remove_child(child);
+  return child->status_exit;
 }
 
 /* Free the current process's resources. */
 void
 process_exit (void)
 {
-  struct thread *cur = thread_current ();
+  struct thread *t = thread_current ();
+  //printf("process exit:%d\n", t->tid);
+  t->exit = true;
+  if(t->parent != NULL)
+  {
+    sema_up(&t->sema_proc);  
+    //printf("parent sema_up tid:%d\n", t->parent->tid);
+  }
+  //1.10 add ryoung (file descriptor)
+  if(t->file_exec != NULL)
+  {
+    file_allow_write(t->file_exec);
+    file_close(t->file_exec);
+  }
   uint32_t *pd;
-
   /* Destroy the current process's page directory and switch back
      to the kernel-only page directory. */
-  pd = cur->pagedir;
+  pd = t->pagedir;
   if (pd != NULL) 
     {
       /* Correct ordering here is crucial.  We must set
@@ -110,7 +238,7 @@ process_exit (void)
          directory before destroying the process's page
          directory, or our active page directory will be one
          that's been freed (and cleared). */
-      cur->pagedir = NULL;
+      t->pagedir = NULL;
       pagedir_activate (NULL);
       pagedir_destroy (pd);
     }
@@ -131,7 +259,76 @@ process_activate (void)
      interrupts. */
   tss_update ();
 }
-
+
+// 1.3 add Ryoung, utils for process descriptor
+struct thread*
+process_get_child(pid_t pid)
+{
+  struct thread *cur = thread_current();
+  struct list *child = &cur->child;
+  struct list_elem *e;
+  for( e = list_begin(child); e != list_end(child); e = list_next(e) )
+  {
+    struct thread *t = list_entry(e, struct thread, child_elem);
+    if(pid == t->tid)
+      return t;
+  }
+  return NULL;
+}
+void
+process_remove_child(struct thread *t)
+{
+  list_remove(&t->child_elem);
+ // palloc_free_page(t);
+}
+
+int 
+process_add_file(struct file *f)
+{
+  struct thread *t = thread_current();
+  struct fd_node *node = malloc(sizeof(struct fd_node));
+  node->fd = t->last_fd++;
+  node->file = f; 
+  list_push_back(&t->fd_tbl, &node->elem);
+ 
+  return node->fd;
+}
+
+struct file*
+process_get_file(int fd)
+{
+  struct thread *t= thread_current();
+  struct list *fd_tbl = &t->fd_tbl;
+  struct list_elem *e;
+  for( e = list_begin(fd_tbl); e != list_end(fd_tbl); e = list_next(e) )
+  {
+    struct fd_node *node = list_entry(e, struct fd_node, elem);
+    if(node->fd == fd)
+      return node->file;
+  }
+  return NULL;
+}
+
+void
+process_close_file(int fd)
+{
+  struct thread *t = thread_current();
+  struct list *fd_tbl = &t->fd_tbl;
+  struct list_elem *next, *e = list_begin(fd_tbl);
+  while( e!= list_end(fd_tbl) )
+  {
+    next = list_next(e);
+    struct fd_node *node = list_entry(e, struct fd_node, elem);
+    if(node->fd == fd )
+    {
+      file_close(node->file);
+      list_remove(&node->elem);
+      free(node);
+    }
+    e = next;
+  }
+}
+
 /* We load ELF binaries.  The following definitions are taken
    from the ELF specification, [ELF1], more-or-less verbatim.  */
 
@@ -209,6 +406,7 @@ bool
 load (const char *file_name, void (**eip) (void), void **esp) 
 {
   struct thread *t = thread_current ();
+  //printf("load file name: %s, tid:%d\n", file_name, t->tid);
   struct Elf32_Ehdr ehdr;
   struct file *file = NULL;
   off_t file_ofs;
@@ -229,6 +427,10 @@ load (const char *file_name, void (**eip) (void), void **esp)
       goto done; 
     }
 
+  // 1.13 add ryoung(denying write to executables)  
+  file_deny_write(file);
+  t->file_exec = file;
+   
   /* Read and verify executable header. */
   if (file_read (file, &ehdr, sizeof ehdr) != sizeof ehdr
       || memcmp (ehdr.e_ident, "\177ELF\1\1\1", 7)
@@ -251,7 +453,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
       if (file_ofs < 0 || file_ofs > file_length (file))
         goto done;
       file_seek (file, file_ofs);
-
+      
       if (file_read (file, &phdr, sizeof phdr) != sizeof phdr)
         goto done;
       file_ofs += sizeof phdr;
@@ -300,7 +502,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
           break;
         }
     }
-
+  
   /* Set up stack. */
   if (!setup_stack (esp))
     goto done;
@@ -312,10 +514,10 @@ load (const char *file_name, void (**eip) (void), void **esp)
 
  done:
   /* We arrive here whether the load is successful or not. */
-  file_close (file);
+  //file_close (file);
   return success;
 }
-
+
 /* load() helpers. */
 
 static bool install_page (void *upage, void *kpage, bool writable);

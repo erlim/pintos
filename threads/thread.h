@@ -4,7 +4,7 @@
 #include <debug.h>
 #include <list.h>
 #include <stdint.h>
-
+#include "synch.h"
 /* States in a thread's life cycle. */
 enum thread_status
   {
@@ -17,12 +17,25 @@ enum thread_status
 /* Thread identifier type.
    You can redefine this to whatever type you like. */
 typedef int tid_t;
+typedef int pid_t;
 #define TID_ERROR ((tid_t) -1)          /* Error value for tid_t. */
 
 /* Thread priorities. */
 #define PRI_MIN 0                       /* Lowest priority. */
 #define PRI_DEFAULT 31                  /* Default priority. */
 #define PRI_MAX 63                      /* Highest priority. */
+
+
+// 1.10 add ryoung file descriptor (file/process/threads..)
+struct fd_node
+ {
+    int fd;
+    struct file *file;
+    struct list_elem elem;
+ };
+ 
+#define FD_DEFINE 2
+#define FD_USER 3 
 
 /* A kernel thread or user process.
 
@@ -90,13 +103,29 @@ struct thread
     int priority;                       /* Priority. */
     struct list_elem allelem;           /* List element for all threads list. */
 
-    /* Shared between thread.c and synch.c. */
-    struct list_elem elem;              /* List element. */
-
 #ifdef USERPROG
-    /* Owned by userprog/process.c. */
+     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
+
+    //{ 1.1 add Ryoung process descriptor (pro3.hierarchical process struct)    
+    struct thread* parent;
+    struct list child;
+    struct list_elem child_elem;
+    int  status_load; // -1:error, 0:load x, 1:load o 
+    bool exit;
+    int  status_exit;
+    struct semaphore sema_proc;
+    struct semaphore sema_exit;
+    //}
 #endif
+
+    /* 1.10 add Ryoung file descriptor */ 
+    struct list fd_tbl;
+    int last_fd; 
+    struct file *file_exec; // running file
+     
+    /* Shared between thread.c and synch.c(semaphore, lock). */
+    struct list_elem elem;              /* List element. */
 
     /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */

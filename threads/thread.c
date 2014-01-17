@@ -14,6 +14,7 @@
 #ifdef USERPROG
 #include "userprog/process.h"
 #endif
+#include "filesys/file.h" // 1.10 add ryoung file_desc
 
 /* Random value for struct thread's `magic' member.
    Used to detect stack overflow.  See the big comment at the top
@@ -105,6 +106,8 @@ thread_init (void)
 void
 thread_start (void) 
 {
+  //printf("thread start\n");
+  
   /* Create the idle thread. */
   struct semaphore idle_started;
   sema_init (&idle_started, 0);
@@ -166,6 +169,7 @@ tid_t
 thread_create (const char *name, int priority,
                thread_func *function, void *aux) 
 {
+  //printf("thread_create\n");
   struct thread *t;
   struct kernel_thread_frame *kf;
   struct switch_entry_frame *ef;
@@ -178,7 +182,10 @@ thread_create (const char *name, int priority,
   /* Allocate thread. */
   t = palloc_get_page (PAL_ZERO);
   if (t == NULL)
+  {
+    printf("fffff\n");
     return TID_ERROR;
+  }
 
   /* Initialize thread. */
   init_thread (t, name, priority);
@@ -206,9 +213,16 @@ thread_create (const char *name, int priority,
 
   intr_set_level (old_level);
 
+#ifdef USERPROG
+  //1.3 add ryoug
+  struct thread* parent = thread_current();
+  t->parent = parent;
+  list_push_back(&parent->child, &t->child_elem);
+#endif
+  
   /* Add to run queue. */
   thread_unblock (t);
-
+ 
   return tid;
 }
 
@@ -294,12 +308,16 @@ thread_exit (void)
   process_exit ();
 #endif
 
+  struct thread* t = thread_current();
   /* Remove thread from all threads list, set our status to dying,
      and schedule another process.  That process will destroy us
      when it calls thread_schedule_tail(). */
   intr_disable ();
-  list_remove (&thread_current()->allelem);
-  thread_current ()->status = THREAD_DYING;
+  list_remove (&t->allelem);
+  //list_remove( &t->child_elem);
+  t->status = THREAD_DYING;
+  sema_up(&t->sema_exit);
+  //palloc_free_page(t);
   schedule ();
   NOT_REACHED ();
 }
@@ -383,7 +401,8 @@ thread_get_recent_cpu (void)
   /* Not yet implemented. */
   return 0;
 }
-
+
+
 /* Idle thread.  Executes when no other thread is ready to run.
 
    The idle thread is initially put on the ready list by
@@ -432,7 +451,7 @@ kernel_thread (thread_func *function, void *aux)
   function (aux);       /* Execute the thread function. */
   thread_exit ();       /* If function() returns, kill the thread. */
 }
-
+
 /* Returns the running thread. */
 struct thread *
 running_thread (void) 
@@ -459,6 +478,7 @@ is_thread (struct thread *t)
 static void
 init_thread (struct thread *t, const char *name, int priority)
 {
+  //printf("init_thread tid:%s\n", name);
   ASSERT (t != NULL);
   ASSERT (PRI_MIN <= priority && priority <= PRI_MAX);
   ASSERT (name != NULL);
@@ -469,8 +489,25 @@ init_thread (struct thread *t, const char *name, int priority)
   t->stack = (uint8_t *) t + PGSIZE;
   t->priority = priority;
   t->magic = THREAD_MAGIC;
-  list_push_back (&all_list, &t->allelem);
+
+#ifdef USERPROG
+  // 1.1 add ryoung process descriptor
+  t->parent = NULL;
+  list_init(&t->child);
+  t->status_load = false;
+  t->exit = false;
+  t->status_exit = -1;
+  sema_init(&t->sema_proc,0);
+  sema_init(&t->sema_exit,0); 
+#endif
+  
+  list_init(&t->fd_tbl);
+  t->last_fd = FD_DEFINE;
+  t->file_exec = NULL; 
+
+  list_push_back(&all_list, &t->allelem);
 }
+
 
 /* Allocates a SIZE-byte frame at the top of thread T's stack and
    returns a pointer to the frame's base. */
@@ -558,6 +595,12 @@ schedule (void)
   struct thread *cur = running_thread ();
   struct thread *next = next_thread_to_run ();
   struct thread *prev = NULL;
+  /*
+  if( cur != NULL)
+    printf("current tid:%d, status:%d, process status:%d\n", cur->tid, cur->status, cur->status_proc);
+  if( next != NULL) 
+    printf("nextt tid:%d, status:%d, process status:%d\n", next->tid, next->status, next->status_proc);
+  */
 
   ASSERT (intr_get_level () == INTR_OFF);
   ASSERT (cur->status != THREAD_RUNNING);

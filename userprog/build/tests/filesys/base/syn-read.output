@@ -1,0 +1,51 @@
+Copying tests/filesys/base/syn-read to scratch partition...
+Copying tests/filesys/base/child-syn-read to scratch partition...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
+PiLo hda1
+Loading.........
+Kernel command line: -q -f extract run syn-read
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
+hda1: 147 sectors (73 kB), Pintos OS kernel (20)
+hda2: 4,096 sectors (2 MB), Pintos file system (21)
+hda3: 218 sectors (109 kB), Pintos scratch (22)
+filesys: using hda2
+scratch: using hda3
+Formatting file system...done.
+Boot complete.
+Extracting ustar archive from scratch device into file system...
+Putting 'syn-read' into the file system...
+Putting 'child-syn-read' into the file system...
+Erasing ustar archive...
+Executing 'syn-read':
+(syn-read) begin
+(syn-read) create "data"
+(syn-read) open "data"
+(syn-read) write "data"
+(syn-read) close "data"
+(syn-read) exec child 1 of 10: "child-syn-read 0"
+child-syn-read: exit(0)
+(syn-read) exec child 2 of 10: "child-syn-read 1"
+child-syn-read: exit(1)
+(syn-read) exec child 3 of 10: "child-syn-read 2"
+Kernel PANIC at ../../lib/kernel/list.c:84 in list_next(): assertion `is_head (elem) || is_interior (elem)' failed.
+Call stack: 0xc00285ec 0xc0028a23 0xc002a5d9 0xc002bafe 0xc002bdc9 0xc0021a86 0xc0021bbd 0x804a3bd 0x80487a9 0x80481b1 0x8048953 0x804897e.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 1694 ticks
+Thread: 0 idle ticks, 329 kernel ticks, 1365 user ticks
+hda2 (filesys): 2246 reads, 450 writes
+hda3 (scratch): 217 reads, 2 writes
+Console: 1570 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off..========================================================================
+                       Bochs x86 Emulator 2.6.2
+                Built from SVN snapshot on May 26, 2013
+                  Compiled on Dec 28 2013 at 04:29:58
+========================================================================

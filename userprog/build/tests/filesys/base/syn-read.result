@@ -1,0 +1,21 @@
+FAIL
+Kernel panic in run: PANIC at ../../lib/kernel/list.c:84 in list_next(): assertion `is_head (elem) || is_interior (elem)' failed.
+Call stack: 0xc00285ec 0xc0028a23 0xc002a5d9 0xc002bafe 0xc002bdc9 0xc0021a86 0xc0021bbd 0x804a3bd 0x80487a9 0x80481b1 0x8048953 0x804897e
+Translation of call stack:
+In kernel.o:
+0xc00285ec: debug_panic (.../../lib/kernel/debug.c:38)
+0xc0028a23: is_sorted (.../../lib/kernel/list.c:343)
+0xc002a5d9: process_get_child (...../userprog/process.c:270)
+0xc002bafe: exec (...../userprog/syscall.c:127)
+0xc002bdc9: syscall_handler (.../../userprog/syscall.c:52)
+0xc0021a86: intr_handler (..../threads/interrupt.c:367)
+0xc0021bbd: intr_entry (threads/intr-stubs.S:38)
+In tests/filesys/base/syn-read:
+0x0804a3bd: exec (.../../lib/user/syscall.c:81)
+0x080487a9: exec_children (...uild/../../tests/lib.c:88)
+0x080481b1: test_main (...ilesys/base/syn-read.c:30)
+0x08048953: main (...ild/../../tests/main.c:13)
+0x0804897e: _start (.../../../lib/user/entry.c:9)
+Translations of user virtual addresses above are based on a guess at
+the binary to use.  If this guess is incorrect, then those
+translations will be misleading.

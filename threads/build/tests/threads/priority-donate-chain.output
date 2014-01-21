@@ -25,21 +25,12 @@ Executing 'priority-donate-chain':
 (priority-donate-chain) interloper 6 finished.
 (priority-donate-chain) main should have priority 21.  Actual priority: 0.
 (priority-donate-chain) interloper 7 finished.
-(priority-donate-chain) thread 1 got lock
-(priority-donate-chain) thread 1 should have priority 21. Actual priority: 3
-(priority-donate-chain) thread 1 finishing with priority 3.
-(priority-donate-chain) thread 2 got lock
-(priority-donate-chain) thread 2 should have priority 21. Actual priority: 6
-(priority-donate-chain) thread 2 finishing with priority 6.
-(priority-donate-chain) thread 3 got lock
-(priority-donate-chain) thread 3 should have priority 21. Actual priority: 9
-(priority-donate-chain) thread 3 finishing with priority 9.
-(priority-donate-chain) (priority-donate-chain) main finishing with priority 0.
+(priority-donate-chain) main finishing with priority 0.
 (priority-donate-chain) end
 Execution of 'priority-donate-chain' complete.
-Timer: 269 ticks
-Thread: 0 idle ticks, 272 kernel ticks, 0 user ticks
-Console: 1927 characters output
+Timer: 200 ticks
+Thread: 1 idle ticks, 202 kernel ticks, 0 user ticks
+Console: 1366 characters output
 Keyboard: 0 keys pressed
 Powering off...
 ========================================================================

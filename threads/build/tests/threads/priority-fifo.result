@@ -1,2 +1,2 @@
 FAIL
-First iteration does not list all threads 0...15
+run: TIMEOUT after 60 seconds of host CPU time

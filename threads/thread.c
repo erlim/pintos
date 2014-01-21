@@ -11,6 +11,7 @@
 #include "threads/switch.h"
 #include "threads/synch.h"
 #include "threads/vaddr.h"
+#include "threads/common.h" //add ryoung 
 #ifdef USERPROG
 #include "userprog/process.h"
 #endif
@@ -28,6 +29,8 @@ static struct list ready_list;
 /* List of all processes.  Processes are added to this list
    when they are first scheduled and removed when they exit. */
 static struct list all_list;
+
+static struct list sleep_list;
 
 /* Idle thread. */
 static struct thread *idle_thread;
@@ -93,6 +96,7 @@ thread_init (void)
   lock_init (&tid_lock);
   list_init (&ready_list);
   list_init (&all_list);
+  list_init (&sleep_list);
 
   /* Set up a thread structure for the running thread. */
   initial_thread = running_thread ();
@@ -140,6 +144,37 @@ thread_tick (void)
   /* Enforce preemption. */
   if (++thread_ticks >= TIME_SLICE)
     intr_yield_on_return ();
+}
+
+void
+thread_sleep()
+{
+  enum intr_level old_level;
+  old_level = intr_disable();
+  if(thread_current() != idle_thread)
+  {
+    list_insert_ordered(&sleep_list, &thread_current()->elem, less_ticks_cmp, NULL);
+    thread_block();
+  }
+  intr_set_level(old_level);
+}
+
+void
+thread_wakeup(int64_t ticks)
+{ 
+  struct list_elem *e = list_begin(&sleep_list);
+  struct list_elem *next;
+  while( e!=list_end(&sleep_list))
+  {
+    next = list_next(e);
+    struct thread *t = list_entry(e, struct thread, elem);
+    if(t->wakeup_ticks <= ticks)
+    {
+      list_remove(e);
+      thread_unblock(t);
+    }
+    e = next;
+  }
 }
 
 /* Prints thread statistics. */
@@ -213,17 +248,19 @@ thread_create (const char *name, int priority,
 
   intr_set_level (old_level);
 
-#ifdef USERPROG
+//#ifdef USERPROG
   //1.3 add ryoug
   struct thread* parent = thread_current();
   t->parent = parent;
   list_push_back(&parent->child, &t->child_elem);
-#endif
+//#endif
  
   t->fd_tbl = palloc_get_page(0); 
   /* Add to run queue. */
   thread_unblock (t);
  
+  if(t->priority > thread_get_priority())
+    thread_yield();
   return tid;
 }
 
@@ -255,12 +292,10 @@ void
 thread_unblock (struct thread *t) 
 {
   enum intr_level old_level;
-
   ASSERT (is_thread (t));
-
   old_level = intr_disable ();
   ASSERT (t->status == THREAD_BLOCKED);
-  list_push_back (&ready_list, &t->elem);
+  list_insert_ordered(&ready_list, &t->elem, high_priority_cmp, NULL);
   t->status = THREAD_READY;
   intr_set_level (old_level);
 }
@@ -328,15 +363,15 @@ thread_exit (void)
 void
 thread_yield (void) 
 {
-  struct thread *cur = thread_current ();
+  struct thread *t = thread_current ();
   enum intr_level old_level;
   
   ASSERT (!intr_context ());
 
   old_level = intr_disable ();
-  if (cur != idle_thread) 
-    list_push_back (&ready_list, &cur->elem);
-  cur->status = THREAD_READY;
+  if (t != idle_thread) 
+    list_insert_ordered(&ready_list, &t->elem, high_priority_cmp, NULL);
+  t->status = THREAD_READY;
   schedule ();
   intr_set_level (old_level);
 }
@@ -491,7 +526,7 @@ init_thread (struct thread *t, const char *name, int priority)
   t->priority = priority;
   t->magic = THREAD_MAGIC;
 
-#ifdef USERPROG
+//#ifdef USERPROG
   // 1.1 add ryoung process descriptor
   t->parent = NULL;
   list_init(&t->child);
@@ -500,7 +535,7 @@ init_thread (struct thread *t, const char *name, int priority)
   t->status_exit = -1;
   sema_init(&t->sema_proc,0);
   sema_init(&t->sema_exit,0); 
-#endif
+//#endif
   
   t->last_fd = FD_DEFINE;
   t->file_exec = NULL; 

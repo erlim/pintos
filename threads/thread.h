@@ -95,7 +95,7 @@ struct thread
     int priority;                       /* Priority. */
     struct list_elem allelem;           /* List element for all threads list. */
 
-#ifdef USERPROG
+//#ifdef USERPROG
      /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
 
@@ -109,14 +109,16 @@ struct thread
     struct semaphore sema_proc;
     struct semaphore sema_exit;
     //}
-#endif
+//#endif
 
     /* 1.10 add Ryoung file descriptor */ 
-    //struct file* fd_tbl[FD_BUFFER_SIZE];
     struct file **fd_tbl;
     int last_fd; 
     struct file *file_exec; // running file
-     
+   
+    // add ryoung threads project 
+    int64_t wakeup_ticks;
+   
     /* Shared between thread.c and synch.c(semaphore, lock). */
     struct list_elem elem;              /* List element. */
 
@@ -134,6 +136,8 @@ void thread_start (void);
 
 void thread_tick (void);
 void thread_print_stats (void);
+void thread_sleep(void);
+void thread_wakeup(int64_t ticks);
 
 typedef void thread_func (void *aux);
 tid_t thread_create (const char *name, int priority, thread_func *, void *);

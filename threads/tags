@@ -11,6 +11,9 @@ CR0_PE	start.S	/^#define CR0_PE 0x00000001      \/* Protection Enable. *\/$/;"	d
 CR0_PG	start.S	/^#define CR0_PG 0x80000000      \/* Paging. *\/$/;"	d
 CR0_WP	start.S	/^#define CR0_WP 0x00010000      \/* Write-Protect enable in kernel mode. *\/$/;"	d
 DEPENDS	build/Makefile	/^DEPENDS = $(patsubst %.o,%.d,$(OBJECTS))$/;"	m
+FD_BUFFER_SIZE	thread.h	30;"	d
+FD_DEFINE	thread.h	28;"	d
+FD_USER	thread.h	29;"	d
 FLAG_IF	flags.h	6;"	d
 FLAG_MBS	flags.h	5;"	d
 INTR_CNT	interrupt.c	22;"	d	file:
@@ -44,9 +47,9 @@ PIC0_CTRL	interrupt.c	16;"	d	file:
 PIC0_DATA	interrupt.c	17;"	d	file:
 PIC1_CTRL	interrupt.c	18;"	d	file:
 PIC1_DATA	interrupt.c	19;"	d	file:
-PRI_DEFAULT	thread.h	24;"	d
-PRI_MAX	thread.h	25;"	d
-PRI_MIN	thread.h	23;"	d
+PRI_DEFAULT	thread.h	25;"	d
+PRI_MAX	thread.h	26;"	d
+PRI_MIN	thread.h	24;"	d
 PTBITS	pte.h	22;"	d
 PTE_A	pte.h	67;"	d
 PTE_ADDR	pte.h	62;"	d
@@ -68,6 +71,7 @@ SRCDIR	build/Makefile	/^SRCDIR = ..\/..$/;"	m
 STUB	intr-stubs.S	/^#define STUB(NUMBER, TYPE)                      \\$/;"	d
 SWITCH_CUR	switch.h	36;"	d
 SWITCH_NEXT	switch.h	37;"	d
+THREADS_COMMON_H_USER_DEFINE	common.h	2;"	d
 THREADS_FLAGS_H	flags.h	2;"	d
 THREADS_INIT_H	init.h	2;"	d
 THREADS_INTERRUPT_H	interrupt.h	2;"	d
@@ -83,11 +87,11 @@ THREADS_THREAD_H	thread.h	2;"	d
 THREADS_VADDR_H	vaddr.h	2;"	d
 THREAD_BLOCKED	thread.h	/^    THREAD_BLOCKED,     \/* Waiting for an event to trigger. *\/$/;"	e	enum:thread_status
 THREAD_DYING	thread.h	/^    THREAD_DYING        \/* About to be destroyed. *\/$/;"	e	enum:thread_status
-THREAD_MAGIC	thread.c	21;"	d	file:
+THREAD_MAGIC	thread.c	23;"	d	file:
 THREAD_READY	thread.h	/^    THREAD_READY,       \/* Not running but ready to run. *\/$/;"	e	enum:thread_status
 THREAD_RUNNING	thread.h	/^    THREAD_RUNNING,     \/* Running thread. *\/$/;"	e	enum:thread_status
-TID_ERROR	thread.h	20;"	d
-TIME_SLICE	thread.c	54;"	d	file:
+TID_ERROR	thread.h	21;"	d
+TIME_SLICE	thread.c	58;"	d	file:
 _end	build/threads/kernel.lds.s	/^  _end = .;$/;"	d
 _end	kernel.lds.S	/^  _end = .;$/;"	d
 _end_bss	build/threads/kernel.lds.s	/^  _end_bss = .;$/;"	d
@@ -117,6 +121,8 @@ blocks_per_arena	malloc.c	/^    size_t blocks_per_arena;    \/* Number of blocks
 bss_init	init.c	/^bss_init (void) $/;"	f	file:
 calloc	malloc.c	/^calloc (size_t a, size_t b) $/;"	f
 check_partition	loader.S	/^check_partition:$/;"	l
+child	thread.h	/^    struct list child;$/;"	m	struct:thread	typeref:struct:thread::list
+child_elem	thread.h	/^    struct list_elem child_elem;$/;"	m	struct:thread	typeref:struct:thread::list_elem
 cond_broadcast	synch.c	/^cond_broadcast (struct condition *cond, struct lock *lock) $/;"	f
 cond_init	synch.c	/^cond_init (struct condition *cond)$/;"	f
 cond_signal	synch.c	/^cond_signal (struct condition *cond, struct lock *lock UNUSED) $/;"	f
@@ -152,6 +158,9 @@ esi	interrupt.h	/^    uint32_t esi;               \/* Saved ESI. *\/$/;"	m	struc
 esi	switch.h	/^    uint32_t esi;               \/*  4: Saved %esi. *\/$/;"	m	struct:switch_threads_frame
 esp	interrupt.h	/^    void *esp;                  \/* Saved stack pointer. *\/$/;"	m	struct:intr_frame
 esp_dummy	interrupt.h	/^    uint32_t esp_dummy;         \/* Not used. *\/$/;"	m	struct:intr_frame
+exit	thread.h	/^    bool exit;$/;"	m	struct:thread
+fd_tbl	thread.h	/^    struct file **fd_tbl;$/;"	m	struct:thread	typeref:struct:thread::file
+file_exec	thread.h	/^    struct file *file_exec; \/\/ running file$/;"	m	struct:thread	typeref:struct:thread::file
 filesys_SRC	build/Makefile	/^filesys_SRC  = filesys\/filesys.c	# Filesystem core.$/;"	m
 filesys_bdev_name	init.c	/^static const char *filesys_bdev_name;$/;"	v	file:
 format_filesys	init.c	/^static bool format_filesys;$/;"	v	file:
@@ -165,6 +174,7 @@ function	thread.c	/^    thread_func *function;      \/* Function to call. *\/$/;
 gdt	start.S	/^gdt:$/;"	l
 gdtdesc	start.S	/^gdtdesc:$/;"	l
 gs	interrupt.h	/^    uint16_t gs, :16;           \/* Saved GS segment register. *\/$/;"	m	struct:intr_frame
+high_priority_cmp	common.h	/^high_priority_cmp(const struct list_elem *_lhs, const struct list_elem *_rhs, void* aux UNUSED)$/;"	f
 holder	synch.h	/^    struct thread *holder;      \/* Thread holding lock (for debugging). *\/$/;"	m	struct:lock	typeref:struct:lock::thread
 idle	thread.c	/^idle (void *idle_started_ UNUSED) $/;"	f	file:
 idle_thread	thread.c	/^static struct thread *idle_thread;$/;"	v	typeref:struct:thread	file:
@@ -211,6 +221,8 @@ kernel_pool	palloc.c	/^static struct pool kernel_pool, user_pool;$/;"	v	typeref:
 kernel_thread	thread.c	/^kernel_thread (thread_func *function, void *aux) $/;"	f	file:
 kernel_thread_frame	thread.c	/^struct kernel_thread_frame $/;"	s	file:
 kernel_ticks	thread.c	/^static long long kernel_ticks;  \/* # of timer ticks in kernel threads. *\/$/;"	v	file:
+last_fd	thread.h	/^    int last_fd; $/;"	m	struct:thread
+less_ticks_cmp	common.h	/^less_ticks_cmp(const struct list_elem *_lhs, const struct list_elem *_rhs, void* aux UNUSED)$/;"	f
 lib_SRC	build/Makefile	/^lib_SRC  = lib\/debug.c			# Debug helpers.$/;"	m
 load_kernel	loader.S	/^load_kernel:$/;"	l
 locate_block_device	init.c	/^locate_block_device (enum block_type role, const char *name)$/;"	f	file:
@@ -256,6 +268,7 @@ palloc_free_page	palloc.c	/^palloc_free_page (void *page) $/;"	f
 palloc_get_multiple	palloc.c	/^palloc_get_multiple (enum palloc_flags flags, size_t page_cnt)$/;"	f
 palloc_get_page	palloc.c	/^palloc_get_page (enum palloc_flags flags) $/;"	f
 palloc_init	palloc.c	/^palloc_init (size_t user_page_limit)$/;"	f
+parent	thread.h	/^    struct thread* parent;$/;"	m	struct:thread	typeref:struct:thread::thread
 parse_options	init.c	/^parse_options (char **argv) $/;"	f	file:
 pd_no	pte.h	/^static inline uintptr_t pd_no (const void *va) {$/;"	f
 pde_create	pte.h	/^static inline uint32_t pde_create (uint32_t *pt) {$/;"	f
@@ -266,6 +279,7 @@ pg_round_down	vaddr.h	/^static inline void *pg_round_down (const void *va) {$/;"
 pg_round_up	vaddr.h	/^static inline void *pg_round_up (const void *va) {$/;"	f
 pic_end_of_interrupt	interrupt.c	/^pic_end_of_interrupt (int irq) $/;"	f	file:
 pic_init	interrupt.c	/^pic_init (void)$/;"	f	file:
+pid_t	thread.h	/^typedef int pid_t;$/;"	t
 pool	palloc.c	/^struct pool$/;"	s	file:
 popa_ret	loader.S	/^popa_ret:$/;"	l
 priority	thread.h	/^    int priority;                       \/* Priority. *\/$/;"	m	struct:thread
@@ -289,7 +303,9 @@ running_thread	thread.c	/^running_thread (void) $/;"	f
 schedule	thread.c	/^schedule (void) $/;"	f	file:
 scratch_bdev_name	init.c	/^static const char *scratch_bdev_name;$/;"	v	file:
 sema_down	synch.c	/^sema_down (struct semaphore *sema) $/;"	f
+sema_exit	thread.h	/^    struct semaphore sema_exit;$/;"	m	struct:thread	typeref:struct:thread::semaphore
 sema_init	synch.c	/^sema_init (struct semaphore *sema, unsigned value) $/;"	f
+sema_proc	thread.h	/^    struct semaphore sema_proc;$/;"	m	struct:thread	typeref:struct:thread::semaphore
 sema_self_test	synch.c	/^sema_self_test (void) $/;"	f
 sema_test_helper	synch.c	/^sema_test_helper (void *sema_) $/;"	f	file:
 sema_try_down	synch.c	/^sema_try_down (struct semaphore *sema) $/;"	f
@@ -298,11 +314,14 @@ semaphore	synch.c	/^    struct semaphore semaphore;         \/* This semaphore. 
 semaphore	synch.h	/^    struct semaphore semaphore; \/* Binary semaphore controlling access. *\/$/;"	m	struct:lock	typeref:struct:lock::semaphore
 semaphore	synch.h	/^struct semaphore $/;"	s
 semaphore_elem	synch.c	/^struct semaphore_elem $/;"	s	file:
+sleep_list	thread.c	/^static struct list sleep_list;$/;"	v	typeref:struct:list	file:
 ss	interrupt.h	/^    uint16_t ss, :16;           \/* Data segment for esp. *\/$/;"	m	struct:intr_frame
 stack	thread.h	/^    uint8_t *stack;                     \/* Saved stack pointer. *\/$/;"	m	struct:thread
 start	loader.S	/^start:$/;"	l
 start	start.S	/^start:$/;"	l
 status	thread.h	/^    enum thread_status status;          \/* Thread state. *\/$/;"	m	struct:thread	typeref:enum:thread::thread_status
+status_exit	thread.h	/^    int  status_exit;$/;"	m	struct:thread
+status_load	thread.h	/^    int  status_load; \/\/ -1:error, 0:load x, 1:load o $/;"	m	struct:thread
 swap_bdev_name	init.c	/^static const char *swap_bdev_name;$/;"	v	file:
 switch_entry	switch.S	/^switch_entry:$/;"	l
 switch_entry_frame	switch.h	/^struct switch_entry_frame$/;"	s
@@ -327,6 +346,7 @@ thread_print_stats	thread.c	/^thread_print_stats (void) $/;"	f
 thread_schedule_tail	thread.c	/^thread_schedule_tail (struct thread *prev)$/;"	f
 thread_set_nice	thread.c	/^thread_set_nice (int nice UNUSED) $/;"	f
 thread_set_priority	thread.c	/^thread_set_priority (int new_priority) $/;"	f
+thread_sleep	thread.c	/^thread_sleep()$/;"	f
 thread_stack_ofs	thread.c	/^uint32_t thread_stack_ofs = offsetof (struct thread, stack);$/;"	v
 thread_start	thread.c	/^thread_start (void) $/;"	f
 thread_status	thread.h	/^enum thread_status$/;"	g
@@ -334,6 +354,7 @@ thread_tick	thread.c	/^thread_tick (void) $/;"	f
 thread_ticks	thread.c	/^static unsigned thread_ticks;   \/* # of timer ticks since last yield. *\/$/;"	v	file:
 thread_tid	thread.c	/^thread_tid (void) $/;"	f
 thread_unblock	thread.c	/^thread_unblock (struct thread *t) $/;"	f
+thread_wakeup	thread.c	/^thread_wakeup(int64_t ticks)$/;"	f
 thread_yield	thread.c	/^thread_yield (void) $/;"	f
 threads_SRC	build/Makefile	/^threads_SRC  = threads\/start.S		# Startup code.$/;"	m
 tid	thread.h	/^    tid_t tid;                          \/* Thread identifier. *\/$/;"	m	struct:thread
@@ -352,5 +373,6 @@ vec_no	interrupt.h	/^    uint32_t vec_no;            \/* Interrupt vector number
 vtop	vaddr.h	/^vtop (const void *vaddr)$/;"	f
 waiters	synch.h	/^    struct list waiters;        \/* List of waiting threads. *\/$/;"	m	struct:condition	typeref:struct:condition::list
 waiters	synch.h	/^    struct list waiters;        \/* List of waiting threads. *\/$/;"	m	struct:semaphore	typeref:struct:semaphore::list
+wakeup_ticks	thread.h	/^    int64_t wakeup_ticks;$/;"	m	struct:thread
 yield_on_return	interrupt.c	/^static bool yield_on_return;    \/* Should we yield on interrupt return? *\/$/;"	v	file:
 zero	intr-stubs.S	/^#define zero                                    \\$/;"	d

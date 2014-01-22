@@ -23,7 +23,7 @@ Executing 'priority-donate-nest':
 (priority-donate-nest) end
 Execution of 'priority-donate-nest' complete.
 Timer: 131 ticks
-Thread: 1 idle ticks, 133 kernel ticks, 0 user ticks
+Thread: 0 idle ticks, 134 kernel ticks, 0 user ticks
 Console: 1060 characters output
 Keyboard: 0 keys pressed
 Powering off...

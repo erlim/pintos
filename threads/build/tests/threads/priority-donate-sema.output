@@ -14,8 +14,8 @@ Executing 'priority-donate-sema':
 (priority-donate-sema) Main thread finished.
 (priority-donate-sema) end
 Execution of 'priority-donate-sema' complete.
-Timer: 58 ticks
-Thread: 1 idle ticks, 60 kernel ticks, 0 user ticks
+Timer: 59 ticks
+Thread: 0 idle ticks, 61 kernel ticks, 0 user ticks
 Console: 505 characters output
 Keyboard: 0 keys pressed
 Powering off...

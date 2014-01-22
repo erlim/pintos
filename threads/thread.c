@@ -364,10 +364,9 @@ void
 thread_yield (void) 
 {
   struct thread *t = thread_current ();
-  enum intr_level old_level;
   
+  enum intr_level old_level;
   ASSERT (!intr_context ());
-
   old_level = intr_disable ();
   if (t != idle_thread) 
     list_insert_ordered(&ready_list, &t->elem, high_priority_cmp, NULL);
@@ -398,6 +397,13 @@ void
 thread_set_priority (int new_priority) 
 {
   thread_current ()->priority = new_priority;
+  if(!list_empty(&ready_list))
+  {
+    struct list_elem *e = list_begin(&ready_list);
+    struct thread *thread = list_entry(e, struct thread, elem);
+    if(thread->priority > thread_get_priority())
+      thread_yield();
+  }
 }
 
 /* Returns the current thread's priority. */
@@ -630,14 +636,7 @@ schedule (void)
   struct thread *cur = running_thread ();
   struct thread *next = next_thread_to_run ();
   struct thread *prev = NULL;
-  /*
-  if( cur != NULL)
-    printf("current tid:%d, status:%d, process status:%d\n", cur->tid, cur->status, cur->status_proc);
-  if( next != NULL) 
-    printf("nextt tid:%d, status:%d, process status:%d\n", next->tid, next->status, next->status_proc);
-  */
-
-  ASSERT (intr_get_level () == INTR_OFF);
+    ASSERT (intr_get_level () == INTR_OFF);
   ASSERT (cur->status != THREAD_RUNNING);
   ASSERT (is_thread (next));
 

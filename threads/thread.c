@@ -399,9 +399,8 @@ thread_set_priority (int new_priority)
   thread_current ()->priority = new_priority;
   if(!list_empty(&ready_list))
   {
-    struct list_elem *e = list_begin(&ready_list);
-    struct thread *thread = list_entry(e, struct thread, elem);
-    if(thread->priority > thread_get_priority())
+    const struct list_elem *e = list_begin(&ready_list);
+    if(high_priority_cmp(e, &thread_current()->elem, NULL))
       thread_yield();
   }
 }

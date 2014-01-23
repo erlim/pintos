@@ -26,11 +26,11 @@ Executing 'write-bad-ptr':
 (write-bad-ptr) open "sample.txt"
 write-bad-ptr: exit(-1)
 Execution of 'write-bad-ptr' complete.
-Timer: 289 ticks
-Thread: 0 idle ticks, 258 kernel ticks, 38 user ticks
+Timer: 290 ticks
+Thread: 30 idle ticks, 229 kernel ticks, 38 user ticks
 hda2 (filesys): 93 reads, 212 writes
 hda3 (scratch): 102 reads, 2 writes
-Console: 973 characters output
+Console: 974 characters output
 Keyboard: 0 keys pressed
 Exception: 1 page faults
 Powering off...

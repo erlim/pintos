@@ -24,11 +24,11 @@ Executing 'write-stdin':
 (write-stdin) end
 write-stdin: exit(0)
 Execution of 'write-stdin' complete.
-Timer: 260 ticks
-Thread: 0 idle ticks, 234 kernel ticks, 33 user ticks
+Timer: 261 ticks
+Thread: 30 idle ticks, 204 kernel ticks, 34 user ticks
 hda2 (filesys): 63 reads, 204 writes
 hda3 (scratch): 99 reads, 2 writes
-Console: 898 characters output
+Console: 899 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

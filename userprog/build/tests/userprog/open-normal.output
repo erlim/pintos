@@ -26,11 +26,11 @@ Executing 'open-normal':
 (open-normal) end
 open-normal: exit(0)
 Execution of 'open-normal' complete.
-Timer: 284 ticks
-Thread: 0 idle ticks, 254 kernel ticks, 37 user ticks
+Timer: 286 ticks
+Thread: 30 idle ticks, 227 kernel ticks, 36 user ticks
 hda2 (filesys): 92 reads, 212 writes
 hda3 (scratch): 102 reads, 2 writes
-Console: 944 characters output
+Console: 945 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

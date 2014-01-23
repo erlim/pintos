@@ -1,1 +1,15 @@
-PASS
+FAIL
+Kernel panic in run: PANIC at ../../threads/vaddr.h:84 in vtop(): assertion `is_kernel_vaddr (vaddr)' failed.
+Call stack: 0xc002885c 0xc002b3df 0xc002a826 0xc0020bca 0xc0020e54 0xc0020ee4 0xc0022ae9 0xc0022d2d 0xc00212a6 0xc00215d2 0xc002058a
+Translation of call stack:
+0xc002885c: debug_panic (.../../lib/kernel/debug.c:38)
+0xc002b3df: pagedir_activate (...../userprog/pagedir.c:230)
+0xc002a826: process_activate (...../userprog/process.c:260)
+0xc0020bca: thread_schedule_tail (..../../threads/thread.c:619)
+0xc0020e54: schedule (..../../threads/thread.c:646)
+0xc0020ee4: thread_yield (..../../threads/thread.c:375)
+0xc0022ae9: sema_up (...../../threads/synch.c:125)
+0xc0022d2d: lock_release (...../../threads/synch.c:241)
+0xc00212a6: allocate_tid (..../../threads/thread.c:660)
+0xc00215d2: thread_init (..../../threads/thread.c:105)
+0xc002058a: main (...d/../../threads/init.c:91)

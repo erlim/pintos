@@ -23,11 +23,11 @@ Executing 'bad-read2':
 (bad-read2) begin
 bad-read2: exit(-1)
 Execution of 'bad-read2' complete.
-Timer: 255 ticks
-Thread: 0 idle ticks, 231 kernel ticks, 31 user ticks
+Timer: 256 ticks
+Thread: 30 idle ticks, 202 kernel ticks, 31 user ticks
 hda2 (filesys): 63 reads, 206 writes
 hda3 (scratch): 100 reads, 2 writes
-Console: 870 characters output
+Console: 871 characters output
 Keyboard: 0 keys pressed
 Exception: 1 page faults
 Powering off...

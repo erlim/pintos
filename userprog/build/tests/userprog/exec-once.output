@@ -28,11 +28,11 @@ child-simple: exit(81)
 (exec-once) end
 exec-once: exit(0)
 Execution of 'exec-once' complete.
-Timer: 382 ticks
-Thread: 0 idle ticks, 322 kernel ticks, 71 user ticks
+Timer: 383 ticks
+Thread: 30 idle ticks, 295 kernel ticks, 69 user ticks
 hda2 (filesys): 124 reads, 400 writes
 hda3 (scratch): 196 reads, 2 writes
-Console: 975 characters output
+Console: 976 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

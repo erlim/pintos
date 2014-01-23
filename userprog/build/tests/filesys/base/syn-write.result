@@ -1,13 +1,13 @@
 FAIL
 Kernel panic in run: PANIC at ../../lib/kernel/list.c:84 in list_next(): assertion `is_head (elem) || is_interior (elem)' failed.
-Call stack: 0xc002884c 0xc0028c83 0xc002a7e5 0xc002bcbe 0xc002bf89 0xc0021c16 0xc0021d4d 0x804a3cd 0x80487b9 0x8048102 0x8048963 0x804898e
+Call stack: 0xc002887c 0xc0028cb3 0xc002a815 0xc002bcee 0xc002bfb9 0xc0021c16 0xc0021d4d 0x804a3cd 0x80487b9 0x8048102 0x8048963 0x804898e
 Translation of call stack:
 In kernel.o:
-0xc002884c: debug_panic (.../../lib/kernel/debug.c:38)
-0xc0028c83: is_sorted (.../../lib/kernel/list.c:343)
-0xc002a7e5: process_get_child (...../userprog/process.c:270)
-0xc002bcbe: exec (...../userprog/syscall.c:127)
-0xc002bf89: syscall_handler (.../../userprog/syscall.c:52)
+0xc002887c: debug_panic (.../../lib/kernel/debug.c:38)
+0xc0028cb3: is_sorted (.../../lib/kernel/list.c:343)
+0xc002a815: process_get_child (...../userprog/process.c:270)
+0xc002bcee: exec (...../userprog/syscall.c:127)
+0xc002bfb9: syscall_handler (.../../userprog/syscall.c:52)
 0xc0021c16: intr_handler (..../threads/interrupt.c:367)
 0xc0021d4d: intr_entry (threads/intr-stubs.S:38)
 In tests/filesys/base/syn-write:

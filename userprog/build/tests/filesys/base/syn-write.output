@@ -25,23 +25,20 @@ Executing 'syn-write':
 (syn-write) begin
 (syn-write) create "stuff"
 (syn-write) exec child 1 of 10: "child-syn-wrt 0"
-child-syn-wrt: exit(0)
 (syn-write) exec child 2 of 10: "child-syn-wrt 1"
-child-syn-wrt: exit(1)
+child-syn-wrt: exit(0)
 (syn-write) exec child 3 of 10: "child-syn-wrt 2"
-Kernel PANIC at ../../lib/kernel/list.c:84 in list_next(): assertion `is_head (elem) || is_interior (elem)' failed.
-Call stack: 0xc002887c 0xc0028cb3 0xc002a815 0xc002bcee 0xc002bfb9 0xc0021c16 0xc0021d4d 0x804a3cd 0x80487b9 0x8048102 0x8048963 0x804898e.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Timer: 511 ticks
-Thread: 30 idle ticks, 303 kernel ticks, 178 user ticks
-hda2 (filesys): 192 reads, 458 writes
+syn-write: exit(-1)
+Execution of 'syn-write' complete.
+Timer: 565 ticks
+Thread: 30 idle ticks, 337 kernel ticks, 209 user ticks
+hda2 (filesys): 226 reads, 458 writes
 hda3 (scratch): 217 reads, 2 writes
-Console: 1500 characters output
+Console: 1122 characters output
 Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off..========================================================================
+Exception: 1 page faults
+Powering off...
+========================================================================
                        Bochs x86 Emulator 2.6.2
                 Built from SVN snapshot on May 26, 2013
                   Compiled on Dec 28 2013 at 04:29:58

@@ -31,9 +31,9 @@ Executing 'lg-seq-random':
 (lg-seq-random) end
 lg-seq-random: exit(0)
 Execution of 'lg-seq-random' complete.
-Timer: 808 ticks
-Thread: 30 idle ticks, 207 kernel ticks, 578 user ticks
-hda2 (filesys): 502 reads, 664 writes
+Timer: 876 ticks
+Thread: 30 idle ticks, 222 kernel ticks, 631 user ticks
+hda2 (filesys): 504 reads, 664 writes
 hda3 (scratch): 103 reads, 2 writes
 Console: 1166 characters output
 Keyboard: 0 keys pressed

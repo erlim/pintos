@@ -1,0 +1,4 @@
+break test_priority_donate_sema
+break l_thread_func
+break m_thread_func
+break h_thread_func

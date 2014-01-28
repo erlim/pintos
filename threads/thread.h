@@ -24,7 +24,8 @@ typedef int pid_t;
 #define PRI_MIN 0                       /* Lowest priority. */
 #define PRI_DEFAULT 31                  /* Default priority. */
 #define PRI_MAX 63                      /* Highest priority. */
- 
+#define PRI_DONATION_BUF_SIZE 8 
+
 #define FD_DEFINE 2
 #define FD_USER 3 
 #define FD_BUFFER_SIZE 10
@@ -86,45 +87,50 @@ typedef int pid_t;
    ready state is on the run queue, whereas only a thread in the
    blocked state is on a semaphore wait list. */
 struct thread
-  {
-    /* Owned by thread.c. */
-    tid_t tid;                          /* Thread identifier. */
-    enum thread_status status;          /* Thread state. */
-    char name[16];                      /* Name (for debugging purposes). */
-    uint8_t *stack;                     /* Saved stack pointer. */
-    int priority;                       /* Priority. */
-    struct list_elem allelem;           /* List element for all threads list. */
-
+{
+  //------------------ Basic -------------------------
+  /* Owned by thread.c. */
+  tid_t tid;                          /* Thread identifier. */
+  enum thread_status status;          /* Thread state. */
+  char name[16];                      /* Name (for debugging purposes). */
+  uint8_t *stack;                     /* Saved stack pointer. */
+  int priority;                       /* Priority. */
+  struct list_elem allelem;           /* List element for all threads list. */
+  /* Shared between thread.c and synch.c(semaphore, lock). */
+  struct list_elem elem;              /* List element. */
+  /* Owned by thread.c. */
+  unsigned magic;                     /* Detects stack overflow. */
+  //---------------------------------------------------
+  
 //#ifdef USERPROG
-     /* Owned by userprog/process.c. */
-    uint32_t *pagedir;                  /* Page directory. */
-
-    //{ 1.1 add Ryoung process descriptor (pro3.hierarchical process struct)    
-    struct thread* parent;
-    struct list child;
-    struct list_elem child_elem;
-    int  status_load; // -1:error, 0:load x, 1:load o 
-    bool exit;
-    int  status_exit;
-    struct semaphore sema_proc;
-    struct semaphore sema_exit;
-    //}
+  //------------------- User Program -------------------
+  uint32_t *pagedir;                  /* Page directory. */
+  // 1.7 add ryoung parent_child process structure      
+  struct thread* parent;
+  struct list child;
+  struct list_elem child_elem;
+  int  status_load;                   /* -1:error, 0:load x, 1:load o */ 
+  bool exit;
+  int  status_exit;
+  struct semaphore sema_load;
+  struct semaphore sema_exit; 
 //#endif
+  // 1.10 add Ryoung file descriptor 
+  struct file **fd_tbl;
+  int last_fd; 
+  struct file *file_exec;             /* running file */
+  //----------------------------------------------------
 
-    /* 1.10 add Ryoung file descriptor */ 
-    struct file **fd_tbl;
-    int last_fd; 
-    struct file *file_exec; // running file
-   
-    // add ryoung threads project 
-    int64_t wakeup_ticks;
-   
-    /* Shared between thread.c and synch.c(semaphore, lock). */
-    struct list_elem elem;              /* List element. */
-
-    /* Owned by thread.c. */
-    unsigned magic;                     /* Detects stack overflow. */
-  };
+  //--------------------- Threads ----------------------
+  // 1.15 add ryoung alarm clock 
+  int64_t wakeup_ticks;
+  // 1.24 add ryoung  priority inversion
+  int priority_ori;
+  struct list donation;
+  struct list_elem donation_elem;
+  struct lock *lock_wait;
+  //---------------------------------------------------- 
+};
 
 /* If false (default), use round-robin scheduler.
    If true, use multi-level feedback queue scheduler.
@@ -151,6 +157,7 @@ const char *thread_name (void);
 
 void thread_exit (void) NO_RETURN;
 void thread_yield (void);
+void thread_check_yield(void); //check current threads' priority with first elem in ready list
 
 /* Performs some operation on thread t, given auxiliary data AUX. */
 typedef void thread_action_func (struct thread *t, void *aux);
@@ -158,6 +165,8 @@ void thread_foreach (thread_action_func *, void *);
 
 int thread_get_priority (void);
 void thread_set_priority (int);
+void thread_donate_priority(void);
+bool thread_refresh_priority(void);
 
 int thread_get_nice (void);
 void thread_set_nice (int);

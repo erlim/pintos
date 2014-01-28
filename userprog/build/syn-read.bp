@@ -1,0 +1,3 @@
+break syscall.c:exit
+break syscall.c:wait
+break process_wait

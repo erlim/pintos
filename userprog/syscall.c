@@ -25,14 +25,14 @@ unsigned tell (int fd);
 void close (int fd);
 
 
-void
+  void
 syscall_init (void) 
 {
   intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
   lock_init(&lock_file);
 }
 
-static void
+  static void
 syscall_handler (struct intr_frame *f UNUSED) 
 {
   //hex_dump(f->esp, f->esp, f->esp, true);
@@ -89,10 +89,10 @@ syscall_handler (struct intr_frame *f UNUSED)
 
 void check_address(void *addr)
 {
-   if(! (addr>=(void*)0x8048000 && addr<(void*)0xc0000000) )
-   {
-     exit(-1);
-   }
+  if(! (addr>=(void*)0x8048000 && addr<(void*)0xc0000000) )
+  {
+    exit(-1);
+  }
 }   
 
 void get_argument(void *esp, int *arg, int argc)
@@ -127,19 +127,25 @@ pid_t exec(const char *file)
   struct thread *child = process_get_child(pid);
   if(!child)
     return -1;
+
   if(child->status_load == false)
-    {
-      //printf("sema caller thread:%d",child->tid); 
-      sema_down(&child->sema_proc); //thread_current() ->parent push waiters
-    }
+  {
+    sema_down(&child->sema_load); //thread_current() ->parent push waiters
+  }
+
   if(child->status_load == -1)
+  {
+    child->exit = true;
+    child->status_exit = -1;
     return -1;
+  }
 
   return pid;
 }
 
 int wait(pid_t pid)
 {
+//  printf("syscall wait:%d\n", pid);
   return process_wait(pid);
 }
 
@@ -164,7 +170,7 @@ int open(const char *file)
 {
   if(!file)
     return false;
-  
+
   lock_acquire(&lock_file);
   struct file  *f = filesys_open(file);
   if(f == NULL)
@@ -174,7 +180,7 @@ int open(const char *file)
   }
   int fd = process_add_file(f);
   lock_release(&lock_file);
-  
+
   return fd;
 }  
 
@@ -197,9 +203,9 @@ int read(int fd, void *buffer, unsigned length)
     {
       *(unsigned char*)(buffer +idx) = input_getc();
     }
-   return length;
+    return length;
   } 
-  
+
   lock_acquire(&lock_file);
   int ret =0;
   struct file *f = process_get_file(fd);
@@ -208,7 +214,7 @@ int read(int fd, void *buffer, unsigned length)
   else
     ret = file_read(f,buffer,length);
   lock_release(&lock_file);
-  
+
   return ret;  
 }
 
@@ -220,7 +226,7 @@ int write(int fd, const void *buffer, unsigned length)
     putbuf(buffer, length);
     return length;
   }
-  
+
   lock_acquire(&lock_file);
   int ret = 0;
   struct file *f = process_get_file(fd);
@@ -229,7 +235,7 @@ int write(int fd, const void *buffer, unsigned length)
   else
     ret = file_write(f, buffer, length); 
   lock_release(&lock_file);
-  
+
   return ret;
 }
 
@@ -240,7 +246,7 @@ void seek(int fd, unsigned position)
     file_seek(f, position);
 }
 
-unsigned
+  unsigned
 tell(int fd)
 { 
   struct file *f = process_get_file(fd);

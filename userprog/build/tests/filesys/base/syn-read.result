@@ -1,21 +1,70 @@
 FAIL
-Kernel panic in run: PANIC at ../../lib/kernel/list.c:84 in list_next(): assertion `is_head (elem) || is_interior (elem)' failed.
-Call stack: 0xc002887c 0xc0028cb3 0xc002a815 0xc002bcee 0xc002bfb9 0xc0021c16 0xc0021d4d 0x804a3bd 0x80487a9 0x80481b1 0x8048953 0x804897e
-Translation of call stack:
-In kernel.o:
-0xc002887c: debug_panic (.../../lib/kernel/debug.c:38)
-0xc0028cb3: is_sorted (.../../lib/kernel/list.c:343)
-0xc002a815: process_get_child (...../userprog/process.c:270)
-0xc002bcee: exec (...../userprog/syscall.c:127)
-0xc002bfb9: syscall_handler (.../../userprog/syscall.c:52)
-0xc0021c16: intr_handler (..../threads/interrupt.c:367)
-0xc0021d4d: intr_entry (threads/intr-stubs.S:38)
-In tests/filesys/base/syn-read:
-0x0804a3bd: exec (.../../lib/user/syscall.c:81)
-0x080487a9: exec_children (...uild/../../tests/lib.c:88)
-0x080481b1: test_main (...ilesys/base/syn-read.c:30)
-0x08048953: main (...ild/../../tests/main.c:13)
-0x0804897e: _start (.../../../lib/user/entry.c:9)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (syn-read) begin
+  (syn-read) create "data"
+  (syn-read) open "data"
+  (syn-read) write "data"
+  (syn-read) close "data"
+  (syn-read) exec child 1 of 10: "child-syn-read 0"
+  (syn-read) exec child 2 of 10: "child-syn-read 1"
+  (syn-read) exec child 3 of 10: "child-syn-read 2"
+  (syn-read) exec child 4 of 10: "child-syn-read 3"
+  (syn-read) exec child 5 of 10: "child-syn-read 4"
+  (syn-read) exec child 6 of 10: "child-syn-read 5"
+  (syn-read) exec child 7 of 10: "child-syn-read 6"
+  (syn-read) exec child 8 of 10: "child-syn-read 7"
+  (syn-read) exec child 9 of 10: "child-syn-read 8"
+  (syn-read) exec child 10 of 10: "child-syn-read 9"
+  (syn-read) wait for child 1 of 10 returned 0 (expected 0)
+  (syn-read) wait for child 2 of 10 returned 1 (expected 1)
+  (syn-read) wait for child 3 of 10 returned 2 (expected 2)
+  (syn-read) wait for child 4 of 10 returned 3 (expected 3)
+  (syn-read) wait for child 5 of 10 returned 4 (expected 4)
+  (syn-read) wait for child 6 of 10 returned 5 (expected 5)
+  (syn-read) wait for child 7 of 10 returned 6 (expected 6)
+  (syn-read) wait for child 8 of 10 returned 7 (expected 7)
+  (syn-read) wait for child 9 of 10 returned 8 (expected 8)
+  (syn-read) wait for child 10 of 10 returned 9 (expected 9)
+  (syn-read) end
+Differences in `diff -u' format:
+  (syn-read) begin
+  (syn-read) create "data"
+  (syn-read) open "data"
+  (syn-read) write "data"
+  (syn-read) close "data"
+  (syn-read) exec child 1 of 10: "child-syn-read 0"
+  (syn-read) exec child 2 of 10: "child-syn-read 1"
+  (syn-read) exec child 3 of 10: "child-syn-read 2"
+  (syn-read) exec child 4 of 10: "child-syn-read 3"
+  (syn-read) exec child 5 of 10: "child-syn-read 4"
+  (syn-read) exec child 6 of 10: "child-syn-read 5"
+  (syn-read) exec child 7 of 10: "child-syn-read 6"
+  (syn-read) exec child 8 of 10: "child-syn-read 7"
+  (syn-read) exec child 9 of 10: "child-syn-read 8"
+  (syn-read) exec child 10 of 10: "child-syn-read 9"
+- (syn-read) wait for child 1 of 10 returned 0 (expected 0)
+- (syn-read) wait for child 2 of 10 returned 1 (expected 1)
+- (syn-read) wait for child 3 of 10 returned 2 (expected 2)
+- (syn-read) wait for child 4 of 10 returned 3 (expected 3)
+- (syn-read) wait for child 5 of 10 returned 4 (expected 4)
+- (syn-read) wait for child 6 of 10 returned 5 (expected 5)
+- (syn-read) wait for child 7 of 10 returned 6 (expected 6)
+- (syn-read) wait for child 8 of 10 returned 7 (expected 7)
+- (syn-read) wait for child 9 of 10 returned 8 (expected 8)
+- (syn-read) wait for child 10 of 10 returned 9 (expected 9)
+- (syn-read) end
++ (syn-read) pids[0]:4
++ (syn-read) pids[1]:5
++ (syn-read) pids[2]:6
++ (syn-read) pids[3]:7
++ (syn-read) pids[4]:8
++ (syn-read) pids[5]:9
++ (syn-read) pids[6]:10
++ (syn-read) pids[7]:11
++ (syn-read) pids[8]:12
++ (syn-read) pids[9]:13
++ (syn-read) [4] wait for child 1 of 10 returned 0 (expected 0)
+
+(Process exit codes are excluded for matching purposes.)

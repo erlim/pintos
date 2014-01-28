@@ -10,7 +10,12 @@ high_priority_cmp(const struct list_elem *lhs, const struct list_elem *rhs, void
 {
   const struct thread *l = list_entry(lhs, struct thread, elem);
   const struct thread *r = list_entry(rhs, struct thread, elem);
-  
+
+  /*if(l->priority > r->priority) 
+    return 1;
+  else if(l->priority == r->priority)
+     return l->priority < r->priority;  //same priority, then order, 
+ */
   return l->priority > r->priority;
 }
 

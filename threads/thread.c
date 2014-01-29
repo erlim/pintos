@@ -58,6 +58,11 @@ static long long user_ticks;    /* # of timer ticks in user programs. */
 #define TIME_SLICE 4            /* # of timer ticks to give each thread. */
 static unsigned thread_ticks;   /* # of timer ticks since last yield. */
 
+//1.29 add ryoung mlfqs
+#define NICE_DEFAUIT 0
+#define RECENT_CPU_DEFAULT 0
+
+
 /* If false (default), use round-robin scheduler.
    If true, use multi-level feedback queue scheduler.
    Controlled by kernel command-line option "-o mlfqs". */
@@ -357,7 +362,9 @@ thread_exit (void)
   intr_disable ();
   list_remove (&t->allelem);
   t->status = THREAD_DYING;
-  palloc_free_page(t->fd_tbl);
+  //t->exit = true;
+  //if(t->parent != NULL)
+    //sema_up(&t->sema_exit);
   schedule ();
   NOT_REACHED ();
 }
@@ -464,6 +471,7 @@ thread_refresh_priority()
   return false; //refresh no, changed to priority_original
 } 
 
+//1.29 add ryoung(mlfqs)
 /* Sets the current thread's nice value to NICE. */
   void
 thread_set_nice (int nice UNUSED) 
@@ -493,6 +501,28 @@ thread_get_recent_cpu (void)
 {
   /* Not yet implemented. */
   return 0;
+}
+
+//mlfqs
+void 
+mlfqs_priorirty(struct thread *t)
+{
+}
+void
+mlfqs_recent_cpu(struct thread *t)
+{
+}
+void
+mlfqs_load_avg(void)
+{
+}
+void
+mlfqs_increment(void)
+{
+}
+void
+mlfqs_recalc(void)
+{
 }
 
 
@@ -583,19 +613,24 @@ init_thread (struct thread *t, const char *name, int priority)
   t->priority = priority;
   t->magic = THREAD_MAGIC;
   
+  //---------------- User program ----------
   //parent,child
   list_init(&t->child);
-
   //file descriptor 
   t->last_fd = FD_DEFINE;
   t->file_exec = NULL; 
+  //----------------------------------------
 
+  //----------------- Threads --------------
   //priority inversion
   t->priority_ori = t->priority;
-  t->lock_wait = NULL; 
+  t->lock_wait = NULL;
   list_init(&t->donation);
-
+  //mlfqs
+  t->nice = NI
   list_push_back(&all_list, &t->allelem);
+  //----------------------------------------g
+
 }
 
 
@@ -671,7 +706,7 @@ thread_schedule_tail (struct thread *prev)
   if (prev != NULL && prev->status == THREAD_DYING && prev != initial_thread) 
   {
     ASSERT (prev != cur);
-    palloc_free_page (prev);
+    palloc_free_page (prev);  //ryoung
   }
 }
 

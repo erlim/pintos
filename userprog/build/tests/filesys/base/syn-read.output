@@ -47,23 +47,22 @@ Executing 'syn-read':
 (syn-read) pids[7]:11
 (syn-read) pids[8]:12
 (syn-read) pids[9]:13
-child-syn-read: exit(3)
-child-syn-read: exit(2)
-child-syn-read: exit(1)
-child-syn-read: exit(6)
 child-syn-read: exit(5)
+child-syn-read: exit(2)
+child-syn-read: exit(3)
+child-syn-read: exit(1)
 child-syn-read: exit(4)
+child-syn-read: exit(6)
 child-syn-read: exit(7)
-child-syn-read: exit(9)
 child-syn-read: exit(0)
 (syn-read) [4] wait for child 1 of 10 returned 0 (expected 0)
 syn-read: exit(-1)
 Execution of 'syn-read' complete.
-Timer: 10375 ticks
-Thread: 30 idle ticks, 488 kernel ticks, 9869 user ticks
-hda2 (filesys): 10533 reads, 452 writes
+Timer: 10337 ticks
+Thread: 30 idle ticks, 467 kernel ticks, 9853 user ticks
+hda2 (filesys): 10513 reads, 452 writes
 hda3 (scratch): 218 reads, 2 writes
-Console: 2011 characters output
+Console: 1987 characters output
 Keyboard: 0 keys pressed
 Exception: 1 page faults
 Powering off...

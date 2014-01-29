@@ -25,7 +25,7 @@ Executing 'read-stdout':
 read-stdout: exit(0)
 Execution of 'read-stdout' complete.
 Timer: 281 ticks
-Thread: 30 idle ticks, 222 kernel ticks, 36 user ticks
+Thread: 30 idle ticks, 221 kernel ticks, 37 user ticks
 hda2 (filesys): 63 reads, 206 writes
 hda3 (scratch): 100 reads, 2 writes
 Console: 900 characters output

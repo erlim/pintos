@@ -32,7 +32,7 @@ Executing 'sm-seq-block':
 sm-seq-block: exit(0)
 Execution of 'sm-seq-block' complete.
 Timer: 380 ticks
-Thread: 30 idle ticks, 223 kernel ticks, 134 user ticks
+Thread: 30 idle ticks, 221 kernel ticks, 136 user ticks
 hda2 (filesys): 126 reads, 251 writes
 hda3 (scratch): 103 reads, 2 writes
 Console: 1152 characters output

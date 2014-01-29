@@ -24,7 +24,7 @@ Executing 'write-bad-fd':
 write-bad-fd: exit(-1)
 Execution of 'write-bad-fd' complete.
 Timer: 278 ticks
-Thread: 30 idle ticks, 222 kernel ticks, 33 user ticks
+Thread: 30 idle ticks, 220 kernel ticks, 35 user ticks
 hda2 (filesys): 63 reads, 206 writes
 hda3 (scratch): 100 reads, 2 writes
 Console: 889 characters output

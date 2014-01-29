@@ -29,12 +29,13 @@ Executing 'syn-write':
 child-syn-wrt: exit(0)
 (syn-write) exec child 3 of 10: "child-syn-wrt 2"
 syn-write: exit(-1)
+child-syn-wrt: exit(1)
 Execution of 'syn-write' complete.
-Timer: 565 ticks
-Thread: 30 idle ticks, 337 kernel ticks, 209 user ticks
+Timer: 596 ticks
+Thread: 30 idle ticks, 355 kernel ticks, 226 user ticks
 hda2 (filesys): 226 reads, 458 writes
 hda3 (scratch): 217 reads, 2 writes
-Console: 1122 characters output
+Console: 1145 characters output
 Keyboard: 0 keys pressed
 Exception: 1 page faults
 Powering off...

@@ -29,7 +29,7 @@ Executing 'write-normal':
 write-normal: exit(0)
 Execution of 'write-normal' complete.
 Timer: 341 ticks
-Thread: 30 idle ticks, 251 kernel ticks, 67 user ticks
+Thread: 30 idle ticks, 249 kernel ticks, 69 user ticks
 hda2 (filesys): 116 reads, 220 writes
 hda3 (scratch): 103 reads, 2 writes
 Console: 1017 characters output

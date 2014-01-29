@@ -32,7 +32,7 @@ Executing 'syn-remove':
 syn-remove: exit(0)
 Execution of 'syn-remove' complete.
 Timer: 339 ticks
-Thread: 30 idle ticks, 219 kernel ticks, 97 user ticks
+Thread: 30 idle ticks, 217 kernel ticks, 99 user ticks
 hda2 (filesys): 97 reads, 225 writes
 hda3 (scratch): 104 reads, 2 writes
 Console: 1107 characters output

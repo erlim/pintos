@@ -129,7 +129,11 @@ struct thread
   struct list donation;
   struct list_elem donation_elem;
   struct lock *lock_wait;
+  // 1.29 add ryoung mlfqs
+  int nice;
+  int recent_cpu;
   //---------------------------------------------------- 
+
 };
 
 /* If false (default), use round-robin scheduler.

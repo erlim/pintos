@@ -214,8 +214,8 @@ process_exit (void)
   {
     file_close(t->file_exec);
   }
+  palloc_free_page(t->fd_tbl);
   //while(t-> >2) //process_close_file(;
-  //palloc_free_page(t->fd);
 
   uint32_t *pd;
   /* Destroy the current process's page directory and switch back

@@ -32,7 +32,7 @@ Executing 'lg-seq-block':
 lg-seq-block: exit(0)
 Execution of 'lg-seq-block' complete.
 Timer: 884 ticks
-Thread: 30 idle ticks, 222 kernel ticks, 639 user ticks
+Thread: 30 idle ticks, 220 kernel ticks, 641 user ticks
 hda2 (filesys): 534 reads, 659 writes
 hda3 (scratch): 103 reads, 2 writes
 Console: 1152 characters output

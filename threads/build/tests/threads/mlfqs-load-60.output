@@ -11,7 +11,7 @@ Boot complete.
 Executing 'mlfqs-load-60':
 (mlfqs-load-60) begin
 (mlfqs-load-60) Starting 60 niced load threads...
-(mlfqs-load-60) Starting threads took 2 seconds.
+(mlfqs-load-60) Starting threads took 1 seconds.
 (mlfqs-load-60) After 0 seconds, load average=0.00.
 (mlfqs-load-60) After 2 seconds, load average=0.00.
 (mlfqs-load-60) After 4 seconds, load average=0.00.
@@ -104,8 +104,8 @@ Executing 'mlfqs-load-60':
 (mlfqs-load-60) After 178 seconds, load average=0.00.
 (mlfqs-load-60) end
 Execution of 'mlfqs-load-60' complete.
-Timer: 18842 ticks
-Thread: 11831 idle ticks, 7015 kernel ticks, 0 user ticks
+Timer: 18843 ticks
+Thread: 12011 idle ticks, 6836 kernel ticks, 0 user ticks
 Console: 5298 characters output
 Keyboard: 0 keys pressed
 Powering off...

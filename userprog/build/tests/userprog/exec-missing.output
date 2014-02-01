@@ -11,7 +11,7 @@ Calibrating timer...  204,600 loops/s.
 hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
 hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
-hda3: 101 sectors (50 kB), Pintos scratch (22)
+hda3: 100 sectors (50 kB), Pintos scratch (22)
 filesys: using hda2
 scratch: using hda3
 Formatting file system...done.
@@ -22,14 +22,14 @@ Erasing ustar archive...
 Executing 'exec-missing':
 (exec-missing) begin
 load: no-such-file: open failed
-(exec-missing) exec("no-such-file"): 4
+(exec-missing) exec("no-such-file"): -1
 (exec-missing) end
 exec-missing: exit(0)
 Execution of 'exec-missing' complete.
-Timer: 316 ticks
-Thread: 30 idle ticks, 223 kernel ticks, 70 user ticks
-hda2 (filesys): 80 reads, 206 writes
-hda3 (scratch): 100 reads, 2 writes
+Timer: 325 ticks
+Thread: 30 idle ticks, 230 kernel ticks, 68 user ticks
+hda2 (filesys): 80 reads, 204 writes
+hda3 (scratch): 99 reads, 2 writes
 Console: 978 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults

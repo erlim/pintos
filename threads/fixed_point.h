@@ -20,26 +20,18 @@ int div_mixed( int x, int n) ;
 
 int int_to_fp(int n)
 {
-  int fixed_num = n * F ;
-  return fixed_num ;
+  return n * F;
 }
 int fp_to_int_round( int x )
 {
-  int fixed_num = x / F ;
-  return fixed_num ;
+  if(x>=0)
+    return (x + F/2) / F;
+  else
+    return (x - F/2) / F;
 }
 int fp_to_int( int x)
 {
-  int fixed_num;
-  if(fixed_num >= 0 )
-  {
-    fixed_num= (x + F/2)/F;
-  }
-  else
-  {
-    fixed_num = (x - F/2)/F ;
-  }
-  return fixed_num ;
+  return x / F;
 }
 int add_fp( int x , int y)
 {
@@ -47,7 +39,7 @@ int add_fp( int x , int y)
 }
 int add_mixed(int x , int n)
 {
-  return x + n*F ;
+  return x + int_to_fp(n);
 }
 int sub_fp( int x , int y)
 {
@@ -55,7 +47,7 @@ int sub_fp( int x , int y)
 }
 int sub_mixed( int x , int n)
 {
-  x - n*F;
+  return x -int_to_fp(n);
 }
 int mult_fp(int x , int y)
 {
@@ -67,7 +59,7 @@ int mult_mixed(int x , int n)
 }
 int div_fp(int x , int y)
 {
-  return ((int64_t)x)*F/y;
+  return ((int64_t)x) * F / y;
 }
 int div_mixed(int x , int n)
 {

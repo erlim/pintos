@@ -12,7 +12,7 @@ Calibrating timer...  204,600 loops/s.
 hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
 hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
-hda3: 199 sectors (99 kB), Pintos scratch (22)
+hda3: 198 sectors (99 kB), Pintos scratch (22)
 filesys: using hda2
 scratch: using hda3
 Formatting file system...done.
@@ -29,10 +29,10 @@ child-bad: exit(-1)
 (wait-killed) end
 wait-killed: exit(0)
 Execution of 'wait-killed' complete.
-Timer: 428 ticks
-Thread: 30 idle ticks, 325 kernel ticks, 84 user ticks
-hda2 (filesys): 126 reads, 404 writes
-hda3 (scratch): 198 reads, 2 writes
+Timer: 443 ticks
+Thread: 30 idle ticks, 328 kernel ticks, 88 user ticks
+hda2 (filesys): 126 reads, 402 writes
+hda3 (scratch): 197 reads, 2 writes
 Console: 1015 characters output
 Keyboard: 0 keys pressed
 Exception: 1 page faults

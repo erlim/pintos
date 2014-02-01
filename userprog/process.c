@@ -89,29 +89,32 @@ process_start (void *file_name_)
   // 1.4 modify Ryoung
   struct thread *cur = thread_current(); 
   bool bLoad = load(file_name, &if_.eip, &if_.esp);
-  if(cur->parent != NULL)
-    sema_up(&cur->sema_load);
+  palloc_free_page(file_name);
   if(bLoad)
   {
     cur->status_load = true;
-    argument_stack(argv,argc,&if_.esp);
+    sema_up(&cur->sema_proc);
+  }
+  else
+  {
+    int idx = 0;
+    for(; idx<argc; ++idx)
+    {
+      free(argv[idx]);
+    } 
+    palloc_free_page(argv);
+    cur->status_load = -1;
+    thread_exit();
   }
   
-  //delete memory 
-  palloc_free_page(file_name);
+  argument_stack(argv,argc,&if_.esp);
   int idx = 0;
   for(; idx<argc; ++idx)
-  {
+  { 
     free(argv[idx]);
-  } 
-  palloc_free_page(argv);
-
-  if(!bLoad)
-  {
-    cur->status_load = -1;
-    cur->status_exit = -1;
-    thread_exit(); 
   }
+  palloc_free_page(argv);
+ 
   /* Start the user process by simulating a return from an
    interrupt, implemented by intr_exit (in
    threads/intr-stubs.S).  Because intr_exit takes all of its
@@ -127,7 +130,7 @@ process_start (void *file_name_)
 argument_stack(char **argv, int argc, void **esp)
 {  
   char** argv_addr;
-  argv_addr = malloc( argc  * sizeof(char*)); //palloc_get_page(0);
+  argv_addr = palloc_get_page(0);
 
   int slen, buffer_size = 0;
   int num =0;
@@ -173,8 +176,7 @@ argument_stack(char **argv, int argc, void **esp)
   *esp -=ptr_size;
   memset(*esp, zero_val ,ptr_size);
 
-  free(argv_addr);  
-  //palloc_free_page(argv_addr);
+  palloc_free_page(argv_addr);
 }
 
 /* Waits for thread TID to die and returns its exit status.  If
@@ -193,11 +195,14 @@ process_wait (pid_t child_pid UNUSED)
   struct thread *child = process_get_child(child_pid);
   if(!child)  
     return -1;
-  while(!child->exit)
-    sema_down(&child->sema_exit);  //thread_current()->block, parent push waiters
 
+  while(!child->exit)
+    sema_down(&child->sema_proc);  
+  
+  int status_exit = child->status_exit;
   process_remove_child(child);
-  return child->status_exit; //child->status_exit;
+  
+  return status_exit; //child->status_exit;
 }
 
 /* Free the current process's resources. */
@@ -206,16 +211,20 @@ process_exit (void)
 {
   struct thread *t = thread_current ();
   t->exit = true;
-  if(t->parent != NULL)
-    sema_up(&t->sema_exit);
 
   //1.10 add ryoung (file descriptor)
   if(t->file_exec != NULL)
   {
     file_close(t->file_exec);
   }
+
+  while(t->last_fd <2)
+  {
+    t->last_fd--;
+    process_close_file(t->last_fd);
+  }
+ 
   palloc_free_page(t->fd_tbl);
-  //while(t-> >2) //process_close_file(;
 
   uint32_t *pd;
   /* Destroy the current process's page directory and switch back
@@ -274,7 +283,7 @@ process_get_child(pid_t pid)
 process_remove_child(struct thread *t)
 {
   list_remove(&t->child_elem);
-  //palloc_free_page(t);
+  palloc_free_page(t);
 }
 
   int 

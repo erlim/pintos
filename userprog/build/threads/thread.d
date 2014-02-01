@@ -6,4 +6,5 @@ threads/thread.o: ../../threads/thread.c ../../threads/thread.h \
  ../../threads/interrupt.h ../../threads/intr-stubs.h \
  ../../threads/palloc.h ../../threads/switch.h ../../threads/synch.h \
  ../../threads/vaddr.h ../../threads/loader.h ../../threads/common.h \
- ../../userprog/process.h ../../filesys/file.h ../../filesys/off_t.h
+ ../../threads/fixed_point.h ../../userprog/process.h \
+ ../../filesys/file.h ../../filesys/off_t.h

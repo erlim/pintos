@@ -88,10 +88,6 @@ exec_children (const char *child_name, pid_t pids[], size_t child_cnt)
       CHECK ((pids[i] = exec (cmd_line)) != PID_ERROR,
              "exec child %zu of %zu: \"%s\"",i + 1, child_cnt, cmd_line);
     }
-    for ( i= 0; i<child_cnt; i++)
-    {
-      msg("pids[%d]:%d", i,pids[i]);
-    }
 }
 
 void
@@ -103,8 +99,8 @@ wait_children (pid_t pids[], size_t child_cnt)
     {
       int status = wait (pids[i]);
       CHECK (status == (int) i,
-             "[%zu] wait for child %zu of %zu returned %d (expected %zu)",
-             pids[i], i + 1, child_cnt, status, i);
+             "wait for child %zu of %zu returned %d (expected %zu)",
+              i + 1, child_cnt, status, i);
     }
 }
 

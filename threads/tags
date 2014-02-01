@@ -11,6 +11,7 @@ CR0_PE	start.S	/^#define CR0_PE 0x00000001      \/* Protection Enable. *\/$/;"	d
 CR0_PG	start.S	/^#define CR0_PG 0x80000000      \/* Paging. *\/$/;"	d
 CR0_WP	start.S	/^#define CR0_WP 0x00010000      \/* Write-Protect enable in kernel mode. *\/$/;"	d
 DEPENDS	build/Makefile	/^DEPENDS = $(patsubst %.o,%.d,$(OBJECTS))$/;"	m
+F	fixed_point.h	1;"	d
 FD_BUFFER_SIZE	thread.h	31;"	d
 FD_DEFINE	thread.h	29;"	d
 FD_USER	thread.h	30;"	d
@@ -19,6 +20,8 @@ FLAG_MBS	flags.h	5;"	d
 INTR_CNT	interrupt.c	22;"	d	file:
 INTR_OFF	interrupt.h	/^    INTR_OFF,             \/* Interrupts disabled. *\/$/;"	e	enum:intr_level
 INTR_ON	interrupt.h	/^    INTR_ON               \/* Interrupts enabled. *\/$/;"	e	enum:intr_level
+INT_MAX	fixed_point.h	2;"	d
+INT_MIN	fixed_point.h	3;"	d
 LOADER_ARGS	loader.h	18;"	d
 LOADER_ARGS_LEN	loader.h	24;"	d
 LOADER_ARG_CNT	loader.h	19;"	d
@@ -31,6 +34,10 @@ LOADER_PARTS_LEN	loader.h	23;"	d
 LOADER_PHYS_BASE	loader.h	13;"	d
 LOADER_SIG	loader.h	16;"	d
 LOADER_SIG_LEN	loader.h	22;"	d
+LOAD_AVG_DEFAULT	thread.c	67;"	d	file:
+NICE_DEFAULT	thread.c	63;"	d	file:
+NICE_MAX	thread.c	65;"	d	file:
+NICE_MIN	thread.c	64;"	d	file:
 OBJECTS	build/Makefile	/^OBJECTS = $(patsubst %.c,%.o,$(patsubst %.S,%.o,$(SOURCES)))$/;"	m
 PAL_ASSERT	palloc.h	/^    PAL_ASSERT = 001,           \/* Panic on failure. *\/$/;"	e	enum:palloc_flags
 PAL_USER	palloc.h	/^    PAL_USER = 004              \/* User page. *\/$/;"	e	enum:palloc_flags
@@ -64,6 +71,7 @@ PTMASK	pte.h	24;"	d
 PTSHIFT	pte.h	21;"	d
 PTSPAN	pte.h	23;"	d
 REAL	intr-stubs.S	/^#define REAL                                    \\$/;"	d
+RECENT_CPU_DEFAULT	thread.c	66;"	d	file:
 SEL_KCSEG	loader.h	30;"	d
 SEL_KDSEG	loader.h	31;"	d
 SEL_NULL	loader.h	29;"	d
@@ -88,11 +96,11 @@ THREADS_THREAD_H	thread.h	2;"	d
 THREADS_VADDR_H	vaddr.h	2;"	d
 THREAD_BLOCKED	thread.h	/^    THREAD_BLOCKED,     \/* Waiting for an event to trigger. *\/$/;"	e	enum:thread_status
 THREAD_DYING	thread.h	/^    THREAD_DYING        \/* About to be destroyed. *\/$/;"	e	enum:thread_status
-THREAD_MAGIC	thread.c	23;"	d	file:
+THREAD_MAGIC	thread.c	24;"	d	file:
 THREAD_READY	thread.h	/^    THREAD_READY,       \/* Not running but ready to run. *\/$/;"	e	enum:thread_status
 THREAD_RUNNING	thread.h	/^    THREAD_RUNNING,     \/* Running thread. *\/$/;"	e	enum:thread_status
 TID_ERROR	thread.h	21;"	d
-TIME_SLICE	thread.c	58;"	d	file:
+TIME_SLICE	thread.c	59;"	d	file:
 _end	build/threads/kernel.lds.s	/^  _end = .;$/;"	d
 _end	kernel.lds.S	/^  _end = .;$/;"	d
 _end_bss	build/threads/kernel.lds.s	/^  _end_bss = .;$/;"	d
@@ -105,6 +113,8 @@ _start	build/threads/kernel.lds.s	/^  _start = 0xc0000000 + 0x20000;$/;"	d
 _start	kernel.lds.S	/^  _start = LOADER_PHYS_BASE + LOADER_KERN_BASE;$/;"	d
 _start_bss	build/threads/kernel.lds.s	/^  _start_bss = .;$/;"	d
 _start_bss	kernel.lds.S	/^  _start_bss = .;$/;"	d
+add_fp	fixed_point.h	/^int add_fp( int x , int y)$/;"	f
+add_mixed	fixed_point.h	/^int add_mixed(int x , int n)$/;"	f
 all_list	thread.c	/^static struct list all_list;$/;"	v	typeref:struct:list	file:
 allelem	thread.h	/^  struct list_elem allelem;           \/* List element for all threads list. *\/$/;"	m	struct:thread	typeref:struct:thread::list_elem
 alloc_frame	thread.c	/^alloc_frame (struct thread *t, size_t size) $/;"	f	file:
@@ -136,6 +146,8 @@ desc	malloc.c	/^struct desc$/;"	s	file:
 desc_cnt	malloc.c	/^static size_t desc_cnt;         \/* Number of descriptors. *\/$/;"	v	file:
 descs	malloc.c	/^static struct desc descs[10];   \/* Descriptors. *\/$/;"	v	typeref:struct:desc	file:
 devices_SRC	build/Makefile	/^devices_SRC  = devices\/pit.c		# Programmable interrupt timer chip.$/;"	m
+div_fp	fixed_point.h	/^int div_fp(int x , int y)$/;"	f
+div_mixed	fixed_point.h	/^int div_mixed(int x , int n)$/;"	f
 donation	thread.h	/^  struct list donation;$/;"	m	struct:thread	typeref:struct:thread::list
 donation_elem	thread.h	/^  struct list_elem donation_elem;$/;"	m	struct:thread	typeref:struct:thread::list_elem
 ds	interrupt.h	/^    uint16_t ds, :16;           \/* Saved DS segment register. *\/$/;"	m	struct:intr_frame
@@ -167,6 +179,8 @@ file_exec	thread.h	/^  struct file *file_exec;             \/* running file *\/$
 filesys_SRC	build/Makefile	/^filesys_SRC  = filesys\/filesys.c	# Filesystem core.$/;"	m
 filesys_bdev_name	init.c	/^static const char *filesys_bdev_name;$/;"	v	file:
 format_filesys	init.c	/^static bool format_filesys;$/;"	v	file:
+fp_to_int	fixed_point.h	/^int fp_to_int( int x)$/;"	f
+fp_to_int_round	fixed_point.h	/^int fp_to_int_round( int x )$/;"	f
 frame_pointer	interrupt.h	/^    void *frame_pointer;        \/* Saved EBP (frame pointer). *\/$/;"	m	struct:intr_frame
 free	malloc.c	/^free (void *p) $/;"	f
 free_cnt	malloc.c	/^    size_t free_cnt;            \/* Free blocks; pages in big block. *\/$/;"	m	struct:arena	file:
@@ -195,6 +209,7 @@ inl	io.h	/^inl (uint16_t port)$/;"	f
 insb	io.h	/^insb (uint16_t port, void *addr, size_t cnt)$/;"	f
 insl	io.h	/^insl (uint16_t port, void *addr, size_t cnt)$/;"	f
 insw	io.h	/^insw (uint16_t port, void *addr, size_t cnt)$/;"	f
+int_to_fp	fixed_point.h	/^int int_to_fp(int n)$/;"	f
 intr_context	interrupt.c	/^intr_context (void) $/;"	f
 intr_disable	interrupt.c	/^intr_disable (void) $/;"	f
 intr_dump_frame	interrupt.c	/^intr_dump_frame (const struct intr_frame *f) $/;"	f
@@ -228,6 +243,7 @@ kernel_ticks	thread.c	/^static long long kernel_ticks;  \/* # of timer ticks in 
 last_fd	thread.h	/^  int last_fd; $/;"	m	struct:thread
 less_ticks_cmp	common.h	/^less_ticks_cmp(const struct list_elem *lhs, const struct list_elem *rhs, void* aux UNUSED)$/;"	f
 lib_SRC	build/Makefile	/^lib_SRC  = lib\/debug.c			# Debug helpers.$/;"	m
+load_avg	thread.c	/^int load_avg;$/;"	v
 load_kernel	loader.S	/^load_kernel:$/;"	l
 locate_block_device	init.c	/^locate_block_device (enum block_type role, const char *name)$/;"	f	file:
 locate_block_devices	init.c	/^locate_block_devices (void)$/;"	f	file:
@@ -249,6 +265,13 @@ make_intr_gate	interrupt.c	/^make_intr_gate (void (*function) (void), int dpl)$/
 make_trap_gate	interrupt.c	/^make_trap_gate (void (*function) (void), int dpl)$/;"	f	file:
 malloc	malloc.c	/^malloc (size_t size) $/;"	f
 malloc_init	malloc.c	/^malloc_init (void) $/;"	f
+mlfqs_increment	thread.c	/^mlfqs_increment(void)$/;"	f
+mlfqs_load_avg	thread.c	/^mlfqs_load_avg(void)$/;"	f
+mlfqs_priority	thread.c	/^mlfqs_priority(struct thread *t)$/;"	f
+mlfqs_recalc	thread.c	/^mlfqs_recalc(void)$/;"	f
+mlfqs_recent_cpu	thread.c	/^mlfqs_recent_cpu(struct thread *t)$/;"	f
+mult_fp	fixed_point.h	/^int mult_fp(int x , int y)$/;"	f
+mult_mixed	fixed_point.h	/^int mult_mixed(int x , int n)$/;"	f
 name	thread.h	/^  char name[16];                      \/* Name (for debugging purposes). *\/$/;"	m	struct:thread
 next	switch.h	/^    struct thread *next;        \/* 24: switch_threads()'s NEXT argument. *\/$/;"	m	struct:switch_threads_frame	typeref:struct:switch_threads_frame::thread
 next_char	loader.S	/^next_char:$/;"	l
@@ -256,6 +279,7 @@ next_drive	loader.S	/^next_drive:$/;"	l
 next_partition	loader.S	/^next_partition:$/;"	l
 next_sector	loader.S	/^next_sector:$/;"	l
 next_thread_to_run	thread.c	/^next_thread_to_run (void) $/;"	f	file:
+nice	thread.h	/^  int nice;$/;"	m	struct:thread
 no_boot_partition	loader.S	/^no_boot_partition:$/;"	l
 no_such_drive	loader.S	/^no_such_drive:$/;"	l
 outb	io.h	/^outb (uint16_t port, uint8_t data)$/;"	f
@@ -288,7 +312,6 @@ pid_t	thread.h	/^typedef int pid_t;$/;"	t
 pool	palloc.c	/^struct pool$/;"	s	file:
 popa_ret	loader.S	/^popa_ret:$/;"	l
 priority	thread.h	/^  int priority;                       \/* Priority. *\/$/;"	m	struct:thread
-priority_get	thread.h	/^  int priority_get[PRI_DONATION_BUF_SIZE];$/;"	m	struct:thread
 priority_ori	thread.h	/^  int priority_ori;$/;"	m	struct:thread
 pt_no	pte.h	/^static inline unsigned pt_no (const void *va) {$/;"	f
 pte_create_kernel	pte.h	/^static inline uint32_t pte_create_kernel (void *page, bool writable) {$/;"	f
@@ -303,6 +326,7 @@ read_mbr	loader.S	/^read_mbr:$/;"	l
 read_sector	loader.S	/^read_sector:$/;"	l
 ready_list	thread.c	/^static struct list ready_list;$/;"	v	typeref:struct:list	file:
 realloc	malloc.c	/^realloc (void *old_block, size_t new_size) $/;"	f
+recent_cpu	thread.h	/^  int recent_cpu;$/;"	m	struct:thread
 register_handler	interrupt.c	/^register_handler (uint8_t vec_no, int dpl, enum intr_level level,$/;"	f	file:
 run_actions	init.c	/^run_actions (char **argv) $/;"	f	file:
 run_task	init.c	/^run_task (char **argv)$/;"	f	file:
@@ -310,9 +334,8 @@ running_thread	thread.c	/^running_thread (void) $/;"	f
 schedule	thread.c	/^schedule (void) $/;"	f	file:
 scratch_bdev_name	init.c	/^static const char *scratch_bdev_name;$/;"	v	file:
 sema_down	synch.c	/^sema_down (struct semaphore *sema) $/;"	f
-sema_exit	thread.h	/^  struct semaphore sema_exit; $/;"	m	struct:thread	typeref:struct:thread::semaphore
 sema_init	synch.c	/^sema_init (struct semaphore *sema, unsigned value) $/;"	f
-sema_load	thread.h	/^  struct semaphore sema_load;$/;"	m	struct:thread	typeref:struct:thread::semaphore
+sema_proc	thread.h	/^  struct semaphore sema_proc;$/;"	m	struct:thread	typeref:struct:thread::semaphore
 sema_self_test	synch.c	/^sema_self_test (void) $/;"	f
 sema_test_helper	synch.c	/^sema_test_helper (void *sema_) $/;"	f	file:
 sema_try_down	synch.c	/^sema_try_down (struct semaphore *sema) $/;"	f
@@ -329,6 +352,8 @@ start	start.S	/^start:$/;"	l
 status	thread.h	/^  enum thread_status status;          \/* Thread state. *\/$/;"	m	struct:thread	typeref:enum:thread::thread_status
 status_exit	thread.h	/^  int  status_exit;$/;"	m	struct:thread
 status_load	thread.h	/^  int  status_load;                   \/* -1:error, 0:load x, 1:load o *\/ $/;"	m	struct:thread
+sub_fp	fixed_point.h	/^int sub_fp( int x , int y)$/;"	f
+sub_mixed	fixed_point.h	/^int sub_mixed( int x , int n)$/;"	f
 swap_bdev_name	init.c	/^static const char *swap_bdev_name;$/;"	v	file:
 switch_entry	switch.S	/^switch_entry:$/;"	l
 switch_entry_frame	switch.h	/^struct switch_entry_frame$/;"	s
@@ -337,9 +362,10 @@ switch_threads_frame	switch.h	/^struct switch_threads_frame $/;"	s
 thread	thread.h	/^struct thread$/;"	s
 thread_action_func	thread.h	/^typedef void thread_action_func (struct thread *t, void *aux);$/;"	t
 thread_block	thread.c	/^thread_block (void) $/;"	f
+thread_check_yield	thread.c	/^thread_check_yield(void)$/;"	f
 thread_create	thread.c	/^thread_create (const char *name, int priority,$/;"	f
 thread_current	thread.c	/^thread_current (void) $/;"	f
-thread_donate_priority	thread.c	/^thread_donate_priority(struct thread *t \/*receiver*\/)$/;"	f
+thread_donate_priority	thread.c	/^thread_donate_priority(void)$/;"	f
 thread_exit	thread.c	/^thread_exit (void) $/;"	f
 thread_foreach	thread.c	/^thread_foreach (thread_action_func *func, void *aux)$/;"	f
 thread_func	thread.h	/^typedef void thread_func (void *aux);$/;"	t
@@ -380,7 +406,6 @@ userprog_SRC	build/Makefile	/^userprog_SRC  = userprog\/process.c	# Process load
 value	synch.h	/^  unsigned value;             \/* Current value. *\/$/;"	m	struct:semaphore
 vec_no	interrupt.h	/^    uint32_t vec_no;            \/* Interrupt vector number. *\/$/;"	m	struct:intr_frame
 vtop	vaddr.h	/^vtop (const void *vaddr)$/;"	f
-wait	thread.h	/^  bool wait;$/;"	m	struct:thread
 waiters	synch.h	/^  struct list waiters;        \/* List of waiting threads. *\/$/;"	m	struct:condition	typeref:struct:condition::list
 waiters	synch.h	/^  struct list waiters;        \/* List of waiting threads. *\/$/;"	m	struct:semaphore	typeref:struct:semaphore::list
 wakeup_ticks	thread.h	/^  int64_t wakeup_ticks;$/;"	m	struct:thread

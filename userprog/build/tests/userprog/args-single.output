@@ -28,8 +28,8 @@ Executing 'args-single onearg':
 (args) end
 args-single: exit(0)
 Execution of 'args-single onearg' complete.
-Timer: 299 ticks
-Thread: 30 idle ticks, 221 kernel ticks, 51 user ticks
+Timer: 306 ticks
+Thread: 30 idle ticks, 228 kernel ticks, 51 user ticks
 hda2 (filesys): 63 reads, 204 writes
 hda3 (scratch): 99 reads, 2 writes
 Console: 1003 characters output

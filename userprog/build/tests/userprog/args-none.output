@@ -27,8 +27,8 @@ Executing 'args-none':
 (args) end
 args-none: exit(0)
 Execution of 'args-none' complete.
-Timer: 288 ticks
-Thread: 30 idle ticks, 219 kernel ticks, 46 user ticks
+Timer: 301 ticks
+Thread: 30 idle ticks, 226 kernel ticks, 48 user ticks
 hda2 (filesys): 63 reads, 204 writes
 hda3 (scratch): 99 reads, 2 writes
 Console: 942 characters output

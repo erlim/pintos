@@ -12,6 +12,7 @@
 #include "threads/synch.h"
 #include "threads/vaddr.h"
 #include "threads/common.h" //add ryoung 
+#include "threads/fixed_point.h"
 #ifdef USERPROG
 #include "userprog/process.h"
 #endif
@@ -59,9 +60,13 @@ static long long user_ticks;    /* # of timer ticks in user programs. */
 static unsigned thread_ticks;   /* # of timer ticks since last yield. */
 
 //1.29 add ryoung mlfqs
-#define NICE_DEFAUIT 0
+#define NICE_DEFAULT 0
+#define NICE_MIN 20
+#define NICE_MAX 20
 #define RECENT_CPU_DEFAULT 0
+#define LOAD_AVG_DEFAULT 0
 
+int load_avg;
 
 /* If false (default), use round-robin scheduler.
    If true, use multi-level feedback queue scheduler.
@@ -121,7 +126,7 @@ thread_start (void)
   struct semaphore idle_started;
   sema_init (&idle_started, 0);
   thread_create ("idle", PRI_MIN, idle, &idle_started);
-
+  load_avg = LOAD_AVG_DEFAULT;
   /* Start preemptive thread scheduling. */
   intr_enable ();
 
@@ -209,7 +214,6 @@ thread_print_stats (void)
 thread_create (const char *name, int priority,
     thread_func *function, void *aux) 
 {
-  //printf("thread_create\n");
   struct thread *t;
   struct kernel_thread_frame *kf;
   struct switch_entry_frame *ef;
@@ -223,7 +227,6 @@ thread_create (const char *name, int priority,
   t = palloc_get_page (PAL_ZERO);
   if (t == NULL)
   {
-    printf("fffff\n");
     return TID_ERROR;
   }
 
@@ -253,19 +256,17 @@ thread_create (const char *name, int priority,
 
   intr_set_level (old_level);
 
-  //#ifdef USERPROG
+#ifdef USERPROG
   //1.1 add ryoung process descriptor
   t->parent = thread_current();
   t->status_load = false;
   t->exit = false;
   t->status_exit = -1;
-  sema_init(&t->sema_load,0);
-  sema_init(&t->sema_exit,0); 
-  //#endif
+  sema_init(&t->sema_proc,0);
+  t->fd_tbl = palloc_get_page(0);
   list_push_back(&t->parent->child, &t->child_elem);
-  //#endif
+#endif
 
-  t->fd_tbl = palloc_get_page(0); 
   /* Add to run queue. */
   thread_unblock (t);
 
@@ -301,7 +302,6 @@ thread_block (void)
   void
 thread_unblock (struct thread *t) 
 {
-  //printf("unlock tid:%d\n", t->tid);
   enum intr_level old_level;
   ASSERT (is_thread (t));
   old_level = intr_disable ();
@@ -362,9 +362,9 @@ thread_exit (void)
   intr_disable ();
   list_remove (&t->allelem);
   t->status = THREAD_DYING;
-  //t->exit = true;
-  //if(t->parent != NULL)
-    //sema_up(&t->sema_exit);
+#ifdef USERPROG
+  sema_up(&t->sema_proc);
+#endif
   schedule ();
   NOT_REACHED ();
 }
@@ -418,12 +418,15 @@ thread_foreach (thread_action_func *func, void *aux)
 void
 thread_set_priority (int new_priority) 
 {
-  struct thread *t = thread_current();
-  t->priority = new_priority;
-  t->priority_ori = t->priority;
-  if(thread_refresh_priority()) //check donation list;
-    thread_donate_priority();
-  thread_check_yield();
+  if(!thread_mlfqs)
+  {
+    struct thread *t = thread_current();
+    t->priority = new_priority;
+    t->priority_ori = t->priority;
+    if(thread_refresh_priority()) //check donation list;
+      thread_donate_priority();
+    thread_check_yield();
+  }
 }
 
 /* Returns the current thread's priority. */
@@ -471,60 +474,137 @@ thread_refresh_priority()
   return false; //refresh no, changed to priority_original
 } 
 
-//1.29 add ryoung(mlfqs)
-/* Sets the current thread's nice value to NICE. */
-  void
+/* set current thread's nice value to NICE. */
+void
 thread_set_nice (int nice UNUSED) 
 {
-  /* Not yet implemented. */
+   enum intr_level old_level;
+  old_level = intr_disable();
+  thread_current()->nice = nice;
+  mlfqs_priority(thread_current());
+  thread_check_yield();
+  intr_set_level(old_level);
 }
 
-/* Returns the current thread's nice value. */
-  int
+// Returns the current thread's nice value.
+int
 thread_get_nice (void) 
 {
-  /* Not yet implemented. */
-  return 0;
+  
+  enum intr_level old_level;
+  old_level = intr_disable();
+  int nice = thread_current()->nice;
+  intr_set_level(old_level);
+  
+  return nice;
 }
 
-/* Returns 100 times the system load average. */
+// Returns 100 times the system load average.
   int
 thread_get_load_avg (void) 
 {
-  /* Not yet implemented. */
-  return 0;
+  
+  enum intr_level old_level;
+  old_level = intr_disable();
+  int load_avg = fp_to_int_round(mult_mixed(load_avg,100));
+  intr_set_level(old_level);
+  
+  return load_avg;
+  
 }
-
-/* Returns 100 times the current thread's recent_cpu value. */
-  int
+// Returns 100 times the current thread's recent_cpu value.
+int
 thread_get_recent_cpu (void) 
-{
-  /* Not yet implemented. */
-  return 0;
+{ 
+  enum intr_level old_level;
+  old_level = intr_disable();
+  int recent_cpu = fp_to_int_round(mult_mixed(thread_current()->recent_cpu,100));
+  intr_set_level(old_level);
+  
+  return recent_cpu;  
 }
 
 //mlfqs
 void 
-mlfqs_priorirty(struct thread *t)
+mlfqs_priority(struct thread *t)
 {
+  //priority = PRI_MAX - (recent_cpu/4) - (nice*2)
+  //all thread: per 1 second
+  //current thread: per 4 clock tick
+  if(t != idle_thread) 
+  {
+    int x,y = 0; 
+    x = int_to_fp(PRI_MAX);         //PRI_MAX
+    y = div_mixed(t->recent_cpu,4); //recent_cpu/4
+    x = sub_fp(x,y);                //x-y
+    y = t->nice *2;                 //nice * 2
+    x = sub_mixed(x, y);            //x-y
+    int temp = fp_to_int(x);
+    if(temp < PRI_MIN)
+      temp = PRI_MIN;
+    else if(temp > PRI_MAX)
+      temp = PRI_MAX;
+    t->priority = temp;
+    //check mix, max
+  }
 }
 void
 mlfqs_recent_cpu(struct thread *t)
 {
+  //recent_cpu = (2*load_avg)/(2*load_avg +1) * recent_cpu +nice
+  //per timer interrupt, 1++; per 1 second
+  
+  if(t != idle_thread)
+  {
+    int x,y = 0;
+    x = mult_mixed(load_avg,2);             //2*load_avg
+    y = add_mixed(mult_mixed(load_avg,2),1); //2*load_avg+1
+    x = div_fp(x,y);                            //(2*load_avg)/(2*load_avg+1)
+    x = mult_fp(x, t->recent_cpu);             //*recent_cpu
+    y = t->nice;                               //+nice
+    int temp = add_mixed(x, y);
+    if(temp <0)
+      temp =0;
+    t->recent_cpu = temp;
+    //check < 0
+  }
 }
 void
 mlfqs_load_avg(void)
 {
+  //load_avg = (59/60) * load_avg + (1/60) * ready_threads
+  //ready_threads : count of ready_list(except idel)
+  int x,y =0;  
+  x = div_mixed(int_to_fp(59),60);          //(59/60)
+  x = mult_fp(x,load_avg);                  //*load_avg
+  y = div_mixed(int_to_fp(1),60);           //(1/60)
+  y = mult_fp(y, list_size(&ready_list)-1); //*ready_threads
+  load_avg = add_fp(x,y);
+  //ASSERT(load_avg<0)
 }
 void
 mlfqs_increment(void)
 {
+  struct thread *t = thread_current();
+  if(t != idle_thread)
+  {
+    t->recent_cpu = add_mixed(t->recent_cpu,1);
+  }
 }
 void
 mlfqs_recalc(void)
 {
+  struct list_elem *e;
+  for(e=list_begin(&all_list); e != list_end(&all_list); e = list_next(e))
+  {
+    struct thread *t = list_entry(e, struct thread, elem);
+    if(t != idle_thread)
+    {
+      mlfqs_priority(t);
+      mlfqs_recent_cpu(t);
+    }
+  }
 }
-
 
 /* Idle thread.  Executes when no other thread is ready to run.
 
@@ -627,10 +707,10 @@ init_thread (struct thread *t, const char *name, int priority)
   t->lock_wait = NULL;
   list_init(&t->donation);
   //mlfqs
-  t->nice = NI
+  t->nice = NICE_DEFAULT;
+  t->recent_cpu = RECENT_CPU_DEFAULT;
   list_push_back(&all_list, &t->allelem);
   //----------------------------------------g
-
 }
 
 
@@ -706,7 +786,9 @@ thread_schedule_tail (struct thread *prev)
   if (prev != NULL && prev->status == THREAD_DYING && prev != initial_thread) 
   {
     ASSERT (prev != cur);
-    palloc_free_page (prev);  //ryoung
+#ifndef USERPROG
+    palloc_free_page(prev);
+#endif    
   }
 }
 

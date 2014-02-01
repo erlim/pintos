@@ -23,9 +23,9 @@ Executing 'exit':
 (exit) begin
 exit: exit(57)
 Execution of 'exit' complete.
-Timer: 275 ticks
-Thread: 30 idle ticks, 218 kernel ticks, 34 user ticks
-hda2 (filesys): 63 reads, 204 writes
+Timer: 284 ticks
+Thread: 30 idle ticks, 223 kernel ticks, 34 user ticks
+hda2 (filesys): 62 reads, 204 writes
 hda3 (scratch): 99 reads, 2 writes
 Console: 840 characters output
 Keyboard: 0 keys pressed

@@ -12,7 +12,7 @@ Calibrating timer...  204,600 loops/s.
 hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
 hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
-hda3: 107 sectors (53 kB), Pintos scratch (22)
+hda3: 106 sectors (53 kB), Pintos scratch (22)
 filesys: using hda2
 scratch: using hda3
 Formatting file system...done.
@@ -27,10 +27,10 @@ Executing 'read-boundary':
 (read-boundary) end
 read-boundary: exit(0)
 Execution of 'read-boundary' complete.
-Timer: 323 ticks
-Thread: 30 idle ticks, 248 kernel ticks, 52 user ticks
-hda2 (filesys): 95 reads, 220 writes
-hda3 (scratch): 106 reads, 2 writes
+Timer: 337 ticks
+Thread: 30 idle ticks, 258 kernel ticks, 52 user ticks
+hda2 (filesys): 94 reads, 218 writes
+hda3 (scratch): 105 reads, 2 writes
 Console: 993 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults

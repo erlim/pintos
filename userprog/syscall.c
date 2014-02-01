@@ -130,13 +130,11 @@ pid_t exec(const char *file)
 
   if(child->status_load == false)
   {
-    sema_down(&child->sema_load); //thread_current() ->parent push waiters
+    sema_down(&child->sema_proc); //thread_current() ->parent push waiters
   }
 
   if(child->status_load == -1)
   {
-    child->exit = true;
-    child->status_exit = -1;
     return -1;
   }
 

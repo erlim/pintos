@@ -171,7 +171,7 @@ timer_print_stats (void)
 {
   printf ("Timer: %"PRId64" ticks\n", timer_ticks ());
 }
-
+
 /* Timer interrupt handler. */
 static void
 timer_interrupt (struct intr_frame *args UNUSED)
@@ -179,6 +179,24 @@ timer_interrupt (struct intr_frame *args UNUSED)
   ticks++;
   thread_tick ();
   thread_wakeup(ticks);
+  
+  /*
+  if(thread_mlfqs)
+  {
+    mlfqs_increment();
+    if(ticks % TIMER_FREQ == 0)
+    {
+      mlfqs_load_avg();
+      mlfqs_recalc();
+    }
+    if(ticks % RECALC_FREQ == 0)
+    {
+      mlfqs_priority(thread_current());
+    }
+    thread_check_yield();
+  }
+  */
+  
 }
 
 /* Returns true if LOOPS iterations waits for more than one timer

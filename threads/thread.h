@@ -112,8 +112,7 @@ struct thread
   int  status_load;                   /* -1:error, 0:load x, 1:load o */ 
   bool exit;
   int  status_exit;
-  struct semaphore sema_load;
-  struct semaphore sema_exit; 
+  struct semaphore sema_proc;
 //#endif
   // 1.10 add Ryoung file descriptor 
   struct file **fd_tbl;
@@ -176,5 +175,11 @@ int thread_get_nice (void);
 void thread_set_nice (int);
 int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
+
+void mlfqs_priority(struct thread*);
+void mlfqs_rencet_cpu(struct thread*);
+void mlfqs_load_avg(void);
+void mlfqs_increment(void);
+void mlfqs_recalc(void);
 
 #endif /* threads/thread.h */

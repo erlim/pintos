@@ -90,6 +90,7 @@ process_start (void *file_name_)
   struct thread *cur = thread_current(); 
   bool bLoad = load(file_name, &if_.eip, &if_.esp);
   palloc_free_page(file_name);
+  //sema_up(&cur->sema_proc);
   if(bLoad)
   {
     cur->status_load = true;

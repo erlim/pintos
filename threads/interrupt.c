@@ -80,7 +80,15 @@ intr_get_level (void)
 enum intr_level
 intr_set_level (enum intr_level level) 
 {
-  return level == INTR_ON ? intr_enable () : intr_disable ();
+  enum intr_level temp;
+  if(level == INTR_ON)
+    temp = intr_enable();
+  else
+    temp = intr_disable();
+  return temp;
+  
+  //debug ryoung
+  //return level == INTR_ON ? intr_enable () : intr_disable ();
 }
 
 /* Enables interrupts and returns the previous interrupt status. */

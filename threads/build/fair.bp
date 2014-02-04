@@ -1,0 +1,2 @@
+break test_mlfqs_fair
+break /home/ryoung/src/pintos/tests/threads/mlfqs-fair.c:101

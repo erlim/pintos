@@ -19,6 +19,8 @@
 
 /* Number of timer ticks since OS booted. */
 static int64_t ticks;
+static int64_t ticks_wakeup; //shared variable, extern in thread
+
 // add ryoung 
 static int64_t ticks_wakeup_thread;
 /* Number of loops per timer tick.
@@ -94,12 +96,29 @@ timer_sleep (int64_t ticks)
   ASSERT (intr_get_level () == INTR_ON);
 
   //1.17 add ryoung 
-  thread_current()->wakeup_ticks = start + ticks;
-  if( timer_elapsed(start) < ticks)
+  if( timer_elapsed(start) <= ticks)
+  {
+    thread_current()->wakeup_ticks = start + ticks;
     thread_sleep();
+  }
+}
 
-  //while (timer_elapsed (start) < ticks) 
-  //  thread_yield ();
+//2.3 add ryoung
+void
+timer_update_ticks_wakeup(int64_t ticks)
+{
+  if( ticks < ticks_wakeup)
+    ticks_wakeup = ticks;
+   
+  /*if(timer_ticks() > ticks_wakeup)
+  {
+    ticks_wakeup = ticks;
+  }
+  else
+  { 
+    if(ticks_wakeup > ticks)
+      ticks_wakeup = ticks;
+  }*/
 }
 
 /* Sleeps for approximately MS milliseconds.  Interrupts must be
@@ -178,25 +197,24 @@ timer_interrupt (struct intr_frame *args UNUSED)
 {
   ticks++;
   thread_tick ();
-  thread_wakeup(ticks);
-  
-  /*
+     
   if(thread_mlfqs)
   {
     mlfqs_increment();
     if(ticks % TIMER_FREQ == 0)
     {
-      mlfqs_load_avg();
       mlfqs_recalc();
+      mlfqs_load_avg();
     }
     if(ticks % RECALC_FREQ == 0)
     {
       mlfqs_priority(thread_current());
     }
-    thread_check_yield();
+    //thread_check_yield(); 
   }
-  */
-  
+
+  if(ticks >= ticks_wakeup)
+    thread_wakeup(ticks);
 }
 
 /* Returns true if LOOPS iterations waits for more than one timer

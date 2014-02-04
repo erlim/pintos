@@ -202,8 +202,8 @@ lock_acquire (struct lock *lock)
   ASSERT (!lock_held_by_current_thread (lock));
 
   //1.24 add ryoung priority inversion
-  //if(!thread_mlfqs)
-  //{
+  if(!thread_mlfqs)
+  {
     if(lock->holder)
     {
       thread_current()->lock_wait = lock;
@@ -214,7 +214,7 @@ lock_acquire (struct lock *lock)
         thread_donate_priority();
       }
     }
-  //}
+  }
   sema_down (&lock->semaphore);
   thread_current()->lock_wait = NULL;
   lock->holder = thread_current ();
@@ -251,8 +251,8 @@ lock_release (struct lock *lock)
   ASSERT (lock != NULL);
   ASSERT (lock_held_by_current_thread (lock));
 
-  //if(!thread_mlfqs)
-  //{
+  if(!thread_mlfqs)
+  {
     //{remove wait lock information on thread
     if(!list_empty(&thread_current()->donation))
     {
@@ -270,7 +270,7 @@ lock_release (struct lock *lock)
     }
     //}
     thread_refresh_priority(); //consider priority donation
-  //}
+  }
   
   lock->holder = NULL;
   sema_up (&lock->semaphore);

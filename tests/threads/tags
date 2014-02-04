@@ -1,0 +1,146 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ITER_CNT	priority-fifo.c	27;"	d	file:
+MAX_THREAD_CNT	mlfqs-fair.c	54;"	d	file:
+NESTING_DEPTH	priority-donate-chain.c	33;"	d	file:
+TESTS_THREADS_TESTS_H	tests.h	2;"	d
+THREAD_CNT	mlfqs-load-60.c	112;"	d	file:
+THREAD_CNT	mlfqs-load-avg.c	123;"	d	file:
+THREAD_CNT	priority-fifo.c	26;"	d	file:
+a	priority-donate-nest.c	/^    struct lock *a;$/;"	m	struct:locks	typeref:struct:locks::lock	file:
+a_thread_func	priority-donate-multiple.c	/^a_thread_func (void *lock_) $/;"	f	file:
+a_thread_func	priority-donate-multiple.c	/^static thread_func a_thread_func;$/;"	v	file:
+a_thread_func	priority-donate-multiple2.c	/^a_thread_func (void *lock_) $/;"	f	file:
+a_thread_func	priority-donate-multiple2.c	/^static thread_func a_thread_func;$/;"	v	file:
+acquire1_thread_func	priority-donate-one.c	/^acquire1_thread_func (void *lock_) $/;"	f	file:
+acquire1_thread_func	priority-donate-one.c	/^static thread_func acquire1_thread_func;$/;"	v	file:
+acquire2_thread_func	priority-donate-one.c	/^acquire2_thread_func (void *lock_) $/;"	f	file:
+acquire2_thread_func	priority-donate-one.c	/^static thread_func acquire2_thread_func;$/;"	v	file:
+acquire_thread_func	priority-donate-lower.c	/^acquire_thread_func (void *lock_) $/;"	f	file:
+acquire_thread_func	priority-donate-lower.c	/^static thread_func acquire_thread_func;$/;"	v	file:
+alarm_priority_thread	alarm-priority.c	/^alarm_priority_thread (void *aux UNUSED) $/;"	f	file:
+alarm_priority_thread	alarm-priority.c	/^static thread_func alarm_priority_thread;$/;"	v	file:
+b	priority-donate-nest.c	/^    struct lock *b;$/;"	m	struct:locks	typeref:struct:locks::lock	file:
+b_thread_func	priority-donate-multiple.c	/^b_thread_func (void *lock_) $/;"	f	file:
+b_thread_func	priority-donate-multiple.c	/^static thread_func b_thread_func;$/;"	v	file:
+b_thread_func	priority-donate-multiple2.c	/^b_thread_func (void *lock_) $/;"	f	file:
+b_thread_func	priority-donate-multiple2.c	/^static thread_func b_thread_func;$/;"	v	file:
+block_thread	mlfqs-block.c	/^block_thread (void *lock_) $/;"	f	file:
+c_thread_func	priority-donate-multiple2.c	/^c_thread_func (void *a_ UNUSED) $/;"	f	file:
+c_thread_func	priority-donate-multiple2.c	/^static thread_func c_thread_func;$/;"	v	file:
+changing_thread	priority-change.c	/^changing_thread (void *aux UNUSED) $/;"	f	file:
+changing_thread	priority-change.c	/^static thread_func changing_thread;$/;"	v	file:
+check_alarm	alarm.pm	/^sub check_alarm {$/;"	s
+check_mlfqs_fair	mlfqs.pm	/^sub check_mlfqs_fair {$/;"	s
+condition	priority-condvar.c	/^static struct condition condition;$/;"	v	typeref:struct:condition	file:
+donor_thread_func	priority-donate-chain.c	/^donor_thread_func (void *locks_) $/;"	f	file:
+donor_thread_func	priority-donate-chain.c	/^static thread_func donor_thread_func;$/;"	v	file:
+duration	alarm-wait.c	/^    int duration;               \/* Number of ticks to sleep. *\/$/;"	m	struct:sleep_thread	file:
+fail	tests.c	/^fail (const char *format, ...) $/;"	f
+first	priority-donate-chain.c	/^    struct lock *first;$/;"	m	struct:lock_pair	typeref:struct:lock_pair::lock	file:
+function	tests.c	/^    test_func *function;$/;"	m	struct:test	file:
+h_thread_func	priority-donate-sema.c	/^h_thread_func (void *ls_) $/;"	f	file:
+h_thread_func	priority-donate-sema.c	/^static thread_func h_thread_func;$/;"	v	file:
+high_thread_func	priority-donate-nest.c	/^high_thread_func (void *lock_) $/;"	f	file:
+high_thread_func	priority-donate-nest.c	/^static thread_func high_thread_func;$/;"	v	file:
+id	alarm-wait.c	/^    int id;                     \/* Sleeper ID. *\/$/;"	m	struct:sleep_thread	file:
+id	priority-fifo.c	/^    int id;                     \/* Sleeper ID. *\/$/;"	m	struct:simple_thread_data	file:
+interloper_thread_func	priority-donate-chain.c	/^interloper_thread_func (void *arg_ UNUSED)$/;"	f	file:
+interloper_thread_func	priority-donate-chain.c	/^static thread_func interloper_thread_func;$/;"	v	file:
+iterations	alarm-simultaneous.c	/^    int iterations;             \/* Number of iterations per thread. *\/$/;"	m	struct:sleep_test	file:
+iterations	alarm-wait.c	/^    int iterations;             \/* Iterations counted so far. *\/$/;"	m	struct:sleep_thread	file:
+iterations	alarm-wait.c	/^    int iterations;             \/* Number of iterations per thread. *\/$/;"	m	struct:sleep_test	file:
+iterations	priority-fifo.c	/^    int iterations;             \/* Iterations so far. *\/$/;"	m	struct:simple_thread_data	file:
+l_thread_func	priority-donate-sema.c	/^l_thread_func (void *ls_) $/;"	f	file:
+l_thread_func	priority-donate-sema.c	/^static thread_func l_thread_func;$/;"	v	file:
+load_thread	mlfqs-fair.c	/^load_thread (void *ti_) $/;"	f	file:
+load_thread	mlfqs-load-60.c	/^load_thread (void *aux UNUSED) $/;"	f	file:
+load_thread	mlfqs-load-avg.c	/^load_thread (void *seq_no_) $/;"	f	file:
+lock	priority-condvar.c	/^static struct lock lock;$/;"	v	typeref:struct:lock	file:
+lock	priority-donate-sema.c	/^    struct lock lock;$/;"	m	struct:lock_and_sema	typeref:struct:lock_and_sema::lock	file:
+lock	priority-fifo.c	/^    struct lock *lock;          \/* Lock on output. *\/$/;"	m	struct:simple_thread_data	typeref:struct:simple_thread_data::lock	file:
+lock_and_sema	priority-donate-sema.c	/^struct lock_and_sema $/;"	s	file:
+lock_pair	priority-donate-chain.c	/^struct lock_pair$/;"	s	file:
+locks	priority-donate-nest.c	/^struct locks $/;"	s	file:
+m_thread_func	priority-donate-sema.c	/^m_thread_func (void *ls_) $/;"	f	file:
+m_thread_func	priority-donate-sema.c	/^static thread_func m_thread_func;$/;"	v	file:
+medium_thread_func	priority-donate-nest.c	/^medium_thread_func (void *locks_) $/;"	f	file:
+medium_thread_func	priority-donate-nest.c	/^static thread_func medium_thread_func;$/;"	v	file:
+mlfqs_compare	mlfqs.pm	/^sub mlfqs_compare {$/;"	s
+mlfqs_expected_load	mlfqs.pm	/^sub mlfqs_expected_load {$/;"	s
+mlfqs_expected_ticks	mlfqs.pm	/^sub mlfqs_expected_ticks {$/;"	s
+mlfqs_row	mlfqs.pm	/^sub mlfqs_row {$/;"	s
+msg	tests.c	/^msg (const char *format, ...) $/;"	f
+name	tests.c	/^    const char *name;$/;"	m	struct:test	file:
+nice	mlfqs-fair.c	/^    int nice;$/;"	m	struct:thread_info	file:
+op	priority-fifo.c	/^    int **op;                   \/* Output buffer position. *\/$/;"	m	struct:simple_thread_data	file:
+output_lock	alarm-wait.c	/^    struct lock output_lock;    \/* Lock protecting output buffer. *\/$/;"	m	struct:sleep_test	typeref:struct:sleep_test::lock	file:
+output_pos	alarm-simultaneous.c	/^    int *output_pos;            \/* Current position in output buffer. *\/$/;"	m	struct:sleep_test	file:
+output_pos	alarm-wait.c	/^    int *output_pos;            \/* Current position in output buffer. *\/$/;"	m	struct:sleep_test	file:
+pass	tests.c	/^pass (void) $/;"	f
+priority_condvar_thread	priority-condvar.c	/^priority_condvar_thread (void *aux UNUSED) $/;"	f	file:
+priority_condvar_thread	priority-condvar.c	/^static thread_func priority_condvar_thread;$/;"	v	file:
+priority_sema_thread	priority-sema.c	/^priority_sema_thread (void *aux UNUSED) $/;"	f	file:
+priority_sema_thread	priority-sema.c	/^static thread_func priority_sema_thread;$/;"	v	file:
+run_test	tests.c	/^run_test (const char *name) $/;"	f
+second	priority-donate-chain.c	/^    struct lock *second;$/;"	m	struct:lock_pair	typeref:struct:lock_pair::lock	file:
+sema	priority-donate-sema.c	/^    struct semaphore sema;$/;"	m	struct:lock_and_sema	typeref:struct:lock_and_sema::semaphore	file:
+sema	priority-sema.c	/^static struct semaphore sema;$/;"	v	typeref:struct:semaphore	file:
+simple_thread_data	priority-fifo.c	/^struct simple_thread_data $/;"	s	file:
+simple_thread_func	priority-fifo.c	/^simple_thread_func (void *data_) $/;"	f	file:
+simple_thread_func	priority-fifo.c	/^static thread_func simple_thread_func;$/;"	v	file:
+simple_thread_func	priority-preempt.c	/^simple_thread_func (void *aux UNUSED) $/;"	f	file:
+simple_thread_func	priority-preempt.c	/^static thread_func simple_thread_func;$/;"	v	file:
+sleep_test	alarm-simultaneous.c	/^struct sleep_test $/;"	s	file:
+sleep_test	alarm-wait.c	/^struct sleep_test $/;"	s	file:
+sleep_thread	alarm-wait.c	/^struct sleep_thread $/;"	s	file:
+sleeper	alarm-simultaneous.c	/^sleeper (void *test_) $/;"	f	file:
+sleeper	alarm-wait.c	/^sleeper (void *t_) $/;"	f	file:
+start	alarm-simultaneous.c	/^    int64_t start;              \/* Current time at start of test. *\/$/;"	m	struct:sleep_test	file:
+start	alarm-wait.c	/^    int64_t start;              \/* Current time at start of test. *\/$/;"	m	struct:sleep_test	file:
+start_time	mlfqs-fair.c	/^    int64_t start_time;$/;"	m	struct:thread_info	file:
+start_time	mlfqs-load-60.c	/^static int64_t start_time;$/;"	v	file:
+start_time	mlfqs-load-avg.c	/^static int64_t start_time;$/;"	v	file:
+test	alarm-wait.c	/^    struct sleep_test *test;     \/* Info shared between all threads. *\/$/;"	m	struct:sleep_thread	typeref:struct:sleep_thread::sleep_test	file:
+test	tests.c	/^struct test $/;"	s	file:
+test_alarm_multiple	alarm-wait.c	/^test_alarm_multiple (void) $/;"	f
+test_alarm_negative	alarm-negative.c	/^test_alarm_negative (void) $/;"	f
+test_alarm_priority	alarm-priority.c	/^test_alarm_priority (void) $/;"	f
+test_alarm_simultaneous	alarm-simultaneous.c	/^test_alarm_simultaneous (void) $/;"	f
+test_alarm_single	alarm-wait.c	/^test_alarm_single (void) $/;"	f
+test_alarm_zero	alarm-zero.c	/^test_alarm_zero (void) $/;"	f
+test_func	tests.h	/^typedef void test_func (void);$/;"	t
+test_mlfqs_block	mlfqs-block.c	/^test_mlfqs_block (void) $/;"	f
+test_mlfqs_fair	mlfqs-fair.c	/^test_mlfqs_fair (int thread_cnt, int nice_min, int nice_step)$/;"	f	file:
+test_mlfqs_fair_2	mlfqs-fair.c	/^test_mlfqs_fair_2 (void) $/;"	f
+test_mlfqs_fair_20	mlfqs-fair.c	/^test_mlfqs_fair_20 (void) $/;"	f
+test_mlfqs_load_1	mlfqs-load-1.c	/^test_mlfqs_load_1 (void) $/;"	f
+test_mlfqs_load_60	mlfqs-load-60.c	/^test_mlfqs_load_60 (void) $/;"	f
+test_mlfqs_load_avg	mlfqs-load-avg.c	/^test_mlfqs_load_avg (void) $/;"	f
+test_mlfqs_nice_10	mlfqs-fair.c	/^test_mlfqs_nice_10 (void) $/;"	f
+test_mlfqs_nice_2	mlfqs-fair.c	/^test_mlfqs_nice_2 (void) $/;"	f
+test_mlfqs_recent_1	mlfqs-recent-1.c	/^test_mlfqs_recent_1 (void) $/;"	f
+test_name	tests.c	/^static const char *test_name;$/;"	v	file:
+test_priority_change	priority-change.c	/^test_priority_change (void) $/;"	f
+test_priority_condvar	priority-condvar.c	/^test_priority_condvar (void) $/;"	f
+test_priority_donate_chain	priority-donate-chain.c	/^test_priority_donate_chain (void) $/;"	f
+test_priority_donate_lower	priority-donate-lower.c	/^test_priority_donate_lower (void) $/;"	f
+test_priority_donate_multiple	priority-donate-multiple.c	/^test_priority_donate_multiple (void) $/;"	f
+test_priority_donate_multiple2	priority-donate-multiple2.c	/^test_priority_donate_multiple2 (void) $/;"	f
+test_priority_donate_nest	priority-donate-nest.c	/^test_priority_donate_nest (void) $/;"	f
+test_priority_donate_one	priority-donate-one.c	/^test_priority_donate_one (void) $/;"	f
+test_priority_donate_sema	priority-donate-sema.c	/^test_priority_donate_sema (void) $/;"	f
+test_priority_fifo	priority-fifo.c	/^test_priority_fifo (void) $/;"	f
+test_priority_preempt	priority-preempt.c	/^test_priority_preempt (void) $/;"	f
+test_priority_sema	priority-sema.c	/^test_priority_sema (void) $/;"	f
+test_sleep	alarm-simultaneous.c	/^test_sleep (int thread_cnt, int iterations) $/;"	f	file:
+test_sleep	alarm-wait.c	/^test_sleep (int thread_cnt, int iterations) $/;"	f	file:
+tests	tests.c	/^static const struct test tests[] = $/;"	v	typeref:struct:test	file:
+thread_info	mlfqs-fair.c	/^struct thread_info $/;"	s	file:
+tick_count	mlfqs-fair.c	/^    int tick_count;$/;"	m	struct:thread_info	file:
+wait_sema	alarm-priority.c	/^static struct semaphore wait_sema;$/;"	v	typeref:struct:semaphore	file:
+wake_time	alarm-priority.c	/^static int64_t wake_time;$/;"	v	file:

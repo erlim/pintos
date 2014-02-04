@@ -11,17 +11,18 @@ Boot complete.
 Executing 'mlfqs-load-1':
 (mlfqs-load-1) begin
 (mlfqs-load-1) spinning for up to 45 seconds, please wait...
-(mlfqs-load-1) FAIL: load average stayed below 0.5 for more than 45 seconds
-Kernel PANIC at ../../tests/threads/tests.c:93 in fail(): test failed
-Call stack: 0xc0028bcc 0xc002aaa4 0xc002c85a 0xc002aaea 0xc00207d1 0xc0020771.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Timer: 4645 ticks
-Thread: 0 idle ticks, 4645 kernel ticks, 0 user ticks
-Console: 767 characters output
+(mlfqs-load-1) load average rose to 0.5 after 42 seconds
+(mlfqs-load-1) sleeping for another 10 seconds, please wait...
+(mlfqs-load-1) load average fell back below 0.5 (to 0.43)
+(mlfqs-load-1) PASS
+(mlfqs-load-1) end
+Execution of 'mlfqs-load-1' complete.
+Timer: 5334 ticks
+Thread: 1000 idle ticks, 4337 kernel ticks, 0 user ticks
+Console: 646 characters output
 Keyboard: 0 keys pressed
-Powering off..========================================================================
+Powering off...
+========================================================================
                        Bochs x86 Emulator 2.6.2
                 Built from SVN snapshot on May 26, 2013
                   Compiled on Dec 28 2013 at 04:29:58

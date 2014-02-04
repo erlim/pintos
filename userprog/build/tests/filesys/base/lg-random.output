@@ -9,7 +9,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 147 sectors (73 kB), Pintos OS kernel (20)
+hda1: 155 sectors (77 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 106 sectors (53 kB), Pintos scratch (22)
 filesys: using hda2
@@ -30,7 +30,7 @@ Executing 'lg-random':
 lg-random: exit(0)
 Execution of 'lg-random' complete.
 Timer: 739 ticks
-Thread: 30 idle ticks, 262 kernel ticks, 450 user ticks
+Thread: 30 idle ticks, 261 kernel ticks, 451 user ticks
 hda2 (filesys): 233 reads, 520 writes
 hda3 (scratch): 105 reads, 2 writes
 Console: 1054 characters output

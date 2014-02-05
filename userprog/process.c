@@ -29,31 +29,26 @@ static bool load (const char *cmdline, void (**eip) (void), void **esp);
 process_execute (const char *file_name) 
 {
   //printf("process_execute file: %s\n", file_name);
-  char *file_name_ = palloc_get_page(0) ; 
-  strlcpy( file_name_ , file_name , PGSIZE) ;   
-
   /* Make a copy of FILE_NAME.
      Otherwise there's a race between the caller and load(). */
   char *fn_copy = palloc_get_page (0);
   if (fn_copy == NULL)
-  {
-    printf("palloc_null\n");
-
-    palloc_free_page(fn_copy);  
     return TID_ERROR;
-  }
-  strlcpy (fn_copy, file_name_, PGSIZE);
+  strlcpy (fn_copy, file_name, PGSIZE);
 
   // 12.27 modify Ryoung
-  char *save_ptr; 
-  file_name = strtok_r(file_name_, " ",&save_ptr); 		  
+  char *parse_name, save_ptr; 
+  parse_name = palloc_get_page(0);
+  strlcpy(parse_name, file_name, PGSIZE);
+  parse_name = strtok_r(parse_name, " ",&save_ptr); 		  
 
   /* Create a new thread to execute FILE_NAME. */
-  tid_t tid = thread_create (file_name_, PRI_DEFAULT, process_start,  fn_copy);
+  tid_t tid = thread_create (parse_name, PRI_DEFAULT, process_start, fn_copy);
+
+  palloc_free_page(parse_name);
   if (tid == TID_ERROR)
     palloc_free_page (fn_copy); 
-
-  palloc_free_page(file_name_);
+  
   return tid;
 }
 
@@ -69,14 +64,13 @@ process_start (void *file_name_)
   //{ 12.27 +Ryoung token, count token
   char **argv = palloc_get_page(0);
   int argc = 0;
-  char *token, *temp=NULL;
+  char *token, *save_ptr=NULL;
 
-  for( token = strtok_r(file_name, " ", &temp); token!= NULL;
-      token = strtok_r(NULL, " ",&temp))
+  for( token = strtok_r(file_name, " ", &save_ptr); token!= NULL;
+      token = strtok_r(NULL, " ",&save_ptr))
   {
-    int slen = strlen(token) +1;
-    argv[argc] = malloc(slen);
-    memcpy(argv[argc], token, slen);
+    argv[argc] = malloc(strlen(token));
+    strlcpy(argv[argc], token, PGSIZE);
     argc++;  
   } //}
 
@@ -88,29 +82,22 @@ process_start (void *file_name_)
 
   // 1.4 modify Ryoung
   struct thread *cur = thread_current(); 
-  bool bLoad = load(file_name, &if_.eip, &if_.esp);
+  bool bLoad = load(argv[0], &if_.eip, &if_.esp);
   palloc_free_page(file_name);
-  //sema_up(&cur->sema_proc);
+  sema_up(&cur->sema_proc);
   if(bLoad)
   {
     cur->status_load = true;
-    sema_up(&cur->sema_proc);
+    argument_stack(argv, argc, &if_.esp);
   }
   else
   {
-    int idx = 0;
-    for(; idx<argc; ++idx)
-    {
-      free(argv[idx]);
-    } 
-    palloc_free_page(argv);
     cur->status_load = -1;
     thread_exit();
   }
   
-  argument_stack(argv,argc,&if_.esp);
   int idx = 0;
-  for(; idx<argc; ++idx)
+  for(; idx<argc; idx++)
   { 
     free(argv[idx]);
   }
@@ -127,11 +114,10 @@ process_start (void *file_name_)
 }
 
 // 12.27 add Ryoung
-  void 
+void 
 argument_stack(char **argv, int argc, void **esp)
 {  
-  char** argv_addr;
-  argv_addr = palloc_get_page(0);
+  char** argv_addr = palloc_get_page(0);
 
   int slen, buffer_size = 0;
   int num =0;
@@ -179,7 +165,7 @@ argument_stack(char **argv, int argc, void **esp)
 
   palloc_free_page(argv_addr);
 }
-
+ 
 /* Waits for thread TID to die and returns its exit status.  If
    it was terminated by the kernel (i.e. killed due to an
    exception), returns -1.  If TID is invalid or if it was not a
@@ -196,7 +182,6 @@ process_wait (pid_t child_pid UNUSED)
   struct thread *child = process_get_child(child_pid);
   if(!child)  
     return -1;
-
   while(!child->exit)
     sema_down(&child->sema_proc);  
   
@@ -218,13 +203,11 @@ process_exit (void)
   {
     file_close(t->file_exec);
   }
-
-  while(t->last_fd <2)
+  while(t->last_fd > FD_DEFINE)
   {
     t->last_fd--;
     process_close_file(t->last_fd);
   }
- 
   palloc_free_page(t->fd_tbl);
 
   uint32_t *pd;
@@ -263,7 +246,7 @@ process_activate (void)
 }
 
 // 1.3 add Ryoung, utils for process descriptor
-  struct thread*
+struct thread*
 process_get_child(pid_t pid)
 {
   struct thread *cur = thread_current();
@@ -279,34 +262,39 @@ process_get_child(pid_t pid)
     }
   }
   return NULL;
+  
 }
-  void
+void
 process_remove_child(struct thread *t)
 {
   list_remove(&t->child_elem);
   palloc_free_page(t);
 }
 
-  int 
+int 
 process_add_file(struct file *f)
 {
   struct thread *t = thread_current();
-  t->fd_tbl[++t->last_fd] =f;
-
-  return t->last_fd; 
+  int fd = t->last_fd++;
+  t->fd_tbl[fd] =f;
+  return fd; 
 }
 
   struct file*
 process_get_file(int fd)
 {
   struct thread *t= thread_current();
-  return t->fd_tbl[fd];
+  if( t->fd_tbl[fd] != NULL)
+    return t->fd_tbl[fd];
+  return  NULL;
 }
 
   void
 process_close_file(int fd)
 {
   struct thread *t = thread_current();
+  if(t->fd_tbl[fd] != NULL)
+    file_close(t->fd_tbl[fd]);
   t->fd_tbl[fd]= NULL; 
 }
 

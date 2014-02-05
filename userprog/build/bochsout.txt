@@ -30,7 +30,7 @@
 00000000000i[     ]   SB16 support: no
 00000000000i[     ]   USB support: no
 00000000000i[     ]   VGA extension support: vbe
-00000000000i[MEM0 ] allocated memory at 0x2b5c3bfda010. after alignment, vector=0x2b5c3bfdb000
+00000000000i[MEM0 ] allocated memory at 0x2b3db3ab5010. after alignment, vector=0x2b3db3ab6000
 00000000000i[MEM0 ] 4.00MB
 00000000000i[MEM0 ] mem block size = 0x00100000, blocks=4
 00000000000i[MEM0 ] rom at 0xfffe0000/131072 ('/usr/local/share/bochs/BIOS-bochs-latest')
@@ -62,7 +62,7 @@
 00000000000i[     ] init_dev of 'keyboard' plugin device by virtual method
 00000000000i[KBD  ] will paste characters every 400 keyboard ticks
 00000000000i[     ] init_dev of 'harddrv' plugin device by virtual method
-00000000000i[HD   ] HD on ata0-0: '/tmp/TbER9K8goX.dsk', 'flat' mode
+00000000000i[HD   ] HD on ata0-0: '/tmp/UGOwXl7sxc.dsk', 'flat' mode
 00000000000i[IMG  ] hd_size: 2580480
 00000000000i[HD   ] ata0-0: using specified geometry: CHS=5/16/63
 00000000000i[HD   ] Using boot sequence disk, none, none
@@ -181,26 +181,26 @@
 00008761641i[BIOS ] Booting from 0000:7c00
 00009161925i[MEM0 ] allocate_block: block=0x1 used 0x3 of 0x4
 00009206496i[MEM0 ] allocate_block: block=0x2 used 0x4 of 0x4
-00024015381p[UNMP ] >>PANIC<< Shutdown port: shutdown requested
-00024015381i[CPU0 ] CPU is in protected mode (active)
-00024015381i[CPU0 ] CS.mode = 32 bit
-00024015381i[CPU0 ] SS.mode = 32 bit
-00024015381i[CPU0 ] EFER   = 0x00000000
-00024015381i[CPU0 ] | EAX=0000006e  EBX=c002e780  ECX=c000ef7e  EDX=ffff8900
-00024015381i[CPU0 ] | ESP=c000ef60  EBP=c000ef88  ESI=c00310f9  EDI=c000ef80
-00024015381i[CPU0 ] | IOPL=0 id vip vif ac vm rf nt of df IF tf sf zf af pf cf
-00024015381i[CPU0 ] | SEG sltr(index|ti|rpl)     base    limit G D
-00024015381i[CPU0 ] |  CS:0008( 0001| 0|  0) 00000000 ffffffff 1 1
-00024015381i[CPU0 ] |  DS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-00024015381i[CPU0 ] |  SS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-00024015381i[CPU0 ] |  ES:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-00024015381i[CPU0 ] |  FS:0023( 0004| 0|  3) 00000000 ffffffff 1 1
-00024015381i[CPU0 ] |  GS:0023( 0004| 0|  3) 00000000 ffffffff 1 1
-00024015381i[CPU0 ] | EIP=c00268f1 (c00268f0)
-00024015381i[CPU0 ] | CR0=0xe0010015 CR2=0x00000000
-00024015381i[CPU0 ] | CR3=0x00101000 CR4=0x00000000
-00024015381i[CPU0 ] 0xc00268f0>> out dx, al : EE
-00024015381i[CMOS ] Last time is 24 (Thu Jan  1 09:00:24 1970)
-00024015381i[NGUI ] bx_nogui_gui_c::exit() not implemented yet.
-00024015381i[     ] restoring default signal behavior
-00024015381i[CTRL ] quit_sim called with exit code 1
+00024141022p[UNMP ] >>PANIC<< Shutdown port: shutdown requested
+00024141022i[CPU0 ] CPU is in protected mode (active)
+00024141022i[CPU0 ] CS.mode = 32 bit
+00024141022i[CPU0 ] SS.mode = 32 bit
+00024141022i[CPU0 ] EFER   = 0x00000000
+00024141022i[CPU0 ] | EAX=0000006e  EBX=c002e780  ECX=c000ef7e  EDX=ffff8900
+00024141022i[CPU0 ] | ESP=c000ef60  EBP=c000ef88  ESI=c00310f9  EDI=c000ef80
+00024141022i[CPU0 ] | IOPL=0 id vip vif ac vm rf nt of df IF tf sf zf af pf cf
+00024141022i[CPU0 ] | SEG sltr(index|ti|rpl)     base    limit G D
+00024141022i[CPU0 ] |  CS:0008( 0001| 0|  0) 00000000 ffffffff 1 1
+00024141022i[CPU0 ] |  DS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+00024141022i[CPU0 ] |  SS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+00024141022i[CPU0 ] |  ES:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+00024141022i[CPU0 ] |  FS:0023( 0004| 0|  3) 00000000 ffffffff 1 1
+00024141022i[CPU0 ] |  GS:0023( 0004| 0|  3) 00000000 ffffffff 1 1
+00024141022i[CPU0 ] | EIP=c00268f1 (c00268f0)
+00024141022i[CPU0 ] | CR0=0xe0010015 CR2=0x00000000
+00024141022i[CPU0 ] | CR3=0x00101000 CR4=0x00000000
+00024141022i[CPU0 ] 0xc00268f0>> out dx, al : EE
+00024141022i[CMOS ] Last time is 24 (Thu Jan  1 09:00:24 1970)
+00024141022i[NGUI ] bx_nogui_gui_c::exit() not implemented yet.
+00024141022i[     ] restoring default signal behavior
+00024141022i[CTRL ] quit_sim called with exit code 1

@@ -26,8 +26,8 @@ load: no-such-file: open failed
 (exec-missing) end
 exec-missing: exit(0)
 Execution of 'exec-missing' complete.
-Timer: 325 ticks
-Thread: 30 idle ticks, 228 kernel ticks, 70 user ticks
+Timer: 324 ticks
+Thread: 30 idle ticks, 229 kernel ticks, 68 user ticks
 hda2 (filesys): 80 reads, 204 writes
 hda3 (scratch): 99 reads, 2 writes
 Console: 978 characters output

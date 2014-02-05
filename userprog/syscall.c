@@ -127,23 +127,17 @@ pid_t exec(const char *file)
   struct thread *child = process_get_child(pid);
   if(!child)
     return -1;
-
   if(child->status_load == false)
-  {
-    sema_down(&child->sema_proc); //thread_current() ->parent push waiters
-  }
-
+    sema_down(&child->sema_proc); 
   if(child->status_load == -1)
-  {
     return -1;
-  }
 
   return pid;
 }
 
 int wait(pid_t pid)
 {
-//  printf("syscall wait:%d\n", pid);
+  //printf("syscall wait:%d\n", pid);
   return process_wait(pid);
 }
 

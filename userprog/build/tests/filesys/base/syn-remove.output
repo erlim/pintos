@@ -31,11 +31,11 @@ Executing 'syn-remove':
 (syn-remove) end
 syn-remove: exit(0)
 Execution of 'syn-remove' complete.
-Timer: 353 ticks
-Thread: 30 idle ticks, 228 kernel ticks, 98 user ticks
-hda2 (filesys): 97 reads, 225 writes
+Timer: 356 ticks
+Thread: 30 idle ticks, 228 kernel ticks, 101 user ticks
+hda2 (filesys): 97 reads, 227 writes
 hda3 (scratch): 104 reads, 2 writes
-Console: 1107 characters output
+Console: 1108 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

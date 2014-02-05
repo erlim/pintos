@@ -23,7 +23,7 @@ Executing 'create-bad-ptr':
 (create-bad-ptr) begin
 create-bad-ptr: exit(-1)
 Execution of 'create-bad-ptr' complete.
-Timer: 290 ticks
+Timer: 291 ticks
 Thread: 30 idle ticks, 226 kernel ticks, 38 user ticks
 hda2 (filesys): 64 reads, 207 writes
 hda3 (scratch): 99 reads, 2 writes

@@ -1,7 +1,7 @@
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 PiLo hda1
-Loading.........
+Loading........
 Kernel command line: -q -mlfqs run mlfqs-fair-20
 Pintos booting with 4,096 kB RAM...
 383 pages available in kernel pool.
@@ -11,33 +11,33 @@ Boot complete.
 Executing 'mlfqs-fair-20':
 (mlfqs-fair-20) begin
 (mlfqs-fair-20) Starting 20 threads...
-(mlfqs-fair-20) Starting threads took 50 ticks.
+(mlfqs-fair-20) Starting threads took 52 ticks.
 (mlfqs-fair-20) Sleeping 40 seconds to let threads run, please wait...
-(mlfqs-fair-20) Thread 0 received 152 ticks.
-(mlfqs-fair-20) Thread 1 received 152 ticks.
-(mlfqs-fair-20) Thread 2 received 144 ticks.
-(mlfqs-fair-20) Thread 3 received 147 ticks.
+(mlfqs-fair-20) Thread 0 received 153 ticks.
+(mlfqs-fair-20) Thread 1 received 153 ticks.
+(mlfqs-fair-20) Thread 2 received 152 ticks.
+(mlfqs-fair-20) Thread 3 received 152 ticks.
 (mlfqs-fair-20) Thread 4 received 152 ticks.
 (mlfqs-fair-20) Thread 5 received 152 ticks.
-(mlfqs-fair-20) Thread 6 received 156 ticks.
-(mlfqs-fair-20) Thread 7 received 148 ticks.
-(mlfqs-fair-20) Thread 8 received 144 ticks.
-(mlfqs-fair-20) Thread 9 received 152 ticks.
-(mlfqs-fair-20) Thread 10 received 152 ticks.
-(mlfqs-fair-20) Thread 11 received 152 ticks.
-(mlfqs-fair-20) Thread 12 received 152 ticks.
-(mlfqs-fair-20) Thread 13 received 144 ticks.
-(mlfqs-fair-20) Thread 14 received 152 ticks.
+(mlfqs-fair-20) Thread 6 received 152 ticks.
+(mlfqs-fair-20) Thread 7 received 152 ticks.
+(mlfqs-fair-20) Thread 8 received 150 ticks.
+(mlfqs-fair-20) Thread 9 received 148 ticks.
+(mlfqs-fair-20) Thread 10 received 149 ticks.
+(mlfqs-fair-20) Thread 11 received 148 ticks.
+(mlfqs-fair-20) Thread 12 received 149 ticks.
+(mlfqs-fair-20) Thread 13 received 149 ticks.
+(mlfqs-fair-20) Thread 14 received 148 ticks.
 (mlfqs-fair-20) Thread 15 received 149 ticks.
-(mlfqs-fair-20) Thread 16 received 156 ticks.
-(mlfqs-fair-20) Thread 17 received 148 ticks.
-(mlfqs-fair-20) Thread 18 received 149 ticks.
-(mlfqs-fair-20) Thread 19 received 148 ticks.
+(mlfqs-fair-20) Thread 16 received 148 ticks.
+(mlfqs-fair-20) Thread 17 received 149 ticks.
+(mlfqs-fair-20) Thread 18 received 151 ticks.
+(mlfqs-fair-20) Thread 19 received 152 ticks.
 (mlfqs-fair-20) end
 Execution of 'mlfqs-fair-20' complete.
-Timer: 4232 ticks
-Thread: 971 idle ticks, 3264 kernel ticks, 0 user ticks
-Console: 1459 characters output
+Timer: 4230 ticks
+Thread: 0 idle ticks, 4233 kernel ticks, 0 user ticks
+Console: 1457 characters output
 Keyboard: 0 keys pressed
 Powering off...
 ========================================================================

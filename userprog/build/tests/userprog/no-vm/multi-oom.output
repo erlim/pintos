@@ -9,7 +9,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 155 sectors (77 kB), Pintos OS kernel (20)
+hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 116 sectors (58 kB), Pintos scratch (22)
 filesys: using hda2
@@ -1105,11 +1105,11 @@ multi-oom: exit(62)
 (multi-oom) end
 multi-oom: exit(62)
 Execution of 'multi-oom' complete.
-Timer: 332816 ticks
-Thread: 30 idle ticks, 22658 kernel ticks, 310131 user ticks
+Timer: 294803 ticks
+Thread: 0 idle ticks, 22342 kernel ticks, 272464 user ticks
 hda2 (filesys): 309393 reads, 236 writes
 hda3 (scratch): 115 reads, 2 writes
-Console: 22546 characters output
+Console: 22545 characters output
 Keyboard: 0 keys pressed
 Exception: 340 page faults
 Powering off...

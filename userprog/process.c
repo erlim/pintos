@@ -188,7 +188,7 @@ process_wait (pid_t child_pid UNUSED)
   int status_exit = child->status_exit;
   process_remove_child(child);
   
-  return status_exit; //child->status_exit;
+  return status_exit; 
 }
 
 /* Free the current process's resources. */

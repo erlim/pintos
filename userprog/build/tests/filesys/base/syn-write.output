@@ -10,7 +10,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 155 sectors (77 kB), Pintos OS kernel (20)
+hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 218 sectors (109 kB), Pintos scratch (22)
 filesys: using hda2
@@ -59,11 +59,11 @@ child-syn-wrt: exit(9)
 (syn-write) end
 syn-write: exit(0)
 Execution of 'syn-write' complete.
-Timer: 1386 ticks
-Thread: 30 idle ticks, 527 kernel ticks, 832 user ticks
+Timer: 1317 ticks
+Thread: 0 idle ticks, 524 kernel ticks, 796 user ticks
 hda2 (filesys): 527 reads, 466 writes
 hda3 (scratch): 217 reads, 2 writes
-Console: 2337 characters output
+Console: 2336 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

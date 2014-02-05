@@ -119,20 +119,6 @@ struct thread
   int last_fd; 
   struct file *file_exec;             /* running file */
   //----------------------------------------------------
-
-  //--------------------- Threads ----------------------
-  // 1.15 add ryoung alarm clock 
-  int64_t wakeup_ticks;
-  // 1.24 add ryoung  priority inversion
-  int priority_ori;
-  struct list donation;
-  struct list_elem donation_elem;
-  struct lock *lock_wait;
-  // 1.29 add ryoung mlfqs
-  int nice;
-  int recent_cpu;
-  //---------------------------------------------------- 
-
 };
 
 /* If false (default), use round-robin scheduler.

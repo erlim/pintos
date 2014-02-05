@@ -9,7 +9,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 155 sectors (77 kB), Pintos OS kernel (20)
+hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 106 sectors (53 kB), Pintos scratch (22)
 filesys: using hda2
@@ -29,11 +29,11 @@ Executing 'sm-random':
 (sm-random) end
 sm-random: exit(0)
 Execution of 'sm-random' complete.
-Timer: 547 ticks
-Thread: 30 idle ticks, 228 kernel ticks, 292 user ticks
+Timer: 503 ticks
+Thread: 0 idle ticks, 246 kernel ticks, 260 user ticks
 hda2 (filesys): 335 reads, 350 writes
 hda3 (scratch): 105 reads, 2 writes
-Console: 1054 characters output
+Console: 1053 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

@@ -9,7 +9,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 155 sectors (77 kB), Pintos OS kernel (20)
+hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 104 sectors (52 kB), Pintos scratch (22)
 filesys: using hda2
@@ -31,11 +31,11 @@ Executing 'sm-seq-block':
 (sm-seq-block) end
 sm-seq-block: exit(0)
 Execution of 'sm-seq-block' complete.
-Timer: 397 ticks
-Thread: 30 idle ticks, 229 kernel ticks, 141 user ticks
+Timer: 376 ticks
+Thread: 0 idle ticks, 247 kernel ticks, 132 user ticks
 hda2 (filesys): 125 reads, 251 writes
 hda3 (scratch): 103 reads, 2 writes
-Console: 1152 characters output
+Console: 1151 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

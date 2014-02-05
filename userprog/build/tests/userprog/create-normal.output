@@ -9,7 +9,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 155 sectors (77 kB), Pintos OS kernel (20)
+hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 100 sectors (50 kB), Pintos scratch (22)
 filesys: using hda2
@@ -25,11 +25,11 @@ Executing 'create-normal':
 (create-normal) end
 create-normal: exit(0)
 Execution of 'create-normal' complete.
-Timer: 312 ticks
-Thread: 30 idle ticks, 226 kernel ticks, 59 user ticks
+Timer: 296 ticks
+Thread: 0 idle ticks, 244 kernel ticks, 55 user ticks
 hda2 (filesys): 83 reads, 208 writes
 hda3 (scratch): 99 reads, 2 writes
-Console: 945 characters output
+Console: 944 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

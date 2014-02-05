@@ -1,7 +1,7 @@
 warning: can't find squish-pty, so terminal input will fail
 bochs -q
 PiLo hda1
-Loading.........
+Loading........
 Kernel command line: -q run alarm-single
 Pintos booting with 4,096 kB RAM...
 383 pages available in kernel pool.
@@ -22,9 +22,9 @@ Executing 'alarm-single':
 (alarm-single) thread 4: duration=50, iteration=1, product=50
 (alarm-single) end
 Execution of 'alarm-single' complete.
-Timer: 382 ticks
-Thread: 251 idle ticks, 134 kernel ticks, 0 user ticks
-Console: 984 characters output
+Timer: 378 ticks
+Thread: 0 idle ticks, 380 kernel ticks, 0 user ticks
+Console: 982 characters output
 Keyboard: 0 keys pressed
 Powering off...
 ========================================================================

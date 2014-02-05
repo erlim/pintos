@@ -1,0 +1,25 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+DEPENDS	build/Makefile	/^DEPENDS = $(patsubst %.o,%.d,$(OBJECTS))$/;"	m
+OBJECTS	build/Makefile	/^OBJECTS = $(patsubst %.c,%.o,$(patsubst %.S,%.o,$(SOURCES)))$/;"	m
+SOURCES	build/Makefile	/^SOURCES = $(foreach dir,$(KERNEL_SUBDIRS),$($(dir)_SRC))$/;"	m
+SRCDIR	build/Makefile	/^SRCDIR = ..\/..$/;"	m
+_end	build/threads/kernel.lds.s	/^  _end = .;$/;"	d
+_end_bss	build/threads/kernel.lds.s	/^  _end_bss = .;$/;"	d
+_end_kernel_text	build/threads/kernel.lds.s	/^       _end_kernel_text = .; }$/;"	d
+_signature	build/threads/kernel.lds.s	/^     _signature = .; LONG(0xaa55aa55) }$/;"	d
+_start	build/threads/kernel.lds.s	/^  _start = 0xc0000000 + 0x20000;$/;"	d
+_start_bss	build/threads/kernel.lds.s	/^  _start_bss = .;$/;"	d
+devices_SRC	build/Makefile	/^devices_SRC  = devices\/pit.c		# Programmable interrupt timer chip.$/;"	m
+filesys_SRC	build/Makefile	/^filesys_SRC  = filesys\/filesys.c	# Filesystem core.$/;"	m
+kernel_SRC	build/Makefile	/^lib\/kernel_SRC  = lib\/kernel\/debug.c	# Debug helpers.$/;"	m
+lib_SRC	build/Makefile	/^lib_SRC  = lib\/debug.c			# Debug helpers.$/;"	m
+number	vm_test.h	/^  int32_t number  : 20;$/;"	m	struct:pages
+offset	vm_test.h	/^  int32_t offset  : 12;$/;"	m	struct:pages
+pages	vm_test.h	/^struct pages$/;"	s
+threads_SRC	build/Makefile	/^threads_SRC  = threads\/start.S		# Startup code.$/;"	m
+userprog_SRC	build/Makefile	/^userprog_SRC  = userprog\/process.c	# Process loading.$/;"	m

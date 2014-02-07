@@ -40,7 +40,7 @@ process_execute (const char *file_name)
   char *parse_name, save_ptr; 
   parse_name = palloc_get_page(0);
   strlcpy(parse_name, file_name, PGSIZE);
-  parse_name = strtok_r(parse_name, " ",&save_ptr); 		  
+  parse_name = strtok_r(parse_name, " ",&save_ptr);       
 
   /* Create a new thread to execute FILE_NAME. */
   tid_t tid = thread_create (parse_name, PRI_DEFAULT, process_start, fn_copy);
@@ -85,7 +85,6 @@ process_start (void *file_name_)
   bool bLoad = load(argv[0], &if_.eip, &if_.esp);
   palloc_free_page(file_name);
   sema_up(&cur->sema_load);
-  //sema_up(&cur->sema_proc);
   if(bLoad)
   {
     cur->status_load = true;
@@ -183,10 +182,12 @@ process_wait (pid_t child_pid UNUSED)
   struct thread *child = process_get_child(child_pid);
   if(!child)  
     return -1;
-  //while(!child->exit)
-  //  sema_down(&child->sema_proc);  
+  if(child->wait)
+    return -1;
+  child->wait = true;   
   if(!child->exit)
     sema_down(&child->sema_exit);
+
   int status_exit = child->status_exit;
   process_remove_child(child);
   

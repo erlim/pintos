@@ -110,9 +110,12 @@ struct thread
   struct list child;
   struct list_elem child_elem;
   int  status_load;                   /* -1:error, 0:load x, 1:load o */ 
+  bool wait;
   bool exit;
   int  status_exit;
-  struct semaphore sema_proc;
+  //struct semaphore sema_proc;
+  struct semaphore sema_load;
+  struct semaphore sema_exit;
 //#endif
   // 1.10 add Ryoung file descriptor 
   struct file **fd_tbl;

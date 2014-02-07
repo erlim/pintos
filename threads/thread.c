@@ -212,9 +212,12 @@ thread_create (const char *name, int priority,
   //1.1 add ryoung process descriptor
   t->parent = thread_current();
   t->status_load = false;
+  t->wait = false;
   t->exit = false;
   t->status_exit = -1;
-  sema_init(&t->sema_proc,0);
+  //sema_init(&t->sema_proc,0);
+  sema_init(&t->sema_load,0);
+  sema_init(&t->sema_exit,0);
   t->fd_tbl = palloc_get_page(0);
   list_push_back(&t->parent->child, &t->child_elem);
 #endif
@@ -315,7 +318,8 @@ thread_exit (void)
   list_remove (&t->allelem);
   t->status = THREAD_DYING;
 #ifdef USERPROG
-  sema_up(&t->sema_proc);
+  //sema_up(&t->sema_proc);
+  sema_up(&t->sema_exit);
 #endif
   schedule ();
   NOT_REACHED ();

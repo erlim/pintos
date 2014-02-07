@@ -84,7 +84,8 @@ process_start (void *file_name_)
   struct thread *cur = thread_current(); 
   bool bLoad = load(argv[0], &if_.eip, &if_.esp);
   palloc_free_page(file_name);
-  sema_up(&cur->sema_proc);
+  sema_up(&cur->sema_load);
+  //sema_up(&cur->sema_proc);
   if(bLoad)
   {
     cur->status_load = true;
@@ -182,8 +183,11 @@ process_wait (pid_t child_pid UNUSED)
   struct thread *child = process_get_child(child_pid);
   if(!child)  
     return -1;
-  while(!child->exit)
-    sema_down(&child->sema_proc);  
+  if(child->wait)
+    return -1;
+  child->wait = true;
+  if(!child->exit)
+    sema_down(&child->sema_exit);  
   
   int status_exit = child->status_exit;
   process_remove_child(child);

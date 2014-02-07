@@ -25,7 +25,7 @@ Executing 'wait-bad-pid':
 wait-bad-pid: exit(0)
 Execution of 'wait-bad-pid' complete.
 Timer: 278 ticks
-Thread: 0 idle ticks, 244 kernel ticks, 37 user ticks
+Thread: 0 idle ticks, 243 kernel ticks, 37 user ticks
 hda2 (filesys): 62 reads, 204 writes
 hda3 (scratch): 99 reads, 2 writes
 Console: 905 characters output

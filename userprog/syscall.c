@@ -128,7 +128,7 @@ pid_t exec(const char *file)
   if(!child)
     return -1;
   if(child->status_load == false)
-    sema_down(&child->sema_proc); 
+    sema_down(&child->sema_load); 
   if(child->status_load == -1)
     return -1;
 

@@ -11,9 +11,9 @@
 #include "threads/switch.h"
 #include "threads/synch.h"
 #include "threads/vaddr.h"
-#ifdef USERPROG
+//#ifdef USERPROG
 #include "userprog/process.h"
-#endif
+//#endif
 #include "filesys/file.h" // 1.10 add ryoung file_desc
 
 /* Random value for struct thread's `magic' member.
@@ -214,7 +214,9 @@ thread_create (const char *name, int priority,
   t->status_load = false;
   t->exit = false;
   t->status_exit = -1;
-  sema_init(&t->sema_proc,0);
+  sema_init(&t->sema_load,0);
+  sema_init(&t->sema_exit,0);
+  //sema_init(&t->sema_proc,0);
   t->fd_tbl = palloc_get_page(0);
   list_push_back(&t->parent->child, &t->child_elem);
 #endif
@@ -315,7 +317,8 @@ thread_exit (void)
   list_remove (&t->allelem);
   t->status = THREAD_DYING;
 #ifdef USERPROG
-  sema_up(&t->sema_proc);
+  sema_up(&t->sema_exit);
+  //sema_up(&t->sema_proc);
 #endif
   schedule ();
   NOT_REACHED ();
@@ -582,7 +585,7 @@ thread_schedule_tail (struct thread *prev)
    It's not safe to call printf() until thread_schedule_tail()
    has completed. */
   static void
-schedule (void) 
+schedule(void) 
 {
   struct thread *cur = running_thread ();
   struct thread *next = next_thread_to_run ();

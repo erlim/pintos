@@ -17,7 +17,7 @@
 #include "threads/palloc.h"
 #include "threads/thread.h"
 #include "threads/vaddr.h"
-
+#include "vm/page.h"
 static thread_func process_start NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
 
@@ -25,7 +25,7 @@ static bool load (const char *cmdline, void (**eip) (void), void **esp);
    FILENAME.  The new thread may be scheduled (and may even exit)
    before process_execute() returns.  Returns the new process's
    thread id, or TID_ERROR if the thread cannot be created. */
-  tid_t
+tid_t
 process_execute (const char *file_name) 
 {
   //printf("process_execute file: %s\n", file_name);
@@ -84,7 +84,8 @@ process_start (void *file_name_)
   struct thread *cur = thread_current(); 
   bool bLoad = load(argv[0], &if_.eip, &if_.esp);
   palloc_free_page(file_name);
-  sema_up(&cur->sema_proc);
+  sema_up(&cur->sema_load);
+  //sema_up(&cur->sema_proc);
   if(bLoad)
   {
     cur->status_load = true;
@@ -182,9 +183,10 @@ process_wait (pid_t child_pid UNUSED)
   struct thread *child = process_get_child(child_pid);
   if(!child)  
     return -1;
-  while(!child->exit)
-    sema_down(&child->sema_proc);  
-  
+  //while(!child->exit)
+  //  sema_down(&child->sema_proc);  
+  if(!child->exit)
+    sema_down(&child->sema_exit);
   int status_exit = child->status_exit;
   process_remove_child(child);
   
@@ -209,6 +211,10 @@ process_exit (void)
     process_close_file(t->last_fd);
   }
   palloc_free_page(t->fd_tbl);
+
+  //2.6 add ryoung(vm)
+  //delete_vme(thread_current()->vm,
+  //vm_destroy(&thread_current()->vm);
 
   uint32_t *pd;
   /* Destroy the current process's page directory and switch back
@@ -356,6 +362,11 @@ struct Elf32_Phdr
 #define PT_PHDR    6            /* Program header table. */
 #define PT_STACK   0x6474e551   /* Stack segment. */
 
+//2.6 add ryoung
+#define VM_BIN  1
+#define VM_FILE 2
+#define VM_ANON 3 
+
 /* Flags for p_flags.  See [ELF3] 2-3 and 2-4. */
 #define PF_X 1          /* Executable. */
 #define PF_W 2          /* Writable. */
@@ -366,12 +377,13 @@ static bool validate_segment (const struct Elf32_Phdr *, struct file *);
 static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
     uint32_t read_bytes, uint32_t zero_bytes,
     bool writable);
+static bool load_file(void *kaddr, struct vm_entry *vme);
 
 /* Loads an ELF executable from FILE_NAME into the current thread.
    Stores the executable's entry point into *EIP
    and its initial stack pointer into *ESP.
    Returns true if successful, false otherwise. */
-  bool
+bool
 load (const char *file_name, void (**eip) (void), void **esp) 
 {
   struct thread *t = thread_current ();
@@ -403,8 +415,8 @@ load (const char *file_name, void (**eip) (void), void **esp)
   /* Read and verify executable header. */
   if (file_read (file, &ehdr, sizeof ehdr) != sizeof ehdr
       || memcmp (ehdr.e_ident, "\177ELF\1\1\1", 7)
-      || ehdr.e_type != 2
-      || ehdr.e_machine != 3
+      || ehdr.e_type != 2   //executable file
+      || ehdr.e_machine != 3  
       || ehdr.e_version != 1
       || ehdr.e_phentsize != sizeof (struct Elf32_Phdr)
       || ehdr.e_phnum > 1024) 
@@ -439,7 +451,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
       case PT_INTERP:
       case PT_SHLIB:
         goto done;
-      case PT_LOAD:
+      case PT_LOAD: //loaded program segment
         if (validate_segment (&phdr, file)) 
         {
           bool writable = (phdr.p_flags & PF_W) != 0;
@@ -490,7 +502,6 @@ load (const char *file_name, void (**eip) (void), void **esp)
 /* load() helpers. */
 
 static bool install_page (void *upage, void *kpage, bool writable);
-
 /* Checks whether PHDR describes a valid, loadable segment in
    FILE and returns true if so, false otherwise. */
   static bool
@@ -567,30 +578,64 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
     size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
     size_t page_zero_bytes = PGSIZE - page_read_bytes;
 
-    /* Get a page of memory. */
+    //2.6 modify ryoung vm(demand page)
+    struct vm_entry *vme = malloc(sizeof(struct vm_entry));
+    vme->type = VM_BIN;
+    vme->vaddr = upage;  //@todo. check
+    vme->writable = writable;
+    vme->bLoad = false;
+    vme->file = file;
+    vme->offset = ofs; 
+    vme->read_bytes = read_bytes;
+    vme->zero_bytes = zero_bytes;
+    insert_vme(&thread_current()->vm, vme);
+//{originam code
+    /*
+    // Get a page of memory. 
     uint8_t *kpage = palloc_get_page (PAL_USER);
     if (kpage == NULL)
       return false;
-
-    /* Load this page. */
+    // Load this page. 
     if (file_read (file, kpage, page_read_bytes) != (int) page_read_bytes)
     {
       palloc_free_page (kpage);
       return false; 
     }
     memset (kpage + page_read_bytes, 0, page_zero_bytes);
-
-    /* Add the page to the process's address space. */
+    // Add the page to the process's address space. 
     if (!install_page (upage, kpage, writable)) 
     {
       palloc_free_page (kpage);
       return false; 
     }
-
+    */
+//}
     /* Advance. */
     read_bytes -= page_read_bytes;
     zero_bytes -= page_zero_bytes;
     upage += PGSIZE;
+  }
+  return true;
+}
+
+//2.7 add ryoung 
+static bool
+load_file(void* kaddr, struct vm_entry *vme)
+{
+  if(vme->read_bytes > 0)
+  {
+    //lock_acquire(filesys_lock);
+    if((int)vme->read_bytes != file_read_at(vme->file, kaddr, vme->read_bytes, vme->offset))
+    {
+      //lock_release();
+      return false;
+    }
+    //lock_release();
+    memset(kaddr+vme->read_bytes,0,vme->zero_bytes);
+  }
+  else
+  {
+    memset(kaddr,0,PGSIZE);
   }
   return true;
 }
@@ -608,9 +653,20 @@ setup_stack (void **esp)
   {
     success = install_page (((uint8_t *) PHYS_BASE) - PGSIZE, kpage, true);
     if (success)
+    {
       *esp = PHYS_BASE;
+      //2.6 add ryoung vm(demand paging)
+      struct vm_entry *vme = malloc(sizeof(struct vm_entry)); //again ????????
+      vme->type = VM_ANON;
+      vme->vaddr = ((uint8_t*)PHYS_BASE)-PGSIZE;
+      vme->writable = true;
+      vme->bLoad = true;
+      insert_vme(&thread_current()->vm,vme);      
+    }
     else
+    {
       palloc_free_page (kpage);
+    }
   }
   return success;
 }
@@ -624,7 +680,7 @@ setup_stack (void **esp)
    with palloc_get_page().
    Returns true on success, false if UPAGE is already mapped or
    if memory allocation fails. */
-  static bool
+static bool
 install_page (void *upage, void *kpage, bool writable)
 {
   struct thread *t = thread_current ();
@@ -633,4 +689,38 @@ install_page (void *upage, void *kpage, bool writable)
      address, then map our page there. */
   return (pagedir_get_page (t->pagedir, upage) == NULL
       && pagedir_set_page (t->pagedir, upage, kpage, writable));
+}
+
+//2.6 add ryoung 
+bool 
+handle_mm_fault(struct vm_entry *_vme)
+{
+  //1.search vme entry
+  struct vm_entry *vme = find_vme(_vme->vaddr);
+  if(!vme)
+    return false; //@todo check
+
+  uint8_t *kpage;
+  bool success = false;
+  kpage = palloc_get_page( PAL_USER | PAL_ZERO);
+  switch(vme->type)
+  {
+    case VM_BIN:
+      load_file(kpage, vme);
+      break;
+    case VM_FILE:
+      break;
+    case VM_ANON: 
+      break;
+    default:
+      break;
+  }
+  if(kpage != NULL)
+  {
+    success = install_page(vme->vaddr, kpage, vme->writable);
+    vme->bLoad = true;
+    return true;
+  } 
+
+  return false;  
 }

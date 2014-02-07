@@ -5,6 +5,7 @@
 #include <list.h>
 #include <stdint.h>
 #include "synch.h"
+#include <hash.h>
 /* States in a thread's life cycle. */
 enum thread_status
   {
@@ -101,8 +102,14 @@ struct thread
   /* Owned by thread.c. */
   unsigned magic;                     /* Detects stack overflow. */
   //---------------------------------------------------
-  
-//#ifdef USERPROG
+
+  //-------------------- VM ----------------------------
+  struct list lock_list;
+  struct hash vm;
+  int mapid;
+  //----------------------------------------------------  
+
+#ifdef USERPROG
   //------------------- User Program -------------------
   uint32_t *pagedir;                  /* Page directory. */
   // 1.7 add ryoung parent_child process structure      
@@ -112,8 +119,10 @@ struct thread
   int  status_load;                   /* -1:error, 0:load x, 1:load o */ 
   bool exit;
   int  status_exit;
-  struct semaphore sema_proc;
-//#endif
+  //struct semaphore sema_proc;
+  struct semaphore sema_load;
+  struct semaphore sema_exit;
+#endif
   // 1.10 add Ryoung file descriptor 
   struct file **fd_tbl;
   int last_fd; 

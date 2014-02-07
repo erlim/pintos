@@ -95,6 +95,24 @@ void check_address(void *addr)
   }
 }   
 
+/*struct vm_entry
+check_address(void *addr, void *esp)
+{
+  exit(-1);
+  find_vme(addr, 
+  return vme;
+
+}
+void check_valid_buffer(void *buffer, unsigned size, void*esp, bool to_write)
+{
+  check_address(buffer, esp);
+}
+void check_valid_string(const void *str, void *esp)
+{
+  check_address(str,esp);
+}
+
+*/
 void get_argument(void *esp, int *arg, int argc)
 {
   int idx=0, num=1;
@@ -128,7 +146,8 @@ pid_t exec(const char *file)
   if(!child)
     return -1;
   if(child->status_load == false)
-    sema_down(&child->sema_proc); 
+    sema_down(&child->sema_load);
+    //sema_down(&child->sema_proc); 
   if(child->status_load == -1)
     return -1;
 

@@ -4,7 +4,8 @@
 #include "userprog/gdt.h"
 #include "threads/interrupt.h"
 #include "threads/thread.h"
-
+#include "vm/page.h"
+#include "userprog/process.h"
 /* Number of page faults processed. */
 static long long page_fault_cnt;
 
@@ -148,8 +149,11 @@ page_fault (struct intr_frame *f)
   write = (f->error_code & PF_W) != 0;
   user = (f->error_code & PF_U) != 0;
 
-  exit(-1); // 1.12 modify ryoung
-  
+  //2.6 modify ryoung vm(page fault ->demand paging)
+  struct vm_entry *vme = find_vme(fault_addr);
+  handle_mm_fault(vme);
+  //exit(-1); //1.12 modift ryoung
+  //original
   /* To implement virtual memory, delete the rest of the function
      body, and replace it with code that brings in the page to
      which fault_addr refers. */

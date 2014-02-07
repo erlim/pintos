@@ -10,7 +10,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 13,104 sectors (6 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 155 sectors (77 kB), Pintos OS kernel (20)
+hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 105 sectors (52 kB), Pintos scratch (22)
 hda4: 8,192 sectors (4 MB), Pintos swap (23)
@@ -29,14 +29,14 @@ Executing 'open-boundary':
 (open-boundary) end
 open-boundary: exit(0)
 Execution of 'open-boundary' complete.
-Timer: 348 ticks
-Thread: 30 idle ticks, 268 kernel ticks, 53 user ticks
-hda2 (filesys): 92 reads, 216 writes
+Timer: 327 ticks
+Thread: 0 idle ticks, 281 kernel ticks, 49 user ticks
+hda2 (filesys): 107 reads, 216 writes
 hda3 (scratch): 104 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes
 Console: 1087 characters output
 Keyboard: 0 keys pressed
-Exception: 0 page faults
+Exception: 6 page faults
 Powering off...
 ========================================================================
                        Bochs x86 Emulator 2.6.2

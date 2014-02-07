@@ -4,6 +4,9 @@
 #include "userprog/gdt.h"
 #include "threads/interrupt.h"
 #include "threads/thread.h"
+#include "threads/vaddr.h"
+#include "userprog/pagedir.h"
+#include "threads/palloc.h"
 #include "vm/page.h"
 #include "userprog/process.h"
 /* Number of page faults processed. */
@@ -151,6 +154,9 @@ page_fault (struct intr_frame *f)
 
   //2.6 modify ryoung vm(page fault ->demand paging)
   struct vm_entry *vme = find_vme(fault_addr);
+  if(vme ==NULL)
+    exit(-1);
+  //printf("afert find vme id:%d, type:%d\n", vme->id, vme->type);
   handle_mm_fault(vme);
   //exit(-1); //1.12 modift ryoung
   //original

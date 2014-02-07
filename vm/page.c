@@ -69,22 +69,28 @@ find_vme(void *vaddr)
   if(!e)  
     return NULL;
 
- //struct vm_entry *find = hash_entry(e, struct vm_entry, elem);
- //if(find)
- //find->bPin = false; //unpin_ptr()
  return hash_entry(e, struct vm_entry, elem);
 }
 
-//@todo. think inser_vme(type, vaddr,.......);
-//thread_current()->vm?????
 bool
 insert_vme(struct hash *vm, struct vm_entry *vme)
 {
-  return hash_insert(vm, vme);
+  bool sucess;
+  if(vm->bInit)
+  { 
+    sucess = hash_insert(vm, &vme->elem);
+  }
+  else
+  {
+    vm_init(vm);
+    vm->bInit = true;
+    sucess = hash_insert(vm, &vme->elem);
+  }
+  return sucess;
 }
 
 bool
 delete_vme(struct hash *vm, struct vm_entry *vme)
 {
-  return hash_delete(vm, vme);
+  return hash_delete(vm, &vme->elem);
 }

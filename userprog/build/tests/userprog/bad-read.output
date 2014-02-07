@@ -24,7 +24,7 @@ Executing 'bad-read':
 bad-read: exit(-1)
 Execution of 'bad-read' complete.
 Timer: 273 ticks
-Thread: 0 idle ticks, 243 kernel ticks, 34 user ticks
+Thread: 0 idle ticks, 241 kernel ticks, 34 user ticks
 hda2 (filesys): 63 reads, 206 writes
 hda3 (scratch): 100 reads, 2 writes
 Console: 864 characters output

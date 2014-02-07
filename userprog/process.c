@@ -18,6 +18,8 @@
 #include "threads/thread.h"
 #include "threads/vaddr.h"
 #include "vm/page.h"
+static int vme_id = 1;
+
 static thread_func process_start NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
 
@@ -214,8 +216,7 @@ process_exit (void)
   palloc_free_page(t->fd_tbl);
 
   //2.6 add ryoung(vm)
-  //delete_vme(thread_current()->vm,
-  //vm_destroy(&thread_current()->vm);
+  vm_destroy(&thread_current()->vm);
 
   uint32_t *pd;
   /* Destroy the current process's page directory and switch back
@@ -475,7 +476,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
             read_bytes = 0;
             zero_bytes = ROUND_UP (page_offset + phdr.p_memsz, PGSIZE);
           }
-          if (!load_segment (file, file_page, (void *) mem_page,
+          if (!load_segment (file, file_page, (void *) mem_page,  
                 read_bytes, zero_bytes, writable))
             goto done;
         }
@@ -581,8 +582,9 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 
     //2.6 modify ryoung vm(demand page)
     struct vm_entry *vme = malloc(sizeof(struct vm_entry));
+    vme->id = vme_id++;  
     vme->type = VM_BIN;
-    vme->vaddr = upage;  //@todo. check
+    vme->vaddr = upage;
     vme->writable = writable;
     vme->bLoad = false;
     vme->file = file;
@@ -590,8 +592,9 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
     vme->read_bytes = read_bytes;
     vme->zero_bytes = zero_bytes;
     insert_vme(&thread_current()->vm, vme);
+    //ofs+=read_bytes; //add ryoung
 //{originam code
-    /*
+    /* 
     // Get a page of memory. 
     uint8_t *kpage = palloc_get_page (PAL_USER);
     if (kpage == NULL)
@@ -615,6 +618,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
     read_bytes -= page_read_bytes;
     zero_bytes -= page_zero_bytes;
     upage += PGSIZE;
+    ofs += page_read_bytes; //add ryoung 
   }
   return true;
 }
@@ -623,15 +627,17 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 static bool
 load_file(void* kaddr, struct vm_entry *vme)
 {
+  struct lock filesys_lock;
+  lock_init(&filesys_lock);
   if(vme->read_bytes > 0)
   {
-    //lock_acquire(filesys_lock);
+    lock_acquire(&filesys_lock);
     if((int)vme->read_bytes != file_read_at(vme->file, kaddr, vme->read_bytes, vme->offset))
     {
-      //lock_release();
+      lock_release(&filesys_lock);
       return false;
     }
-    //lock_release();
+    lock_release(&filesys_lock);
     memset(kaddr+vme->read_bytes,0,vme->zero_bytes);
   }
   else
@@ -646,28 +652,24 @@ load_file(void* kaddr, struct vm_entry *vme)
   static bool
 setup_stack (void **esp) 
 {
-  uint8_t *kpage;
   bool success = false;
-
-  kpage = palloc_get_page (PAL_USER | PAL_ZERO);
+  uint8_t *kpage = palloc_get_page (PAL_USER /*| PAL_ZERO*/);
   if (kpage != NULL) 
   {
-    success = install_page (((uint8_t *) PHYS_BASE) - PGSIZE, kpage, true);
-    if (success)
-    {
+    //*esp = PHYS_BASE;
+    //2.6 add ryoung vm(demand paging)
+    struct vm_entry *vme = malloc(sizeof(struct vm_entry));
+    vme->id = vme_id ++;
+    vme->type = VM_ANON;
+    vme->vaddr = ((uint8_t*)PHYS_BASE)-PGSIZE;
+    vme->writable = true;
+    vme->bLoad = true;
+    insert_vme(&thread_current()->vm,vme);
+    success = install_page(vme->vaddr, kpage, vme->writable);  
+    if(success)
       *esp = PHYS_BASE;
-      //2.6 add ryoung vm(demand paging)
-      struct vm_entry *vme = malloc(sizeof(struct vm_entry)); //again ????????
-      vme->type = VM_ANON;
-      vme->vaddr = ((uint8_t*)PHYS_BASE)-PGSIZE;
-      vme->writable = true;
-      vme->bLoad = true;
-      insert_vme(&thread_current()->vm,vme);      
-    }
     else
-    {
       palloc_free_page (kpage);
-    }
   }
   return success;
 }
@@ -694,20 +696,20 @@ install_page (void *upage, void *kpage, bool writable)
 
 //2.6 add ryoung 
 bool 
-handle_mm_fault(struct vm_entry *_vme)
+handle_mm_fault(struct vm_entry *vme)
 {
-  //1.search vme entry
-  struct vm_entry *vme = find_vme(_vme->vaddr);
-  if(!vme)
-    return false; //@todo check
-
+  //if(vme == NULL)
+    //printf("vme null \n");
+  
   uint8_t *kpage;
   bool success = false;
-  kpage = palloc_get_page( PAL_USER | PAL_ZERO);
-  switch(vme->type)
+  kpage = palloc_get_page( PAL_USER /*| PAL_ZERO*/);
+  switch((uint8_t)vme->type)
   {
     case VM_BIN:
-      load_file(kpage, vme);
+      {
+        load_file(kpage, vme);
+      }
       break;
     case VM_FILE:
       break;
@@ -725,3 +727,4 @@ handle_mm_fault(struct vm_entry *_vme)
 
   return false;  
 }
+

@@ -16,7 +16,7 @@ Executing 'mlfqs-fair-20':
 (mlfqs-fair-20) Thread 0 received 153 ticks.
 (mlfqs-fair-20) Thread 1 received 153 ticks.
 (mlfqs-fair-20) Thread 2 received 152 ticks.
-(mlfqs-fair-20) Thread 3 received 152 ticks.
+(mlfqs-fair-20) Thread 3 received 153 ticks.
 (mlfqs-fair-20) Thread 4 received 152 ticks.
 (mlfqs-fair-20) Thread 5 received 152 ticks.
 (mlfqs-fair-20) Thread 6 received 152 ticks.
@@ -28,15 +28,15 @@ Executing 'mlfqs-fair-20':
 (mlfqs-fair-20) Thread 12 received 149 ticks.
 (mlfqs-fair-20) Thread 13 received 149 ticks.
 (mlfqs-fair-20) Thread 14 received 148 ticks.
-(mlfqs-fair-20) Thread 15 received 149 ticks.
+(mlfqs-fair-20) Thread 15 received 148 ticks.
 (mlfqs-fair-20) Thread 16 received 148 ticks.
 (mlfqs-fair-20) Thread 17 received 149 ticks.
 (mlfqs-fair-20) Thread 18 received 151 ticks.
 (mlfqs-fair-20) Thread 19 received 152 ticks.
 (mlfqs-fair-20) end
 Execution of 'mlfqs-fair-20' complete.
-Timer: 4230 ticks
-Thread: 0 idle ticks, 4233 kernel ticks, 0 user ticks
+Timer: 4229 ticks
+Thread: 0 idle ticks, 4232 kernel ticks, 0 user ticks
 Console: 1457 characters output
 Keyboard: 0 keys pressed
 Powering off...

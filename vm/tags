@@ -8,18 +8,48 @@ DEPENDS	build/Makefile	/^DEPENDS = $(patsubst %.o,%.d,$(OBJECTS))$/;"	m
 OBJECTS	build/Makefile	/^OBJECTS = $(patsubst %.c,%.o,$(patsubst %.S,%.o,$(SOURCES)))$/;"	m
 SOURCES	build/Makefile	/^SOURCES = $(foreach dir,$(KERNEL_SUBDIRS),$($(dir)_SRC))$/;"	m
 SRCDIR	build/Makefile	/^SRCDIR = ..\/..$/;"	m
+Tables	vm_test.h	/^struct page Tables : pagedir.c$/;"	s
+VM_PAGE_H	page.h	2;"	d
 _end	build/threads/kernel.lds.s	/^  _end = .;$/;"	d
 _end_bss	build/threads/kernel.lds.s	/^  _end_bss = .;$/;"	d
 _end_kernel_text	build/threads/kernel.lds.s	/^       _end_kernel_text = .; }$/;"	d
 _signature	build/threads/kernel.lds.s	/^     _signature = .; LONG(0xaa55aa55) }$/;"	d
 _start	build/threads/kernel.lds.s	/^  _start = 0xc0000000 + 0x20000;$/;"	d
 _start_bss	build/threads/kernel.lds.s	/^  _start_bss = .;$/;"	d
+bLoad	page.h	/^  bool bLoad;$/;"	m	struct:vm_entry
+bPin	page.h	/^  bool bPin;$/;"	m	struct:vm_entry
+delete_vme	page.c	/^delete_vme(struct hash *vm, struct vm_entry *vme)$/;"	f
 devices_SRC	build/Makefile	/^devices_SRC  = devices\/pit.c		# Programmable interrupt timer chip.$/;"	m
+elem	page.h	/^  struct hash_elem elem;$/;"	m	struct:vm_entry	typeref:struct:vm_entry::hash_elem
+file	page.h	/^  struct file* file;$/;"	m	struct:vm_entry	typeref:struct:vm_entry::file
 filesys_SRC	build/Makefile	/^filesys_SRC  = filesys\/filesys.c	# Filesystem core.$/;"	m
+find_vme	page.c	/^find_vme(void *vaddr)$/;"	f
+format	vm_test.h	/^struct page table entry format : \/pte.h$/;"	s
+frame	vm_test.h	/^struct frame : has to be same siw with pages$/;"	s
+id	page.h	/^  int id;$/;"	m	struct:vm_entry
+insert_vme	page.c	/^insert_vme(struct hash *vm, struct vm_entry *vme)$/;"	f
 kernel_SRC	build/Makefile	/^lib\/kernel_SRC  = lib\/kernel\/debug.c	# Debug helpers.$/;"	m
 lib_SRC	build/Makefile	/^lib_SRC  = lib\/debug.c			# Debug helpers.$/;"	m
-number	vm_test.h	/^  int32_t number  : 20;$/;"	m	struct:pages
-offset	vm_test.h	/^  int32_t offset  : 12;$/;"	m	struct:pages
-pages	vm_test.h	/^struct pages$/;"	s
+map_elem	page.h	/^  struct list_elem map_elem;$/;"	m	struct:vm_entry	typeref:struct:vm_entry::list_elem
+number	vm_test.h	/^  int32_t number : 20;$/;"	m	struct:frame
+number	vm_test.h	/^  int32_t number : 20;$/;"	m	struct:pages
+offset	page.h	/^  size_t offset;$/;"	m	struct:vm_entry
+offset	vm_test.h	/^  int32_t offset : 12;$/;"	m	struct:frame
+offset	vm_test.h	/^  int32_t offset : 12;$/;"	m	struct:pages
+pages	vm_test.h	/^struct pages : 4,096 bytes \/ vaddr.h$/;"	s
+read_bytes	page.h	/^  size_t read_bytes;$/;"	m	struct:vm_entry
+slots	vm_test.h	/^struct swap slots$/;"	s
+swap_slot	page.h	/^  size_t swap_slot;$/;"	m	struct:vm_entry
 threads_SRC	build/Makefile	/^threads_SRC  = threads\/start.S		# Startup code.$/;"	m
+type	page.h	/^  int type;$/;"	m	struct:vm_entry
 userprog_SRC	build/Makefile	/^userprog_SRC  = userprog\/process.c	# Process loading.$/;"	m
+vaddr	page.h	/^  void *vaddr;$/;"	m	struct:vm_entry
+vm_SRC	build/Makefile	/^vm_SRC = vm\/page.c                # Page$/;"	m
+vm_destroy	page.c	/^vm_destroy(struct hash *vm)$/;"	f
+vm_destroy_func	page.c	/^vm_destroy_func(struct hash_elem *e, void *aux UNUSED)$/;"	f	file:
+vm_entry	page.h	/^struct vm_entry$/;"	s
+vm_hash_func	page.c	/^vm_hash_func(const struct hash_elem *e, void *aux UNUSED)$/;"	f	file:
+vm_init	page.c	/^vm_init(struct hash *vm)$/;"	f
+vm_less_func	page.c	/^vm_less_func(const struct hash_elem *lhs, const struct hash_elem *rhs, void *aux UNUSED)$/;"	f	file:
+writable	page.h	/^  bool writable;$/;"	m	struct:vm_entry
+zero_bytes	page.h	/^  size_t zero_bytes;$/;"	m	struct:vm_entry

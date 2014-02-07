@@ -26,7 +26,7 @@ Executing 'create-long':
 create-long: exit(0)
 Execution of 'create-long' complete.
 Timer: 285 ticks
-Thread: 0 idle ticks, 243 kernel ticks, 45 user ticks
+Thread: 0 idle ticks, 244 kernel ticks, 44 user ticks
 hda2 (filesys): 64 reads, 210 writes
 hda3 (scratch): 100 reads, 2 writes
 Console: 931 characters output

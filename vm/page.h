@@ -8,6 +8,8 @@
 
 struct vm_entry
 {
+  int id;
+  //int type;
   uint8_t type;
   void *vaddr;
   bool writable;

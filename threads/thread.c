@@ -15,7 +15,7 @@
 #include "userprog/process.h"
 //#endif
 #include "filesys/file.h" // 1.10 add ryoung file_desc
-
+//#include "vm/page.h"
 /* Random value for struct thread's `magic' member.
    Used to detect stack overflow.  See the big comment at the top
    of thread.h for details. */
@@ -222,7 +222,7 @@ thread_create (const char *name, int priority,
 #endif
 
   //2.7 add ryoung vm
-  list_init(&t->lock_list);
+  //list_init(&t->lock_list);
   //vm_init(&t->vm);
 
   intr_set_level(old_level);
@@ -492,14 +492,20 @@ init_thread (struct thread *t, const char *name, int priority)
   
   //---------------- User program ----------
   //parent,child
+#ifdef USERPROG
   list_init(&t->child);
+#endif
   //file descriptor 
   t->last_fd = FD_DEFINE;
   t->file_exec = NULL; 
   //----------------------------------------
 
+  //---------------- vm --------------------
+  t->vm.bInit = false;
+  //----------------------------------------
+  
   list_push_back(&all_list, &t->allelem);
-  //----------------------------------------g
+  //----------------------------------------
 }
 
 

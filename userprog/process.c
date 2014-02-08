@@ -19,7 +19,6 @@
 #include "threads/vaddr.h"
 #include "vm/page.h"
 static int vme_id = 1;
-
 static thread_func process_start NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
 
@@ -216,7 +215,7 @@ process_exit (void)
   palloc_free_page(t->fd_tbl);
 
   //2.6 add ryoung(vm)
-  vm_destroy(&thread_current()->vm);
+  //vm_destroy(&thread_current()->vm);
 
   uint32_t *pd;
   /* Destroy the current process's page directory and switch back
@@ -367,7 +366,7 @@ struct Elf32_Phdr
 //2.6 add ryoung
 #define VM_BIN  1
 #define VM_FILE 2
-#define VM_ANON 3 
+#define VM_SWAP 3 
 
 /* Flags for p_flags.  See [ELF3] 2-3 and 2-4. */
 #define PF_X 1          /* Executable. */
@@ -660,7 +659,7 @@ setup_stack (void **esp)
     //2.6 add ryoung vm(demand paging)
     struct vm_entry *vme = malloc(sizeof(struct vm_entry));
     vme->id = vme_id ++;
-    vme->type = VM_ANON;
+    vme->type = VM_SWAP;
     vme->vaddr = ((uint8_t*)PHYS_BASE)-PGSIZE;
     vme->writable = true;
     vme->bLoad = true;
@@ -713,7 +712,7 @@ handle_mm_fault(struct vm_entry *vme)
       break;
     case VM_FILE:
       break;
-    case VM_ANON: 
+    case VM_SWAP: 
       break;
     default:
       break;

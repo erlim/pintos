@@ -1,0 +1,4 @@
+break insert_vme
+break handle_mm_fault
+break load_segment
+break /home/ryoung/src/pintos/userprog/process.c:585

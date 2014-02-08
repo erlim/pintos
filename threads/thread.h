@@ -106,7 +106,8 @@ struct thread
   //-------------------- VM ----------------------------
   struct list lock_list;
   struct hash vm;
-  int mapid;
+  int mapid; //executable file's map id
+  struct list mmap_files;
   //----------------------------------------------------  
 
 #ifdef USERPROG

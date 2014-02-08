@@ -6,11 +6,14 @@
 #include "threads/interrupt.h"
 #include "threads/thread.h"
 #include "filesys/filesys.h"
+#include "filesys/file.h"
+#ifdef VM
 #include "vm/page.h"
+#endif
 
 static void syscall_handler (struct intr_frame *);
 
-void get_argument(void *esp, int*arg, int count);
+void get_argument(void *esp, int*arg, int coun);
 void check_address(void *addr);
 //2.9 add ryoung(vm)
 void check_valid_buffer(void *buffer, unsigned size);
@@ -29,6 +32,11 @@ int  write(int fd, const void *buffer, unsigned length);
 void seek(int fd, unsigned position);
 unsigned tell (int fd);
 void close (int fd);
+
+//2.8 add ryoung vm(memory mapping file)
+int  mmap(int fd, void *addr);
+void munmap(int id, bool bAll);
+void do_munmap(struct mmap_file *mmapf); 
 
 void
 syscall_init (void) 
@@ -86,17 +94,18 @@ syscall_handler (struct intr_frame *f UNUSED)
       get_argument(f->esp, &arg,1);
       close(arg[0]);                                  break;
     case SYS_MMAP : 
-      get_argument(f->esp, &arg,2);             
+      get_arguemnt(f->esp, &arg,2);             
       mmap(arg[0],arg[1]);                            break;
     case SYS_MUNMAP :
       get_argument(f->esp, &arg,1);
-      munmap(arg[0]);                                break;
+      mummap(arg[0]);                                break;
     default :
       printf("failed to syscall, cuz of invailed syscall\n");
       thread_exit(); 
       break;
   }
 }
+
 void 
 get_argument(void *esp, int *arg, int argc)
 {
@@ -291,3 +300,85 @@ close(int fd)
 {
   process_close_file(fd);
 }
+
+
+//---------------vm------------
+//2.8 add ryoung vm(memory map file)
+int 
+mmap(int fd, void *addr)
+{
+  check_address(addr);
+  
+  struct file* file = progess_get_file(fd);
+  if(file !=  NULL)
+  {
+    file = reopen(file);
+    struct mmap_file *mmapf = malloc(sizeof(struct mmap_file));
+    mmapf->id = fd; //? 
+    mmapf->file = file;
+    list_init(&mmapf->vmes);
+    struct vm_entry *vme = find_vme(addr);
+    while(addr/*read_bytes*/ > (void*)0)
+    {
+      struct vm_entry *vme;
+      list_puch_back(&mmapf->vmes, &vme->mmap_elem);
+      //insert_vme(&thread_current()->vm, &vme->elem);  //?
+    }
+    list_push_back(&thread_current()->mmap_files, &mmapf->elem);
+  
+    return mmapf->id;
+  }
+  return 0;
+}
+void
+munmap(int id, bool bAll)
+{
+  struct thread* t = thread_current();
+  struct list *list = &t->mmap_files;
+  struct list_elem *next, *e= list_begin(list);
+  while(e != list_end(list))
+  {
+    next = list_next(e);
+    struct mmap_file* mmapf = list_entry(e, struct mmap_file, elem);
+    if(mmapf->id == id)
+    {
+      //{ munmap map_files' vme_entry
+      do_munmap(mmapf);
+      //}
+      list_remove(&mmapf->elem); 
+    }
+    e = next;
+  }
+}
+void
+do_munmap(struct mmap_file *mmapf)
+{
+  struct lock lock_file;
+  lock_init(&lock_file);
+
+  struct thread* t = thread_current();
+  struct list* list = &mmapf->vmes;
+  struct list_elem *next, *e = list_begin(list);
+  while(e != list_end(list))
+  {
+    next = list_next(e);
+    struct vm_entry *vme = list_entry(e, struct vm_entry, mmap_elem);
+    if(vme->bLoad)
+    {
+      if(pagedir_is_dirty(t->pagedir, vme->vaddr))
+      {
+        lock_acquire(&lock_file);
+        file_write_at(vme->file, vme->vaddr, vme->read_bytes, vme->offset);
+        lock_release(&lock_file);
+      }
+      palloc_free_page(pagedir_get_page(t->pagedir, vme->vaddr));
+      pagedir_clear_page(t->pagedir, vme->vaddr);
+    }
+    ist_remove(&vme->mmap_elem);
+    delete_vme(&t->vm, &vme->elem);
+    e = next;
+  }
+}
+
+
+

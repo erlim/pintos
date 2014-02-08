@@ -501,7 +501,7 @@ init_thread (struct thread *t, const char *name, int priority)
   //----------------------------------------
 
   //---------------- vm --------------------
-  t->vm.bInit = false;
+  list_init(&t->mmap_files);
   //----------------------------------------
   
   list_push_back(&all_list, &t->allelem);

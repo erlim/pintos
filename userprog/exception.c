@@ -156,7 +156,7 @@ page_fault (struct intr_frame *f)
   struct vm_entry *vme = find_vme(fault_addr);
   if(vme ==NULL)
   {
-    exit(-1);
+    sys_exit(-1);
   }
   //printf("afert find vme id:%d, type:%d\n", vme->id, vme->type);
   handle_mm_fault(vme);

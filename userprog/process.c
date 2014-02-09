@@ -22,6 +22,16 @@ static int vme_id = 1;
 static thread_func process_start NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
 
+/*
+struct lock lock_file; //syscall.c (lock_init()<-syscall.c<- init.c)
+void process_init();
+
+void
+process_init()
+{
+  lock_init(&lock_file);
+}
+*/
 /* Starts a new thread running a user program loaded from
    FILENAME.  The new thread may be scheduled (and may even exit)
    before process_execute() returns.  Returns the new process's
@@ -215,7 +225,28 @@ process_exit (void)
   palloc_free_page(t->fd_tbl);
 
   //2.6 add ryoung(vm)
-  //vm_destroy(&thread_current()->vm);
+  /*
+  struct list *list = &t->mmap_files;
+  struct list_elem *next, *e=list_begin;
+  for( ; e!= list_end(list); e=list_next(e))
+  {
+    struct mmap_file *mmapf = list_entry(e, struct mmap_file, elem);
+    do_munmap(mmapf);
+  }
+  */
+  /*
+  while(e!= list_end(list))
+  {
+    next = list_next(e);
+    struct mmap_file* mmapf = list_entry(e, struct mmap_file, elem);
+    munmap(mmapf->id);
+    //do_munmap(mmapf);
+    //list_remove(&mmapf->elem);
+    e = next;
+    //mmap_destroy(mmapf);
+  }
+  */
+  vm_destroy(&thread_current()->vm);
 
   uint32_t *pd;
   /* Destroy the current process's page directory and switch back
@@ -364,9 +395,9 @@ struct Elf32_Phdr
 #define PT_STACK   0x6474e551   /* Stack segment. */
 
 //2.6 add ryoung
-#define VM_BIN  1
-#define VM_FILE 2
-#define VM_SWAP 3 
+//#define VM_BIN  1
+//#define VM_FILE 2
+//#define VM_SWAP 3 
 
 /* Flags for p_flags.  See [ELF3] 2-3 and 2-4. */
 #define PF_X 1          /* Executable. */
@@ -626,17 +657,17 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 static bool
 load_file(void* kaddr, struct vm_entry *vme)
 {
-  struct lock filesys_lock;
-  lock_init(&filesys_lock);
+  struct lock lock_file;
+  lock_init(&lock_file);
   if(vme->read_bytes > 0)
   {
-    lock_acquire(&filesys_lock);
+    lock_acquire(&lock_file);
     if((int)vme->read_bytes != file_read_at(vme->file, kaddr, vme->read_bytes, vme->offset))
     {
-      lock_release(&filesys_lock);
+      lock_release(&lock_file);
       return false;
     }
-    lock_release(&filesys_lock);
+    lock_release(&lock_file);
     memset(kaddr+vme->read_bytes,0,vme->zero_bytes);
   }
   else
@@ -706,11 +737,10 @@ handle_mm_fault(struct vm_entry *vme)
   switch((uint8_t)vme->type)
   {
     case VM_BIN:
-      {
-        load_file(kpage, vme);
-      }
+      load_file(kpage, vme);
       break;
     case VM_FILE:
+      load_file(kpage, vme);
       break;
     case VM_SWAP: 
       break;

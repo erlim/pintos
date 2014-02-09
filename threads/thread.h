@@ -106,7 +106,7 @@ struct thread
   //-------------------- VM ----------------------------
   struct list lock_list;
   struct hash vm;
-  int mapid; //executable file's map id
+  int last_mapid; //executable file's map id
   struct list mmap_files;
   //----------------------------------------------------  
 

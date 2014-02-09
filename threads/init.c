@@ -31,6 +31,10 @@
 #else
 #include "tests/threads/tests.h"
 #endif
+#ifdef VM
+#include "vm/page.h"
+//#include "vm/mmap.h"
+#endif
 #ifdef FILESYS
 #include "devices/block.h"
 #include "devices/ide.h"
@@ -103,6 +107,7 @@ main (void)
 #ifdef USERPROG
   tss_init ();
   gdt_init ();
+  //process_init();
 #endif
 
   /* Initialize interrupt handlers. */
@@ -115,6 +120,10 @@ main (void)
   syscall_init ();
 #endif
 
+//2.9 add ryoung 
+#ifdef VM
+  page_init();  
+#endif
   /* Start thread scheduler and enable interrupts. */
   thread_start ();
   serial_init_queue ();

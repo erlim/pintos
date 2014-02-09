@@ -1,25 +1,26 @@
 #include "vm/page.h"
-#include <debug.h>
 #include <inttypes.h>
-#include <round.h>
+#include <stdio.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include "userprog/gdt.h"
-#include "userprog/pagedir.h"
-#include "userprog/tss.h"
 #include "userprog/process.h"
-#include "filesys/directory.h"
 #include "filesys/file.h"
-#include "filesys/filesys.h"
-#include "threads/flags.h"
-#include "threads/init.h"
-#include "threads/interrupt.h"
-#include "threads/palloc.h"
 #include "threads/thread.h"
 #include "threads/vaddr.h"
 
+
+typedef int mapid_t;
+static struct lock lock_mapid;
+static struct lock lock_file;
+void
+page_init()
+{
+  lock_init(&lock_file);
+  lock_init(&lock_mapid);
+}
+
 //{ vm utils(init,destory) 
+
 static unsigned 
 vm_hash_func(const struct hash_elem *e, void *aux UNUSED)
 {
@@ -47,10 +48,7 @@ void
 vm_init(struct hash *vm)
 {
   if(!hash_init(vm,vm_hash_func, vm_less_func, NULL))
-  {
-    printf("failed to vm init\n");
-    thread_exit();
-  }
+    sys_exit(-1);
 }
 
 void
@@ -67,7 +65,9 @@ find_vme(void *vaddr)
   vme.vaddr = pg_round_down(vaddr);
   struct hash_elem *e= hash_find(&thread_current()->vm, &vme.elem);
   if(!e)  
+  {
     return NULL;
+  }
 
  return hash_entry(e, struct vm_entry, elem);
 }
@@ -89,45 +89,134 @@ insert_vme(struct hash *vm, struct vm_entry *vme)
   return sucess;
 }
 
-/*
-bool
-create_vme(uint8_t type, void* vaddr)
-{
-}
-*/
-
 bool
 delete_vme(struct hash *vm, struct vm_entry *vme)
 {
   return hash_delete(vm, &vme->elem);
 }
 
+static mapid_t allocate_mapid(void);
+
+static mapid_t
+allocate_mapid(void)
+{
+  static mapid_t next_tid = 1;
+  mapid_t mapid;
+
+  lock_acquire(&lock_mapid);
+  mapid = next_tid++;
+  lock_release(&lock_mapid);
+  
+  return mapid;
+}
+void
+mmap_destroy(struct mmap_file *mmapf)
+{
+  munmap(mmapf->id);
+}
+
+int
+file_is_mmaped(struct file *file)
+{
+  struct thread* t = thread_current();
+  struct list* list = &t->mmap_files;
+  struct list_elem *e;
+  for(e = list_begin(list); e != list_end(list); e=list_next(e))
+  {
+    struct mmap_file* mmapf = list_entry(e, struct mmap_file, elem);
+    if(mmapf->file == file)
+      return mmapf->id;
+  }
+  return 0;
+}
+
+static bool
+check_is_mmaped(void *addr)
+{
+  struct thread* t = thread_current();
+  if(pagedir_get_page(t->pagedir, addr)) //check code,stk, data
+    return true;
+ 
+  struct list *list = &t->mmap_files;
+  struct list_elem *e;
+  for(e = list_begin(list); e!= list_end(list); e = list_next(e))
+  {
+    struct mmap_file *mmapf = list_entry(e, struct mmap_file, elem);    
+    struct list *list_vme = &mmapf->vmes;
+    struct list_elem *e_vme;
+    for(e_vme = list_begin(list_vme); e_vme != list_end(list_vme); e_vme= list_next(e_vme))
+    {
+      struct vm_entry *vme = list_entry(e_vme, struct vm_entry, mmap_elem);
+      if(vme->vaddr == addr)
+        return true;
+    }
+  }
+  return false;
+}
+
 int 
 mmap(int fd, void *addr)
 {
-  check_address(addr);
   
-  struct file* file = progess_get_file(fd);
-  if(file !=  NULL)
+  //{ verify address
+  if(addr == 0 /*NULL*/)
+    return -1;
+  if((uint32_t)addr % PGSIZE != 0) //mmap-misalign.c
+    return -1;
+  if(check_is_mmaped(addr)) //code, stk, data
+    return -1;
+  //check_address //code, stk, data
+  //}
+
+  struct file* file_ = process_get_file(fd);
+  if(file_ !=  NULL)
   {
-    file = reopen(file);
+    struct file* file = file_reopen(file_);
+    uint32_t ofs = file_tell(file); //0; //sys_tell(fd)
+    uint32_t read_bytes, zero_bytes;
+    read_bytes  = file_length(file); //sys_filesize(fd);
+    if(read_bytes == 0 ) //mmap-zero.c
+      return -1;
+    zero_bytes = PGSIZE - (read_bytes % PGSIZE);
+    
+    ASSERT ((read_bytes + zero_bytes) % PGSIZE == 0);
+    ASSERT (pg_ofs (addr) == 0);
+    ASSERT (ofs % PGSIZE == 0);
+
     struct mmap_file *mmapf = malloc(sizeof(struct mmap_file));
-    mmapf->id = fd; //? 
+    mmapf->id = allocate_mapid(); 
     mmapf->file = file;
     list_init(&mmapf->vmes);
-    struct vm_entry *vme = find_vme(addr);
-    while(addr/*read_bytes*/ > (void*)0)
+    while(read_bytes > 0 || zero_bytes > 0)
     {
-      struct vm_entry *vme;
-      list_puch_back(&mmapf->vmes, &vme->mmap_elem);
-      //insert_vme(&thread_current()->vm, &vme->elem);  //?
+      size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
+      size_t page_zero_bytes = PGSIZE - page_read_bytes;
+
+      struct vm_entry *vme = malloc(sizeof(struct vm_entry));
+      vme->id = 99;
+      vme->type = VM_FILE;
+      vme->vaddr = addr;
+      vme->writable = file_is_writable(file); 
+      vme->bLoad = false;
+      vme->file = file;
+      vme->offset = ofs;
+      vme->read_bytes = read_bytes;
+      vme->zero_bytes = zero_bytes;
+      insert_vme(&thread_current()->vm, vme);
+      list_push_back(&mmapf->vmes, &vme->mmap_elem);
+      
+      read_bytes -= page_read_bytes;
+      zero_bytes -= page_zero_bytes;
+      addr += PGSIZE;
+      ofs += page_read_bytes;
     }
     list_push_back(&thread_current()->mmap_files, &mmapf->elem);
   
     return mmapf->id;
   }
-  return 0;
+  return -1;
 }
+
 void
 munmap(int mapping)
 {
@@ -143,6 +232,7 @@ munmap(int mapping)
       //{ munmap map_files' vme_entry
       do_munmap(mmapf);
       //}
+      file_close(mmapf->file);
       list_remove(&mmapf->elem); 
     }
     e = next;

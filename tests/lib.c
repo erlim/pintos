@@ -134,7 +134,6 @@ check_file_handle (int fd,
       if (ret_val != block_size)
         fail ("read of %zu bytes at offset %zu in \"%s\" returned %zu",
               block_size, ofs, file_name, ret_val);
-
       compare_bytes (block, buf + ofs, block_size, ofs, file_name);
       ofs += block_size;
     }
@@ -143,7 +142,6 @@ check_file_handle (int fd,
   if (file_size != size)
     fail ("size of %s (%zu) differs from expected (%zu)",
           file_name, file_size, size);
-
   msg ("verified contents of \"%s\"", file_name);
 }
 

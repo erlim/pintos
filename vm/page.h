@@ -1,10 +1,10 @@
 #ifndef VM_PAGE_H
 #define VM_PAGE_H
 
-#include <debug.h>
 #include <list.h>
 #include <hash.h>
-#include <stdint.h>
+
+void page_init(void);
 
 //2.6 add ryoung virtual memory
 struct vm_entry
@@ -37,6 +37,7 @@ struct mmap_file
   struct list_elem elem;
   struct list vmes;
 };
+void mmap_destroy(struct mmap_file *mmapf);
 int  mmap(int fd, void *addr);
 void munmap(int mapping);
 void do_munmap(struct mmap_file *mmapf);

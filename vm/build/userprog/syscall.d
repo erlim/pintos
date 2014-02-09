@@ -4,5 +4,5 @@ userprog/syscall.o: ../../userprog/syscall.c ../../userprog/syscall.h \
  ../../lib/debug.h ../../threads/synch.h ../../lib/kernel/hash.h \
  ../../lib/kernel/list.h ../../vm/page.h ../../userprog/pagedir.h \
  ../../lib/stdio.h ../../lib/stdarg.h ../../lib/kernel/stdio.h \
- ../../lib/syscall-nr.h ../../threads/interrupt.h ../../filesys/filesys.h \
- ../../filesys/off_t.h
+ ../../lib/syscall-nr.h ../../threads/interrupt.h ../../threads/vaddr.h \
+ ../../threads/loader.h ../../filesys/filesys.h ../../filesys/off_t.h

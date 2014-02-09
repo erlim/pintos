@@ -3,7 +3,8 @@
 #include <list.h>
 void syscall_init (void);
 
-// 1.10 add ryoung file descriptor(denying write together)
-struct lock lock_file;
+//2.9 moved to syscall.c
+//1.10 add ryoung file descriptor(denying write together)
+//struct lock lock_file;
 
 #endif /* userprog/syscall.h */

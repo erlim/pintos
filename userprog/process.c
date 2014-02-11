@@ -18,11 +18,12 @@
 #include "threads/thread.h"
 #include "threads/vaddr.h"
 #include "vm/page.h"
+#include "vm/mmap.h"
+
 static int vme_id = 1;
 static thread_func process_start NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
 
-/*
 struct lock lock_file; //syscall.c (lock_init()<-syscall.c<- init.c)
 void process_init();
 
@@ -31,7 +32,7 @@ process_init()
 {
   lock_init(&lock_file);
 }
-*/
+
 /* Starts a new thread running a user program loaded from
    FILENAME.  The new thread may be scheduled (and may even exit)
    before process_execute() returns.  Returns the new process's
@@ -209,6 +210,7 @@ process_wait (pid_t child_pid UNUSED)
   void
 process_exit (void)
 {
+//  printf("process exit, tid:%d\n", thread_current()->tid);
   struct thread *t = thread_current ();
   t->exit = true;
 
@@ -225,27 +227,37 @@ process_exit (void)
   palloc_free_page(t->fd_tbl);
 
   //2.6 add ryoung(vm)
+  
   /*
   struct list *list = &t->mmap_files;
-  struct list_elem *next, *e=list_begin;
-  for( ; e!= list_end(list); e=list_next(e))
+  struct list_elem *next, *e=list_begin(list);
+  for(; e!= list_end(list); e=list_next(e))
   {
-    struct mmap_file *mmapf = list_entry(e, struct mmap_file, elem);
-    do_munmap(mmapf);
+    struct mmap_file* mmapf = list_entry(e, struct mmap_file, elem);
+    if(!mmapf->bUnmap)
+    {
+      printf("unmap");
+      //do_munmap(mmapf->id);
+    }
   }
   */
+  
   /*
   while(e!= list_end(list))
   {
     next = list_next(e);
     struct mmap_file* mmapf = list_entry(e, struct mmap_file, elem);
-    munmap(mmapf->id);
-    //do_munmap(mmapf);
-    //list_remove(&mmapf->elem);
+    if(!mmapf->bUnmap)
+    {
+      do_munmap(mmapf->id);
+      //file_close(mmapf->file);
+      list_remove(&mmapf->elem);
+      free(mmapf);
+    }  
     e = next;
-    //mmap_destroy(mmapf);
   }
   */
+  
   vm_destroy(&thread_current()->vm);
 
   uint32_t *pd;
@@ -621,7 +633,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
     vme->offset = ofs; 
     vme->read_bytes = read_bytes;
     vme->zero_bytes = zero_bytes;
-    insert_vme(&thread_current()->vm, vme);
+    vme_insert(&thread_current()->vm, vme);
     //ofs+=read_bytes; //add ryoung
 //{originam code
     /* 
@@ -657,6 +669,8 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 static bool
 load_file(void* kaddr, struct vm_entry *vme)
 {
+  //enum intr_level old_level;
+  //old_level = intr_disable();
   struct lock lock_file;
   lock_init(&lock_file);
   if(vme->read_bytes > 0)
@@ -674,6 +688,7 @@ load_file(void* kaddr, struct vm_entry *vme)
   {
     memset(kaddr,0,PGSIZE);
   }
+  //intr_set_level(old_level);
   return true;
 }
 
@@ -694,7 +709,7 @@ setup_stack (void **esp)
     vme->vaddr = ((uint8_t*)PHYS_BASE)-PGSIZE;
     vme->writable = true;
     vme->bLoad = true;
-    insert_vme(&thread_current()->vm,vme);
+    vme_insert(&thread_current()->vm,vme);
     success = install_page(vme->vaddr, kpage, vme->writable);  
     if(success)
       *esp = PHYS_BASE;
@@ -751,9 +766,13 @@ handle_mm_fault(struct vm_entry *vme)
   {
     success = install_page(vme->vaddr, kpage, vme->writable);
     vme->bLoad = true;
+    //if(!success)
+    //{
+      //palloc_free_page(kpage);
+      //return false;
+    //}
     return true;
   } 
-
   return false;  
 }
 

@@ -33,7 +33,7 @@
 #endif
 #ifdef VM
 #include "vm/page.h"
-//#include "vm/mmap.h"
+#include "vm/mmap.h"
 #endif
 #ifdef FILESYS
 #include "devices/block.h"
@@ -123,6 +123,7 @@ main (void)
 //2.9 add ryoung 
 #ifdef VM
   page_init();  
+  mmap_init();
 #endif
   /* Start thread scheduler and enable interrupts. */
   thread_start ();

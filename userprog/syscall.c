@@ -8,6 +8,7 @@
 #include "threads/vaddr.h"
 #include "filesys/filesys.h"
 #include "vm/page.h"
+#include "vm/mmap.h"
 
 static void syscall_handler (struct intr_frame *);
 struct lock lock_file;
@@ -117,8 +118,10 @@ get_argument(void *esp, int *arg, int argc)
 void 
 check_address(void *addr)
 {
-  if(! (addr>=(void*)0x8048000 && addr<(void*)0xc0000000) )
+  if(! (addr>=(void*)0x0000000 && addr<(void*)0xc0000000) )
     sys_exit(-1);
+  //if(! (addr>=(void*)0x8048000 && addr<(void*)0xc0000000) )
+  //  sys_exit(-1);
 }   
 
 //@todo think. why???
@@ -300,10 +303,10 @@ sys_close(int fd)
 int
 sys_mmap(int fd, void *addr)
 {
-  return mmap(fd, addr);
+  return do_mmap(fd, addr);
 }
 void 
 sys_munmap(int mapping)
 {
-  munmap(mapping);
+  do_munmap(mapping);
 }

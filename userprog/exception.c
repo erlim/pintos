@@ -153,7 +153,7 @@ page_fault (struct intr_frame *f)
   user = (f->error_code & PF_U) != 0;
 
   //2.6 modify ryoung vm(page fault ->demand paging)
-  struct vm_entry *vme = find_vme(fault_addr);
+  struct vm_entry *vme = vme_find(fault_addr);
   if(vme ==NULL)
   {
     sys_exit(-1);

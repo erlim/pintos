@@ -6,7 +6,17 @@
 
 void page_init(void);
 
-//2.6 add ryoung virtual memory
+//2.11 add ryoung swapping
+struct page
+{
+  void *kaddr;
+  struct vm_entry *vme;
+  struct thread *thread;
+  struct list_elem lru_elem;
+};
+struct page* page_alloc(/*enum palloc_flags*/ int flags);
+void page_free(void *kaddr);
+
 struct vm_entry
 {
   int id;
@@ -15,7 +25,7 @@ struct vm_entry
   bool writable;
   bool bLoad;
   bool bPin;  //?????????
-  struct file* file;
+  struct file *file;
   struct list_elem mmap_elem; //map_file
   size_t offset;
   size_t read_bytes;
@@ -25,21 +35,8 @@ struct vm_entry
 };
 void vm_init(struct hash *vm);
 void vm_destory(struct hash *vm);
-struct vm_entry* find_vme(void*);
-bool insert_vme(struct hash*, struct vm_entry*);
-bool delete_vme(struct hash*, struct vm_entry*);
-
-//2.8 add ryoung memory mapped file
-struct mmap_file
-{
-  int id;
-  struct file* file;
-  struct list_elem elem;
-  struct list vmes;
-};
-void mmap_destroy(struct mmap_file *mmapf);
-int  mmap(int fd, void *addr);
-void munmap(int mapping);
-void do_munmap(struct mmap_file *mmapf);
+struct vm_entry* vme_find(void*);
+bool vme_insert(struct hash*, struct vm_entry*);
+bool vme_remove(struct hash*, struct vm_entry*);
 
 #endif  

@@ -14,7 +14,6 @@ struct mmap_file
 };
 
 void mmap_init(void);
-//void mmap_destroy(struct mmap_file *mmapf);
 int  do_mmap(int fd, void *addr);
 void do_munmap(int mapping);
 

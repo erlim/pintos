@@ -210,9 +210,25 @@ process_wait (pid_t child_pid UNUSED)
   void
 process_exit (void)
 {
-//  printf("process exit, tid:%d\n", thread_current()->tid);
   struct thread *t = thread_current ();
   t->exit = true;
+
+  //2.11 add ryoung (munmap)
+  struct list *list = &t->mmap_files;
+  struct list_elem *next, *e=list_begin(list);
+  while(e != list_end(list))
+  {
+    struct mmap_file* mmapf = list_entry(e, struct mmap_file, elem);
+    if(!mmapf->bUnmap)
+    {
+      do_munmap(mmapf->id);
+      if(list_empty(list))
+        break;
+      else
+        e = list_begin(list);   
+    }
+  }
+  vm_destroy(&thread_current()->vm);
 
   //1.10 add ryoung (file descriptor)
   if(t->file_exec != NULL)
@@ -225,40 +241,6 @@ process_exit (void)
     process_close_file(t->last_fd);
   }
   palloc_free_page(t->fd_tbl);
-
-  //2.6 add ryoung(vm)
-  
-  /*
-  struct list *list = &t->mmap_files;
-  struct list_elem *next, *e=list_begin(list);
-  for(; e!= list_end(list); e=list_next(e))
-  {
-    struct mmap_file* mmapf = list_entry(e, struct mmap_file, elem);
-    if(!mmapf->bUnmap)
-    {
-      printf("unmap");
-      //do_munmap(mmapf->id);
-    }
-  }
-  */
-  
-  /*
-  while(e!= list_end(list))
-  {
-    next = list_next(e);
-    struct mmap_file* mmapf = list_entry(e, struct mmap_file, elem);
-    if(!mmapf->bUnmap)
-    {
-      do_munmap(mmapf->id);
-      //file_close(mmapf->file);
-      list_remove(&mmapf->elem);
-      free(mmapf);
-    }  
-    e = next;
-  }
-  */
-  
-  vm_destroy(&thread_current()->vm);
 
   uint32_t *pd;
   /* Destroy the current process's page directory and switch back

@@ -33,42 +33,21 @@ allocate_mapid(void)
   
   return mapid;
 }
-/*
-void
-mmap_destroy(struct mmap_file *mmapf)
-{
-  munmap(mmapf->id);
-}
-*/
 
 static bool
 check_is_mmaped(void *addr)
 {
-  struct thread* t = thread_current();
-  if(pagedir_get_page(t->pagedir, addr)) //check code,stk, data
+  struct vm_entry vme;
+  vme.vaddr = pg_round_down(addr);
+  if( NULL == hash_find(&thread_current()->vm, &vme.elem))
+    return false;
+  else
     return true;
- 
-  struct list *list = &t->mmap_files;
-  struct list_elem *e;
-  for(e = list_begin(list); e!= list_end(list); e = list_next(e))
-  {
-    struct mmap_file *mmapf = list_entry(e, struct mmap_file, elem);    
-    struct list *list_vme = &mmapf->vmes;
-    struct list_elem *e_vme;
-    for(e_vme = list_begin(list_vme); e_vme != list_end(list_vme); e_vme= list_next(e_vme))
-    {
-      struct vm_entry *vme = list_entry(e_vme, struct vm_entry, mmap_elem);
-      if(vme->vaddr == addr)
-        return true;
-    }
-  }
-  return false;
 }
 
 int 
 do_mmap(int fd, void *addr)
 {
-  
   //{ verify address
   if(addr == 0 /*NULL*/)
     return -1;
@@ -134,7 +113,6 @@ do_mmap(int fd, void *addr)
       ofs += page_read_bytes;
     }
     list_push_back(&thread_current()->mmap_files, &mmapf->elem);
-  
     return mmapf->id;
   }
   return -1;
@@ -143,7 +121,6 @@ do_mmap(int fd, void *addr)
 void
 do_munmap(int mapping)
 {
-
   struct thread* t = thread_current();
   struct list *list = &t->mmap_files;
   struct list_elem *next, *e= list_begin(list);
@@ -172,11 +149,11 @@ do_munmap(int mapping)
           pagedir_clear_page(t->pagedir, vme->vaddr);
         }
         list_remove(&vme->mmap_elem);
-        vme_remove(&t->vm, &vme->elem);
+        vme_remove(&t->vm, vme);
         e_vme = next_vme;
       }
       //do_munmap(mmapf);
-      file_close(mmapf->file);
+      //file_close(mmapf->file);
       list_remove(&mmapf->elem);
       free(mmapf); 
     }

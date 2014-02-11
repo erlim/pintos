@@ -25,8 +25,8 @@ Executing 'create-null':
 (create-null) begin
 create-null: exit(-1)
 Execution of 'create-null' complete.
-Timer: 289 ticks
-Thread: 0 idle ticks, 254 kernel ticks, 38 user ticks
+Timer: 290 ticks
+Thread: 0 idle ticks, 255 kernel ticks, 38 user ticks
 hda2 (filesys): 85 reads, 204 writes
 hda3 (scratch): 99 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes

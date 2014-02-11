@@ -26,7 +26,7 @@ Executing 'open-empty':
 (open-empty) end
 open-empty: exit(0)
 Execution of 'open-empty' complete.
-Timer: 300 ticks
+Timer: 301 ticks
 Thread: 0 idle ticks, 253 kernel ticks, 50 user ticks
 hda2 (filesys): 102 reads, 204 writes
 hda3 (scratch): 99 reads, 2 writes

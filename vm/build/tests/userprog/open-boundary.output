@@ -29,8 +29,8 @@ Executing 'open-boundary':
 (open-boundary) end
 open-boundary: exit(0)
 Execution of 'open-boundary' complete.
-Timer: 328 ticks
-Thread: 0 idle ticks, 282 kernel ticks, 49 user ticks
+Timer: 327 ticks
+Thread: 0 idle ticks, 281 kernel ticks, 49 user ticks
 hda2 (filesys): 107 reads, 216 writes
 hda3 (scratch): 104 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes

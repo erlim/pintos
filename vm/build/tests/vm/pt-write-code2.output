@@ -29,7 +29,7 @@ Executing 'pt-write-code2':
 pt-write-code2: exit(-1)
 Execution of 'pt-write-code2' complete.
 Timer: 2759 ticks
-Thread: 0 idle ticks, 279 kernel ticks, 2483 user ticks
+Thread: 0 idle ticks, 278 kernel ticks, 2484 user ticks
 hda2 (filesys): 8756 reads, 214 writes
 hda3 (scratch): 103 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes

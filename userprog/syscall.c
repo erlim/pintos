@@ -14,7 +14,7 @@ static void syscall_handler (struct intr_frame *);
 struct lock lock_file;
 
 void get_argument(void *esp, int*arg, int count);
-void check_address(void *addr);
+void check_address(void *addr, void *esp);
 //2.9 add ryoung(vm)
 void check_valid_buffer(void *buffer, unsigned size);
 void check_valid_string(const void *str);
@@ -93,12 +93,11 @@ syscall_handler (struct intr_frame *f UNUSED)
       sys_close(arg[0]);                                  break;
     case SYS_MMAP : 
       get_argument(f->esp, &arg,2);             
-      f->eax = sys_mmap((int)arg[0],arg[1]);                   break;
+      f->eax = sys_mmap((int)arg[0],(void*)arg[1]);       break;
     case SYS_MUNMAP :
       get_argument(f->esp, &arg,1);
-      sys_munmap((int)arg[0]);                                 break;
+      sys_munmap((int)arg[0]);                            break;
     default :
-      printf("failed to syscall, cuz of invailed syscall\n");
       thread_exit(); 
       break;
   }
@@ -107,40 +106,22 @@ void
 get_argument(void *esp, int *arg, int argc)
 {
   int idx=0, num=1;
-  for(; num<=argc; num++,idx++)
+  for(; num<=argc +1; num++,idx++)
   {
     int *pval = (int*)esp +num;
-    check_address(pval);
+    check_address(pval, esp);
     arg[idx] = *pval;
   }   
 }
 
 void 
-check_address(void *addr)
+check_address(void *addr, void *esp)
 {
-  if(! (addr>=(void*)0x0000000 && addr<(void*)0xc0000000) )
+  if(! (esp >=(void*)0x8048000 && addr<(void*)0xc0000000) )
+    sys_exit(-1); 
+  if(! (addr>=(void*)0x8048000 && addr<(void*)0xc0000000) )
     sys_exit(-1);
-  //if(! (addr>=(void*)0x8048000 && addr<(void*)0xc0000000) )
-  //  sys_exit(-1);
 }   
-
-//@todo think. why???
-void 
-check_valid_buffer(void *buffer, unsigned size)
-{
-  unsigned idx =0;
-  char* buffer_ = (char*)buffer;
-  for(; idx<size; ++idx)
-  {
-    check_address((const void*)buffer_);
-    buffer_++;
-  }
-}
-void 
-check_valid_string(const void *str)
-{
-  check_address(str);
-}
 
 void 
 sys_halt(void)
@@ -232,7 +213,9 @@ sys_filesize(int fd)
 int 
 sys_read(int fd, void *buffer, unsigned length)
 {
-  check_address(buffer);
+  if(!(buffer>=(void*)0x8048000 && buffer<(void*)0xc0000000) )
+    sys_exit(-1);
+
   if( 0 == fd)
   {
     int idx =0;
@@ -258,7 +241,7 @@ sys_read(int fd, void *buffer, unsigned length)
 int 
 sys_write(int fd, const void *buffer, unsigned length)
 {
-  check_address(buffer);
+  //check_address(buffer);
   if(1 == fd) 
   {
     putbuf(buffer, length);

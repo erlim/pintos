@@ -34,6 +34,8 @@
 #ifdef VM
 #include "vm/page.h"
 #include "vm/mmap.h"
+#include "vm/frame.h"
+#include "vm/swap.h"
 #endif
 #ifdef FILESYS
 #include "devices/block.h"
@@ -124,6 +126,8 @@ main (void)
 #ifdef VM
   page_init();  
   mmap_init();
+  frame_init();
+  swap_init();
 #endif
   /* Start thread scheduler and enable interrupts. */
   thread_start ();

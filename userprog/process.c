@@ -219,14 +219,11 @@ process_exit (void)
   while(e != list_end(list))
   {
     struct mmap_file* mmapf = list_entry(e, struct mmap_file, elem);
-    if(!mmapf->bUnmap)
-    {
-      do_munmap(mmapf->id);
-      if(list_empty(list))
-        break;
-      else
-        e = list_begin(list);   
-    }
+    do_munmap(mmapf->id);
+    if(list_empty(list))
+      break;
+    else
+      e = list_begin(list);   
   }
   vm_destroy(&thread_current()->vm);
 
@@ -255,7 +252,7 @@ process_exit (void)
        directory before destroying the process's page
        directory, or our active page directory will be one
        that's been freed (and cleared). */
-    t->pagedir = NULL;
+    pd = NULL;
     pagedir_activate (NULL);
     pagedir_destroy (pd);
   }
@@ -680,7 +677,11 @@ load_file(void* kaddr, struct vm_entry *vme)
 setup_stack (void **esp) 
 {
   bool success = false;
-  uint8_t *kpage = palloc_get_page (PAL_USER /*| PAL_ZERO*/);
+
+  //{ 2.12 modify ryoung swap
+  struct page /*uint8_t*/ *kpage = page_alloc(PAL_USER);
+  //uint8_t *kpage = palloc_get_page (PAL_USER /*| PAL_ZERO*/);
+  //}
   if (kpage != NULL) 
   {
     //*esp = PHYS_BASE;
@@ -696,7 +697,8 @@ setup_stack (void **esp)
     if(success)
       *esp = PHYS_BASE;
     else
-      palloc_free_page (kpage);
+      page_free(kpage->kaddr); //2.12 modify ryoung swap
+      //palloc_free_page (kpage);
   }
   return success;
 }
@@ -725,12 +727,13 @@ install_page (void *upage, void *kpage, bool writable)
 bool 
 handle_mm_fault(struct vm_entry *vme)
 {
-  //if(vme == NULL)
-    //printf("vme null \n");
-  
-  uint8_t *kpage;
+  //uint8_t *kpage;
   bool success = false;
-  kpage = palloc_get_page( PAL_USER /*| PAL_ZERO*/);
+  //{ 2.12 modify ryoung swap
+  struct page *kpage = page_alloc(PAL_USER);
+  kpage->vme = vme;
+  //kpage = palloc_get_page( PAL_USER /*| PAL_ZERO*/);
+  //}
   switch((uint8_t)vme->type)
   {
     case VM_BIN:
@@ -740,6 +743,7 @@ handle_mm_fault(struct vm_entry *vme)
       load_file(kpage, vme);
       break;
     case VM_SWAP: 
+      swap_in(vme->swap_slot, kpage->kaddr /*vme->vaddr*/);
       break;
     default:
       break;
@@ -748,13 +752,17 @@ handle_mm_fault(struct vm_entry *vme)
   {
     success = install_page(vme->vaddr, kpage, vme->writable);
     vme->bLoad = true;
-    //if(!success)
-    //{
+    if(!success)
+    { 
+      //2.12 modify ryoung swap
+      page_free(kpage->kaddr);
+      //printf("handle_mm_fault, failed to install_page\n");
       //palloc_free_page(kpage);
-      //return false;
-    //}
+      return false;
+    }
     return true;
-  } 
+  }
+  //printf("handle_mm_fault failed to get page at kpage, %d \n", thread_current()->tid); 
   return false;  
 }
 

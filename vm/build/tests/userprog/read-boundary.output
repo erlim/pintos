@@ -29,8 +29,8 @@ Executing 'read-boundary':
 (read-boundary) end
 read-boundary: exit(0)
 Execution of 'read-boundary' complete.
-Timer: 337 ticks
-Thread: 0 idle ticks, 283 kernel ticks, 57 user ticks
+Timer: 318 ticks
+Thread: 0 idle ticks, 264 kernel ticks, 57 user ticks
 hda2 (filesys): 116 reads, 218 writes
 hda3 (scratch): 105 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes

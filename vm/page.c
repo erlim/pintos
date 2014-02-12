@@ -26,16 +26,21 @@ page_alloc(int flags)//enum palloc_flags flags)
   }
   struct page *page = malloc(sizeof(struct page));
   page->kaddr = kpage;
-  //page>vme = 
+  //page>vme = caller 
   page->thread = thread_current();
-  //list_push_back(&lru.lru_list, &page->lru_elem); 
+  lru_insert_page(page); 
   return page;
 }
 
 void
 page_free(void *kaddr)
 {
+  struct page *pg = lru_find_page(kaddr);
+  lru_remove_page(pg);
+
   struct thread *t = thread_current();
+   
+  //vm->type ==VM_FILE
   /*
   if(pagedir_is_dirty(t->pagedir, kaddr))
   {

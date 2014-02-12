@@ -25,8 +25,8 @@ Executing 'bad-write2':
 (bad-write2) begin
 bad-write2: exit(-1)
 Execution of 'bad-write2' complete.
-Timer: 288 ticks
-Thread: 0 idle ticks, 253 kernel ticks, 38 user ticks
+Timer: 271 ticks
+Thread: 0 idle ticks, 236 kernel ticks, 38 user ticks
 hda2 (filesys): 85 reads, 204 writes
 hda3 (scratch): 99 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes

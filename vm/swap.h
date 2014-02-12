@@ -3,6 +3,7 @@
 
 #include <list.h>
 #include <hash.h>
+#include <bitmap.h>
 
 void swap_init(void);
 void swap_in(size_t user_idx, void *kaddr);

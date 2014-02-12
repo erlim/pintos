@@ -30,7 +30,7 @@ struct vm_entry
   size_t offset;
   size_t read_bytes;
   size_t zero_bytes;
-  size_t swap_slot; //????????????
+  size_t swap_slot;
   struct hash_elem elem;
 };
 void vm_init(struct hash *vm);

@@ -592,14 +592,18 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
   ASSERT (pg_ofs (upage) == 0);
   ASSERT (ofs % PGSIZE == 0);
 
-  file_seek (file, ofs);
-  while (read_bytes > 0 || zero_bytes > 0) 
+  off_t offset = ofs;
+  //2.13 del ryoung 
+  //file_seek (file, ofs);
+  while (read_bytes > 0 || zero_bytes > 0 ) 
   {
     /* Calculate how to fill this page.
        We will read PAGE_READ_BYTES bytes from FILE
        and zero the final PAGE_ZERO_BYTES bytes. */
-    size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
-    size_t page_zero_bytes = PGSIZE - page_read_bytes;
+    
+    //2.13 modify ryoung check page_zero_bytes(0) 
+    size_t page_read_bytes = read_bytes > PGSIZE ? PGSIZE : read_bytes;
+    size_t page_zero_bytes = read_bytes > PGSIZE ? 0 : PGSIZE-read_bytes;
 
     //2.6 modify ryoung vm(demand page)
     struct vm_entry *vme = malloc(sizeof(struct vm_entry));
@@ -609,37 +613,15 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
     vme->writable = writable;
     vme->bLoad = false;
     vme->file = file;
-    vme->offset = ofs; 
-    vme->read_bytes = read_bytes;
-    vme->zero_bytes = zero_bytes;
+    vme->offset = offset; 
+    vme->read_bytes = page_read_bytes;
+    vme->zero_bytes = page_zero_bytes;
     vme_insert(&thread_current()->vm, vme);
-    //ofs+=read_bytes; //add ryoung
-//{originam code
-    /* 
-    // Get a page of memory. 
-    uint8_t *kpage = palloc_get_page (PAL_USER);
-    if (kpage == NULL)
-      return false;
-    // Load this page. 
-    if (file_read (file, kpage, page_read_bytes) != (int) page_read_bytes)
-    {
-      palloc_free_page (kpage);
-      return false; 
-    }
-    memset (kpage + page_read_bytes, 0, page_zero_bytes);
-    // Add the page to the process's address space. 
-    if (!install_page (upage, kpage, writable)) 
-    {
-      palloc_free_page (kpage);
-      return false; 
-    }
-    */
-//}
-    /* Advance. */
+    
     read_bytes -= page_read_bytes;
     zero_bytes -= page_zero_bytes;
     upage += PGSIZE;
-    ofs += page_read_bytes; //add ryoung 
+    offset += page_read_bytes; //add ryoung 
   }
   return true;
 }
@@ -653,7 +635,7 @@ load_file(void* kaddr, struct vm_entry *vme)
     lock_acquire(&lock_file);
     file_read_at(vme->file, kaddr, vme->read_bytes, vme->offset);
     lock_release(&lock_file);
-    memset(kaddr+vme->read_bytes,0,vme->zero_bytes);
+    memset(kaddr+vme->read_bytes, 0, vme->zero_bytes);
   }
   else
   {
@@ -668,7 +650,7 @@ load_file(void* kaddr, struct vm_entry *vme)
 setup_stack (void **esp) 
 {
   bool success = false;
-  uint8_t *kpage = palloc_get_page (PAL_USER /*| PAL_ZERO*/);
+  uint8_t *kpage = palloc_get_page (PAL_USER /*| PAL_ZERO */);
   if (kpage != NULL) 
   {
     //*esp = PHYS_BASE;
@@ -718,7 +700,7 @@ handle_mm_fault(struct vm_entry *vme)
   
   uint8_t *kpage;
   bool success = false;
-  kpage = palloc_get_page( PAL_USER /*| PAL_ZERO*/);
+  kpage = palloc_get_page( PAL_USER);
   switch((uint8_t)vme->type)
   {
     case VM_BIN:

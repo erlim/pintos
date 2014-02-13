@@ -60,13 +60,14 @@ do_mmap(int fd, void *addr)
   if(file_ !=  NULL)
   {
     struct file* file = file_reopen(file_);
-    uint32_t ofs = file_tell(file); //0; //sys_tell(fd)
+    uint32_t offset = file_tell(file); //0; //sys_tell(fd)
     uint32_t read_bytes, zero_bytes;
     read_bytes  = file_length(file); //sys_filesize(fd);
     if(read_bytes == 0 ) //mmap-zero.c
       return -1;
     zero_bytes = PGSIZE - (read_bytes % PGSIZE);
- 
+    //zero_bytes = read_bytes > PGSIZE ? 0 : PGSIZE-read_bytes;
+
     ASSERT ((read_bytes + zero_bytes) % PGSIZE == 0);
 
     struct mmap_file *mmapf = malloc(sizeof(struct mmap_file));
@@ -74,11 +75,11 @@ do_mmap(int fd, void *addr)
     mmapf->file = file;
     list_init(&mmapf->vmes);
 
-    while(read_bytes > 0) //|| zero_bytes > 0)
+    while(read_bytes > 0)
     {
-      size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
-      size_t page_zero_bytes = PGSIZE - page_read_bytes;
-
+      size_t page_read_bytes = read_bytes > PGSIZE ? PGSIZE : read_bytes;
+      size_t page_zero_bytes = read_bytes > PGSIZE ? 0 : PGSIZE-read_bytes;
+      
       struct vm_entry *vme = malloc(sizeof(struct vm_entry));
       vme->id = 99;
       vme->type = VM_FILE;
@@ -86,17 +87,16 @@ do_mmap(int fd, void *addr)
       vme->writable = file_is_writable(file); 
       vme->bLoad = false;
       vme->file = file;
-      vme->offset = ofs;
-      vme->read_bytes = read_bytes;
-      vme->zero_bytes = zero_bytes;
+      vme->offset = offset;
+      vme->read_bytes = page_read_bytes;  
+      vme->zero_bytes = page_zero_bytes; 
       vme_insert(&thread_current()->vm, vme);
       list_push_back(&mmapf->vmes, &vme->mmap_elem);
-      
+
       read_bytes -= page_read_bytes;
       zero_bytes -= page_zero_bytes;
       addr += PGSIZE;
-      ofs += page_read_bytes;
-    
+      offset += page_read_bytes;
     }
     list_push_back(&thread_current()->mmap_files, &mmapf->elem);
     return mmapf->id;

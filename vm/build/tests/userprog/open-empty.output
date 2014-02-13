@@ -9,7 +9,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 13,104 sectors (6 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 155 sectors (77 kB), Pintos OS kernel (20)
+hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 100 sectors (50 kB), Pintos scratch (22)
 hda4: 8,192 sectors (4 MB), Pintos swap (23)
@@ -26,12 +26,12 @@ Executing 'open-empty':
 (open-empty) end
 open-empty: exit(0)
 Execution of 'open-empty' complete.
-Timer: 301 ticks
-Thread: 0 idle ticks, 253 kernel ticks, 50 user ticks
-hda2 (filesys): 102 reads, 204 writes
+Timer: 293 ticks
+Thread: 0 idle ticks, 253 kernel ticks, 43 user ticks
+hda2 (filesys): 80 reads, 204 writes
 hda3 (scratch): 99 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes
-Console: 986 characters output
+Console: 985 characters output
 Keyboard: 0 keys pressed
 Exception: 5 page faults
 Powering off...

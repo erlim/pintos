@@ -10,7 +10,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 13,104 sectors (6 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 155 sectors (77 kB), Pintos OS kernel (20)
+hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 213 sectors (106 kB), Pintos scratch (22)
 hda4: 8,192 sectors (4 MB), Pintos swap (23)
@@ -62,9 +62,9 @@ child-rox: exit(12)
 (rox-multichild) end
 rox-multichild: exit(0)
 Execution of 'rox-multichild' complete.
-Timer: 841 ticks
-Thread: 0 idle ticks, 420 kernel ticks, 424 user ticks
-hda2 (filesys): 442 reads, 434 writes
+Timer: 776 ticks
+Thread: 0 idle ticks, 418 kernel ticks, 361 user ticks
+hda2 (filesys): 285 reads, 434 writes
 hda3 (scratch): 212 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes
 Console: 1999 characters output

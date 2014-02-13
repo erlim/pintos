@@ -9,7 +9,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 13,104 sectors (6 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 155 sectors (77 kB), Pintos OS kernel (20)
+hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 112 sectors (56 kB), Pintos scratch (22)
 hda4: 8,192 sectors (4 MB), Pintos swap (23)
@@ -86,9 +86,9 @@ multi-recurse: exit(14)
 (multi-recurse) end 15
 multi-recurse: exit(15)
 Execution of 'multi-recurse 15' complete.
-Timer: 1452 ticks
-Thread: 0 idle ticks, 509 kernel ticks, 946 user ticks
-hda2 (filesys): 955 reads, 228 writes
+Timer: 1276 ticks
+Thread: 0 idle ticks, 508 kernel ticks, 772 user ticks
+hda2 (filesys): 523 reads, 228 writes
 hda3 (scratch): 111 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes
 Console: 2683 characters output

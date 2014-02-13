@@ -106,6 +106,7 @@ thread_init (void)
   void
 thread_start (void) 
 {
+  process_init();
   //printf("thread start\n");
 
   /* Create the idle thread. */
@@ -222,8 +223,7 @@ thread_create (const char *name, int priority,
 #endif
 
   //2.7 add ryoung vm
-  //list_init(&t->lock_list);
-  //vm_init(&t->vm);
+  vm_init(&t->vm);
 
   intr_set_level(old_level);
 

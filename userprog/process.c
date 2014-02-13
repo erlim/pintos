@@ -24,7 +24,7 @@ static int vme_id = 1;
 static thread_func process_start NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
 
-struct lock lock_file; //syscall.c (lock_init()<-syscall.c<- init.c)
+static struct lock lock_file; //syscall.c (lock_init()<-syscall.c<- init.c)
 void process_init();
 
 void
@@ -219,14 +219,11 @@ process_exit (void)
   while(e != list_end(list))
   {
     struct mmap_file* mmapf = list_entry(e, struct mmap_file, elem);
-    if(!mmapf->bUnmap)
-    {
-      do_munmap(mmapf->id);
-      if(list_empty(list))
+    do_munmap(mmapf->id);
+    if(list_empty(list))
         break;
-      else
-        e = list_begin(list);   
-    }
+    else
+      e = list_begin(list);   
   }
   vm_destroy(&thread_current()->vm);
 
@@ -651,18 +648,10 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 static bool
 load_file(void* kaddr, struct vm_entry *vme)
 {
-  //enum intr_level old_level;
-  //old_level = intr_disable();
-  struct lock lock_file;
-  lock_init(&lock_file);
   if(vme->read_bytes > 0)
   {
     lock_acquire(&lock_file);
-    if((int)vme->read_bytes != file_read_at(vme->file, kaddr, vme->read_bytes, vme->offset))
-    {
-      lock_release(&lock_file);
-      return false;
-    }
+    file_read_at(vme->file, kaddr, vme->read_bytes, vme->offset);
     lock_release(&lock_file);
     memset(kaddr+vme->read_bytes,0,vme->zero_bytes);
   }
@@ -670,7 +659,6 @@ load_file(void* kaddr, struct vm_entry *vme)
   {
     memset(kaddr,0,PGSIZE);
   }
-  //intr_set_level(old_level);
   return true;
 }
 
@@ -748,11 +736,6 @@ handle_mm_fault(struct vm_entry *vme)
   {
     success = install_page(vme->vaddr, kpage, vme->writable);
     vme->bLoad = true;
-    //if(!success)
-    //{
-      //palloc_free_page(kpage);
-      //return false;
-    //}
     return true;
   } 
   return false;  

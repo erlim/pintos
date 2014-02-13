@@ -31,7 +31,6 @@ hash_init (struct hash *h,
   h->hash = hash;
   h->less = less;
   h->aux = aux;
-  h->bInit = false; //add ryoung 
 
   if (h->buckets != NULL) 
     {

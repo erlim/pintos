@@ -86,7 +86,6 @@ vm_destroy(struct hash *vm)
 {
   hash_destroy(vm, NULL);
 }
-//}
 
 struct vm_entry*
 vme_find(void *vaddr)
@@ -105,18 +104,12 @@ vme_find(void *vaddr)
 bool
 vme_insert(struct hash *vm, struct vm_entry *vme)
 {
-  bool sucess;
-  if(vm->bInit)
-  { 
-    sucess = hash_insert(vm, &vme->elem);
-  }
-  else
-  {
-    vm_init(vm);
-    vm->bInit = true;
-    sucess = hash_insert(vm, &vme->elem);
-  }
-  return sucess;
+  struct hash_elem *e = hash_insert(vm, &vme->elem);
+  struct vm_entry *temp = hash_entry(e, struct vm_entry, elem);
+  if(temp)
+    return true;
+ 
+  return false;
 }
 
 bool

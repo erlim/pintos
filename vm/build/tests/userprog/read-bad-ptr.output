@@ -29,7 +29,7 @@ Executing 'read-bad-ptr':
 read-bad-ptr: exit(-1)
 Execution of 'read-bad-ptr' complete.
 Timer: 323 ticks
-Thread: 0 idle ticks, 277 kernel ticks, 49 user ticks
+Thread: 0 idle ticks, 278 kernel ticks, 48 user ticks
 hda2 (filesys): 114 reads, 212 writes
 hda3 (scratch): 102 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes

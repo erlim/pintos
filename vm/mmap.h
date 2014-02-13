@@ -7,7 +7,6 @@
 struct mmap_file
 {
   int id;
-  bool bUnmap;
   struct file* file;
   struct list_elem elem;
   struct list vmes;

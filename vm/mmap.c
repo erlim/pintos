@@ -53,21 +53,8 @@ do_mmap(int fd, void *addr)
     return -1;
   if((uint32_t)addr % PGSIZE != 0) //mmap-misalign.c
     return -1;
-  //if(pg_ofs(addr) != 0)
-  //    return -1;
   if(check_is_mmaped(addr)) //code, stk, data
     return -1;
-  //if(addr >= 0x08048000) //check_address code, stk, data ...??????????
-  //{
-    //0x10000000  : user space 
-    //0x8048000   : over-code
-    //0x804b000   : over-data
-    //0xbffff000  : over-stk
-    //0xc0000000 : PHY_SIZE (is_user()
-    //printf("addr");
-  //  return -1;
-  //}
-  //}
 
   struct file* file_ = process_get_file(fd);
   if(file_ !=  NULL)
@@ -81,14 +68,12 @@ do_mmap(int fd, void *addr)
     zero_bytes = PGSIZE - (read_bytes % PGSIZE);
  
     ASSERT ((read_bytes + zero_bytes) % PGSIZE == 0);
-    //ASSERT (pg_ofs (addr) == 0);
-    //ASSERT (ofs % PGSIZE == 0);
 
     struct mmap_file *mmapf = malloc(sizeof(struct mmap_file));
     mmapf->id = allocate_mapid(); 
-    mmapf->bUnmap = false;
     mmapf->file = file;
     list_init(&mmapf->vmes);
+
     while(read_bytes > 0) //|| zero_bytes > 0)
     {
       size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
@@ -111,6 +96,7 @@ do_mmap(int fd, void *addr)
       zero_bytes -= page_zero_bytes;
       addr += PGSIZE;
       ofs += page_read_bytes;
+    
     }
     list_push_back(&thread_current()->mmap_files, &mmapf->elem);
     return mmapf->id;
@@ -130,7 +116,6 @@ do_munmap(int mapping)
     struct mmap_file* mmapf = list_entry(e, struct mmap_file, elem);
     if(mmapf->id == mapping)
     {
-      mmapf->bUnmap = true;
       struct list* list_vme = &mmapf->vmes;
       struct list_elem *next_vme, *e_vme = list_begin(list_vme);
       while(e_vme != list_end(list_vme))
@@ -152,8 +137,6 @@ do_munmap(int mapping)
         vme_remove(&t->vm, vme);
         e_vme = next_vme;
       }
-      //do_munmap(mmapf);
-      //file_close(mmapf->file);
       list_remove(&mmapf->elem);
       free(mmapf); 
     }
@@ -161,34 +144,3 @@ do_munmap(int mapping)
   }
 }
 
-/*
-void
-do_munmap(struct mmap_file *mmapf)
-{
-  //struct lock lock_file;
-  //lock_init(&lock_file);
-
-  struct thread* t = thread_current();
-  struct list* list = &mmapf->vmes;
-  struct list_elem *next, *e = list_begin(list);
-  while(e != list_end(list))
-  {
-    next = list_next(e);
-    struct vm_entry *vme = list_entry(e, struct vm_entry, mmap_elem);
-    if(vme->bLoad)
-    {
-      if(pagedir_is_dirty(t->pagedir, vme->vaddr))
-      {
-        lock_acquire(&lock_file);
-        file_write_at(vme->file, vme->vaddr, vme->read_bytes, vme->offset);
-        lock_release(&lock_file);
-      }
-      palloc_free_page(pagedir_get_page(t->pagedir, vme->vaddr));
-      pagedir_clear_page(t->pagedir, vme->vaddr);
-    }
-    list_remove(&vme->mmap_elem);
-    delete_vme(&t->vm, &vme->elem);
-    e = next;
-  }
-}
-*/

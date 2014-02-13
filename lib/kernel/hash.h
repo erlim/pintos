@@ -58,7 +58,6 @@ typedef void hash_action_func (struct hash_elem *e, void *aux);
 /* Hash table. */
 struct hash 
   {
-    bool  bInit;                /* add ryoung */
     size_t elem_cnt;            /* Number of elements in table. */
     size_t bucket_cnt;          /* Number of buckets, a power of 2. */
     struct list *buckets;       /* Array of `bucket_cnt' lists. */

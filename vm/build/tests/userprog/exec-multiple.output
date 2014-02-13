@@ -36,8 +36,8 @@ child-simple: exit(81)
 (exec-multiple) end
 exec-multiple: exit(0)
 Execution of 'exec-multiple' complete.
-Timer: 622 ticks
-Thread: 0 idle ticks, 395 kernel ticks, 230 user ticks
+Timer: 621 ticks
+Thread: 0 idle ticks, 396 kernel ticks, 228 user ticks
 hda2 (filesys): 334 reads, 400 writes
 hda3 (scratch): 196 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes

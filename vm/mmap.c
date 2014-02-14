@@ -55,7 +55,8 @@ do_mmap(int fd, void *addr)
     return -1;
   if(check_is_mmaped(addr)) //code, stk, data
     return -1;
-
+  //}
+  
   struct file* file_ = process_get_file(fd);
   if(file_ !=  NULL)
   {
@@ -66,15 +67,20 @@ do_mmap(int fd, void *addr)
     if(read_bytes == 0 ) //mmap-zero.c
       return -1;
     zero_bytes = PGSIZE - (read_bytes % PGSIZE);
-    //zero_bytes = read_bytes > PGSIZE ? 0 : PGSIZE-read_bytes;
-
     ASSERT ((read_bytes + zero_bytes) % PGSIZE == 0);
 
+    /**************************************************
+    ex) read_bytes = 96
+        ->zero_bytes = 4000
+    ex) read_bytes = 5096
+        ->zero_bytes = 3096 (why? page_read_bytes = 1000)
+    read_bytes + zero_bytes = pgsize;
+    ***************************************************/ 
+    
     struct mmap_file *mmapf = malloc(sizeof(struct mmap_file));
     mmapf->id = allocate_mapid(); 
     mmapf->file = file;
     list_init(&mmapf->vmes);
-
     while(read_bytes > 0)
     {
       size_t page_read_bytes = read_bytes > PGSIZE ? PGSIZE : read_bytes;

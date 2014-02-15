@@ -6,4 +6,4 @@ userprog/exception.o: ../../userprog/exception.c \
  ../../threads/thread.h ../../lib/kernel/list.h ../../threads/synch.h \
  ../../lib/kernel/hash.h ../../lib/kernel/list.h ../../threads/vaddr.h \
  ../../userprog/pagedir.h ../../threads/palloc.h ../../vm/page.h \
- ../../userprog/process.h
+ ../../vm/frame.h ../../userprog/process.h

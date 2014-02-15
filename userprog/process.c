@@ -650,7 +650,8 @@ load_file(void* kaddr, struct vm_entry *vme)
 setup_stack (void **esp) 
 {
   bool success = false;
-  uint8_t *kpage = palloc_get_page (PAL_USER /*| PAL_ZERO */);
+  //2.14 modify ryoung setup stack
+  struct page *kpage = page_alloc(PAL_USER);
   if (kpage != NULL) 
   {
     //*esp = PHYS_BASE;
@@ -662,12 +663,14 @@ setup_stack (void **esp)
     vme->writable = true;
     vme->bLoad = true;
     vme_insert(&thread_current()->vm,vme);
-    success = install_page(vme->vaddr, kpage, vme->writable);  
+    kpage->vme = vme;
+    success = install_page(vme->vaddr, kpage->kaddr, vme->writable);
     if(success)
       *esp = PHYS_BASE;
     else
-      palloc_free_page (kpage);
+      page_free(kpage->kaddr); //palloc_free_page (kpage);
   }
+  
   return success;
 }
 
@@ -695,31 +698,35 @@ install_page (void *upage, void *kpage, bool writable)
 bool 
 handle_mm_fault(struct vm_entry *vme)
 {
-  //if(vme == NULL)
-    //printf("vme null \n");
-  
-  uint8_t *kpage;
+  //2.14 modify ryoung
+  struct page *kpage = page_alloc(PAL_USER); 
   bool success = false;
-  kpage = palloc_get_page( PAL_USER);
   switch((uint8_t)vme->type)
   {
     case VM_BIN:
-      load_file(kpage, vme);
+      load_file(kpage->kaddr, vme);  //2.14 modify ryoung(kpage)
       break;
     case VM_FILE:
-      load_file(kpage, vme);
+      load_file(kpage->kaddr, vme);
       break;
     case VM_SWAP: 
+      printf("handle_mm_falt, swap_in\n");
+      swap_in(vme->swap_slot, kpage->kaddr);//vme->vaddr);
       break;
     default:
       break;
   }
   if(kpage != NULL)
   {
-    success = install_page(vme->vaddr, kpage, vme->writable);
+    kpage->vme = vme;
+    success = install_page(vme->vaddr, kpage->kaddr, vme->writable);
+    if(!success)
+    { 
+      page_free(kpage->kaddr);
+    } 
     vme->bLoad = true;
-    return true;
+    success = true;
   } 
-  return false;  
+  return success;
 }
 

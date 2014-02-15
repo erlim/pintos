@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "userprog/process.h"
 #include "filesys/file.h"
+#include "threads/palloc.h"
 #include "threads/thread.h"
 #include "threads/vaddr.h"
 
@@ -17,36 +18,31 @@ page_init()
 }
 
 struct page* 
-page_alloc(int flags)//enum palloc_flags flags)
+page_alloc(enum palloc_flags flags)
 {
-  uint8_t *kpage = palloc_get_page( flags);
-  if(kpage == NULL)
-  {
-    kpage = lru_try_victim_page(flags);
-  }
   struct page *page = malloc(sizeof(struct page));
-  page->kaddr = kpage;
-  //page>vme = 
+  uint8_t *kpage = palloc_get_page(flags);
+  if(kpage == NULL)
+    kpage = lru_try_victim_page(flags);
+  page->kaddr = (uint8_t*)kpage;
+  //page>vme = caller 
   page->thread = thread_current();
-  //list_push_back(&lru.lru_list, &page->lru_elem); 
+  lru_insert_page(page); 
   return page;
 }
 
 void
 page_free(void *kaddr)
 {
-  struct thread *t = thread_current();
-  /*
-  if(pagedir_is_dirty(t->pagedir, kaddr))
-  {
-    lock_acquire(&lock_file);
-    file_write_at(vme->file, vme->vaddr, vme->read_bytes, vme->offset);
-    lock_release(&lock_file);
-  }
-  */
-  palloc_free_page(pagedir_get_page(t->pagedir, kaddr));
-  pagedir_clear_page(t->pagedir, kaddr);
+  palloc_free_page(kaddr);
   
+  struct page *pg = lru_find_page(kaddr);
+
+  struct thread *t= pg->thread;
+  //pagedir_clear_page(t->pagedir, pg->vme->vaddr);
+  //lru_get_next_clock(); //error!!! no check one elem 
+  lru_remove_page(pg);
+  free(pg);
 }
 
 
@@ -86,6 +82,7 @@ vm_destroy(struct hash *vm)
 {
   hash_destroy(vm, NULL);
 }
+//}
 
 struct vm_entry*
 vme_find(void *vaddr)
@@ -104,11 +101,10 @@ vme_find(void *vaddr)
 bool
 vme_insert(struct hash *vm, struct vm_entry *vme)
 {
-  struct hash_elem *e = hash_insert(vm, &vme->elem);
+  struct hash_elem* e =  hash_insert(vm, &vme->elem);
   struct vm_entry *temp = hash_entry(e, struct vm_entry, elem);
   if(temp)
     return true;
- 
   return false;
 }
 

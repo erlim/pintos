@@ -136,11 +136,12 @@ do_munmap(int mapping)
             file_write_at(vme->file, vme->vaddr, vme->read_bytes, vme->offset);
             lock_release(&lock_file);
           }
-          palloc_free_page(pagedir_get_page(t->pagedir, vme->vaddr));
-          pagedir_clear_page(t->pagedir, vme->vaddr);
+          //how to find frame->vaddr?????  hash_table??
+          page_free(pagedir_get_page(t->pagedir, vme->vaddr)); //palloc_free_page(pagedir_get_page(t->pagedir, vme->vaddr));
+          pagedir_clear_page(t->pagedir, vme->vaddr);  
         }
         list_remove(&vme->mmap_elem);
-        vme_remove(&t->vm, vme);
+        vme_remove(&t->vm, vme);  //unmemory
         e_vme = next_vme;
       }
       list_remove(&mmapf->elem);

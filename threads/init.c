@@ -34,6 +34,8 @@
 #ifdef VM
 #include "vm/page.h"
 #include "vm/mmap.h"
+#include "vm/swap.h"
+#include "vm/frame.h"
 #endif
 #ifdef FILESYS
 #include "devices/block.h"
@@ -119,15 +121,17 @@ main (void)
   syscall_init ();
 #endif
 
-//2.9 add ryoung 
-#ifdef VM
-  page_init();  
-  mmap_init();
-#endif
   /* Start thread scheduler and enable interrupts. */
   thread_start ();
   serial_init_queue ();
   timer_calibrate ();
+
+#ifdef VM
+  page_init();
+  mmap_init();
+//swap_init();
+  frame_init();
+#endif;
 
 #ifdef FILESYS
   /* Initialize file system. */
@@ -135,6 +139,8 @@ main (void)
   locate_block_devices ();
   filesys_init (format_filesys);
 #endif
+
+  swap_init();
 
   printf ("Boot complete.\n");
   

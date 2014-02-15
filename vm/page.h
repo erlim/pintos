@@ -3,6 +3,8 @@
 
 #include <list.h>
 #include <hash.h>
+#include "threads/palloc.h"
+#include "vm/frame.h"
 
 void page_init(void);
 
@@ -14,7 +16,7 @@ struct page
   struct thread *thread;
   struct list_elem lru_elem;
 };
-struct page* page_alloc(/*enum palloc_flags*/ int flags);
+struct page* page_alloc(enum palloc_flags flags);
 void page_free(void *kaddr);
 
 struct vm_entry
@@ -30,7 +32,7 @@ struct vm_entry
   size_t offset;
   size_t read_bytes;
   size_t zero_bytes;
-  size_t swap_slot; //????????????
+  size_t swap_slot;
   struct hash_elem elem;
 };
 void vm_init(struct hash *vm);

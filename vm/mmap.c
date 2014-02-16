@@ -92,6 +92,7 @@ do_mmap(int fd, void *addr)
       vme->vaddr = addr;
       vme->writable = file_is_writable(file); 
       vme->bLoad = false;
+      vme->bPin = false;
       vme->file = file;
       vme->offset = offset;
       vme->read_bytes = page_read_bytes;  

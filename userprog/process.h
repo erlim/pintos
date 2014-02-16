@@ -29,4 +29,5 @@ void process_close_file(int fd);
 #define VM_ERROR 99
 // 2.7 add ryoung page faule handlerr
 bool handle_mm_fault(struct vm_entry *vme);
+bool expand_stack(void* addr, void **esp);
 #endif /* userprog/process.h */

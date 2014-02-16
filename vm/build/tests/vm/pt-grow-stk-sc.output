@@ -9,7 +9,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 13,104 sectors (6 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 147 sectors (73 kB), Pintos OS kernel (20)
+hda1: 155 sectors (77 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 103 sectors (51 kB), Pintos scratch (22)
 hda4: 8,192 sectors (4 MB), Pintos swap (23)
@@ -23,16 +23,21 @@ Putting 'pt-grow-stk-sc' into the file system...
 Erasing ustar archive...
 Executing 'pt-grow-stk-sc':
 (pt-grow-stk-sc) begin
+(pt-grow-stk-sc) create "sample.txt"
+(pt-grow-stk-sc) open "sample.txt"
+(pt-grow-stk-sc) write "sample.txt"
+(pt-grow-stk-sc) 2nd open "sample.txt"
+(pt-grow-stk-sc) read "sample.txt"
 pt-grow-stk-sc: exit(-1)
 Execution of 'pt-grow-stk-sc' complete.
-Timer: 287 ticks
-Thread: 0 idle ticks, 256 kernel ticks, 34 user ticks
-hda2 (filesys): 65 reads, 210 writes
+Timer: 349 ticks
+Thread: 0 idle ticks, 263 kernel ticks, 89 user ticks
+hda2 (filesys): 94 reads, 218 writes
 hda3 (scratch): 102 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes
-Console: 994 characters output
+Console: 1176 characters output
 Keyboard: 0 keys pressed
-Exception: 6 page faults
+Exception: 7 page faults
 Powering off...
 ========================================================================
                        Bochs x86 Emulator 2.6.2

@@ -154,12 +154,27 @@ page_fault (struct intr_frame *f)
 
   //2.6 modify ryoung vm(page fault ->demand paging)
   struct vm_entry *vme = vme_find(fault_addr);
-  if(vme ==NULL)
+  if(vme)
   {
-    sys_exit(-1);
+    handle_mm_fault(vme);
   }
-  //printf("afert find vme id:%d, type:%d\n", vme->id, vme->type);
-  handle_mm_fault(vme);
+  else
+  {
+    if( (fault_addr >= f->esp-32) && (PHYS_BASE -pg_round_down(fault_addr) <= 0x800000) ) 
+    {
+      expand_stack(fault_addr, f->esp);
+    }
+    else
+    {
+      sys_exit(-1);
+    }
+  }
+  
+  //else if(fault_addr >= f->esp - 32 /*STACK_HEURISTIC*/) //2.16 add ryoung stack grow
+  //  expand_stack(fault_addr, f->esp);
+  //else
+  //  sys_exit(-1);
+  
   //exit(-1); //1.12 modift ryoung
   //original
   /* To implement virtual memory, delete the rest of the function
@@ -172,4 +187,3 @@ page_fault (struct intr_frame *f)
           user ? "user" : "kernel");
   kill (f);*/
 }
-

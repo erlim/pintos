@@ -307,6 +307,7 @@ thread_tid (void)
   void
 thread_exit (void) 
 {
+  //printf("thread tid:%d\n", thread_current()->tid);
   ASSERT (!intr_context ());
 
 #ifdef USERPROG

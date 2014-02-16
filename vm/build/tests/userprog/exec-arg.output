@@ -10,7 +10,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 13,104 sectors (6 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 147 sectors (73 kB), Pintos OS kernel (20)
+hda1: 155 sectors (77 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 198 sectors (99 kB), Pintos scratch (22)
 hda4: 8,192 sectors (4 MB), Pintos swap (23)
@@ -35,8 +35,8 @@ child-args: exit(0)
 (exec-arg) end
 exec-arg: exit(0)
 Execution of 'exec-arg' complete.
-Timer: 433 ticks
-Thread: 0 idle ticks, 347 kernel ticks, 89 user ticks
+Timer: 444 ticks
+Thread: 0 idle ticks, 351 kernel ticks, 95 user ticks
 hda2 (filesys): 126 reads, 402 writes
 hda3 (scratch): 197 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes

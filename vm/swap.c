@@ -30,7 +30,7 @@ swap_init()
 void
 swap_in(size_t slot_idx, void *kaddr)
 {
-  printf("swap_in, %x\n",kaddr);
+  //printf("swap_in, %x %d\n",kaddr, slot_idx);
   block_sector_t sector = slot_idx;
 
   lock_acquire(&lock_file);
@@ -44,15 +44,16 @@ swap_in(size_t slot_idx, void *kaddr)
   }
   lock_release(&lock_file);
 
-  //bitmap_flip(bitmap_swap, slot_idx);
-  bitmap_set_multiple(bitmap_swap, slot_idx, 1, true);
+  bitmap_flip(bitmap_swap, slot_idx);
+  //bitmap_set_multiple(bitmap_swap, slot_idx, 1, true);
 }
 
 size_t
 swap_out(void*kaddr)
 {
-  printf("swap_out\n");
   size_t slot_idx = bitmap_scan_and_flip(bitmap_swap, 0, 1, false);
+  //printf("swap_out, %x %d\n", kaddr, slot_idx);
+
   block_sector_t sector = slot_idx;
   
   lock_acquire(&lock_file);

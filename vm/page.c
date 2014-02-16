@@ -20,29 +20,29 @@ page_init()
 struct page* 
 page_alloc(enum palloc_flags flags)
 {
-  struct page *page = malloc(sizeof(struct page));
   uint8_t *kpage = palloc_get_page(flags);
   if(kpage == NULL)
-    kpage = lru_try_victim_page(flags);
+    kpage = frame_select_victim(flags);
+  
+  struct page *page = malloc(sizeof(struct page));
   page->kaddr = (uint8_t*)kpage;
   //page>vme = caller 
   page->thread = thread_current();
-  lru_insert_page(page); 
+  //printf("page->thread tid:%d\n", page->thread->tid);
+  //frame_insert_page(page); 
   return page;
 }
 
 void
 page_free(void *kaddr)
 {
-  palloc_free_page(kaddr);
-  
-  struct page *pg = lru_find_page(kaddr);
-
-  struct thread *t= pg->thread;
-  //pagedir_clear_page(t->pagedir, pg->vme->vaddr);
-  //lru_get_next_clock(); //error!!! no check one elem 
-  lru_remove_page(pg);
-  free(pg);
+  struct page *page = frame_find_page(kaddr);
+  if(page)
+  {
+    frame_remove_page(page);
+    palloc_free_page(kaddr);
+    free(page);
+  }
 }
 
 

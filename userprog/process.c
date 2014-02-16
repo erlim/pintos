@@ -19,6 +19,7 @@
 #include "threads/vaddr.h"
 #include "vm/page.h"
 #include "vm/mmap.h"
+#include "vm/frame.h"
 
 static int vme_id = 1;
 static thread_func process_start NO_RETURN;
@@ -225,6 +226,9 @@ process_exit (void)
     else
       e = list_begin(list);   
   }
+  //@todo ?????????????????
+  frame_destroy(t);
+
   vm_destroy(&thread_current()->vm);
 
   //1.10 add ryoung (file descriptor)
@@ -239,6 +243,18 @@ process_exit (void)
   }
   palloc_free_page(t->fd_tbl);
 
+  /*
+  struct hash *hash = &t->vm;
+  struct hash_iterator hi;
+  hash_first(&hi, hash);
+  while(hash_next(&hi))
+  {
+    struct vm_entry *vme = hash_entry(hash_cur(&hi), struct vm_entry, elem);
+    page_free(pagedir_get_page(t->pagedir, vme->vaddr));
+   //frame_remove_page(pagedir_get_page(t->pagedir, vme->vaddr)); 
+  }
+ */ 
+  
   uint32_t *pd;
   /* Destroy the current process's page directory and switch back
      to the kernel-only page directory. */
@@ -396,6 +412,7 @@ struct Elf32_Phdr
 #define PF_R 4          /* Readable. */
 
 static bool setup_stack (void **esp);
+
 static bool validate_segment (const struct Elf32_Phdr *, struct file *);
 static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
     uint32_t read_bytes, uint32_t zero_bytes,
@@ -612,12 +629,13 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
     vme->vaddr = upage;
     vme->writable = writable;
     vme->bLoad = false;
+    vme->bPin = false;
     vme->file = file;
     vme->offset = offset; 
     vme->read_bytes = page_read_bytes;
     vme->zero_bytes = page_zero_bytes;
     vme_insert(&thread_current()->vm, vme);
-    
+   
     read_bytes -= page_read_bytes;
     zero_bytes -= page_zero_bytes;
     upage += PGSIZE;
@@ -651,24 +669,69 @@ setup_stack (void **esp)
 {
   bool success = false;
   //2.14 modify ryoung setup stack
-  struct page *kpage = page_alloc(PAL_USER);
+  struct page *kpage = page_alloc(PAL_USER | PAL_ZERO);
   if (kpage != NULL) 
   {
-    //*esp = PHYS_BASE;
     //2.6 add ryoung vm(demand paging)
     struct vm_entry *vme = malloc(sizeof(struct vm_entry));
     vme->id = vme_id ++;
     vme->type = VM_SWAP;
-    vme->vaddr = ((uint8_t*)PHYS_BASE)-PGSIZE;
+    vme->vaddr = ((uint8_t*)PHYS_BASE)- PGSIZE;
     vme->writable = true;
     vme->bLoad = true;
+    vme->bPin = false;
     vme_insert(&thread_current()->vm,vme);
+    
     kpage->vme = vme;
+    frame_insert_page(kpage);
     success = install_page(vme->vaddr, kpage->kaddr, vme->writable);
     if(success)
       *esp = PHYS_BASE;
     else
-      page_free(kpage->kaddr); //palloc_free_page (kpage);
+      //free(vme);
+      page_free(kpage->kaddr);
+  }
+  
+  return success;
+}
+
+bool
+expand_stack(void *addr, void **esp)
+{ 
+  /*
+  if(PHYS_BASE -pg_round_down(addr) > 0x800000)
+    return false;
+  if( *esp < (void*)0x0848000 || *esp >= (void*)0xc0000000)
+   return false;
+  */
+  
+  /*
+  if(! (esp >=(void*)0x8048000 && addr<(void*)0xc0000000) )
+    sys_exit(-1); 
+  if(! (addr>=(void*)0x8048000 && addr<(void*)0xc0000000) )
+    sys_exit(-1);
+  */
+  check_address(addr, esp);
+ 
+  bool success = false;
+  struct page *kpage = page_alloc(PAL_USER | PAL_ZERO);
+  if(kpage)
+  {
+    struct vm_entry *vme = malloc(sizeof(struct vm_entry));
+    vme->id = vme_id++;
+    vme->type = VM_SWAP;
+    vme->vaddr = pg_round_down(addr);
+    vme->writable = true;
+    vme->bLoad = true;
+    vme->bPin = false;
+    vme_insert(&thread_current()->vm, vme);
+
+    kpage->vme = vme;
+    success = install_page(vme->vaddr, kpage->kaddr, vme->writable); 
+    if(success)
+      *esp = PHYS_BASE;
+    else
+      page_free(kpage->kaddr);
   }
   
   return success;
@@ -710,19 +773,21 @@ handle_mm_fault(struct vm_entry *vme)
       load_file(kpage->kaddr, vme);
       break;
     case VM_SWAP: 
-      printf("handle_mm_falt, swap_in\n");
-      swap_in(vme->swap_slot, kpage->kaddr);//vme->vaddr);
+      swap_in(vme->swap_slot, kpage->kaddr);
       break;
     default:
       break;
   }
   if(kpage != NULL)
   {
+    vme->bPin = false;
     kpage->vme = vme;
+    frame_insert_page(kpage);
     success = install_page(vme->vaddr, kpage->kaddr, vme->writable);
     if(!success)
     { 
       page_free(kpage->kaddr);
+      success = false;
     } 
     vme->bLoad = true;
     success = true;

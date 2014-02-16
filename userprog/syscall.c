@@ -117,12 +117,13 @@ get_argument(void *esp, int *arg, int argc)
 void 
 check_address(void *addr, void *esp)
 {
+  //verify_stack 
   if(! (esp >=(void*)0x8048000 && addr<(void*)0xc0000000) )
     sys_exit(-1); 
   if(! (addr>=(void*)0x8048000 && addr<(void*)0xc0000000) )
     sys_exit(-1);
-}   
-
+} 
+  
 void 
 sys_halt(void)
 {

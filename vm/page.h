@@ -5,6 +5,7 @@
 #include <hash.h>
 #include "threads/palloc.h"
 #include "vm/frame.h"
+#include "threads/thread.h"
 
 void page_init(void);
 
@@ -26,7 +27,7 @@ struct vm_entry
   void *vaddr;
   bool writable;
   bool bLoad;
-  bool bPin;  //?????????
+  bool bPin;  //whether selected as victim 
   struct file *file;
   struct list_elem mmap_elem; //map_file
   size_t offset;

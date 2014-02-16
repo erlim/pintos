@@ -8,10 +8,18 @@
 
 void frame_init(void);
 
-void lru_insert_page(struct page* page);
-void lru_remove_page(struct page* page);
-struct page* lru_find_page(void *kaddr);
-struct list_elem* lru_get_next_clock(); 
-void* lru_try_victim_page(enum palloc_flags flags);
+void frame_insert_page(struct page* page);
+void frame_remove_page(struct page* page);
+void frame_destroy(struct thread* thread);
+
+struct list_elem* frame_get_next_clock();
+struct list_elem* frame_get_clock();
+
+struct page* frame_get_next_page();
+struct page* frame_get_page();
+
+struct page* frame_find_page(void *kaddr);
+struct list_elem* frame_get_next_clock(); 
+void* frame_select_victim(enum palloc_flags flags);
 
 #endif

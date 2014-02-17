@@ -51,7 +51,7 @@ swap_in(size_t slot_idx, void *kaddr)
 size_t
 swap_out(void*kaddr)
 {
-   /********************************************
+  /********************************************
   ex) slot_idx = 2
   sector: 16 ~ 23
   kaddr : kaddr ~ kaddr +(block_sector_size *8)
@@ -71,6 +71,7 @@ swap_out(void*kaddr)
   return slot_idx;
 }
 
+void
 swap_destroy(void)
 {
   bitmap_destroy(bitmap_swap);

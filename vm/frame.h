@@ -19,7 +19,6 @@ struct page* frame_get_next_page();
 struct page* frame_get_page();
 
 struct page* frame_find_page(void *kaddr);
-struct list_elem* frame_get_next_clock(); 
 void* frame_select_victim(enum palloc_flags flags);
 
 #endif

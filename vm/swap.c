@@ -56,7 +56,7 @@ swap_out(void*kaddr)
   sector: 16 ~ 23
   kaddr : kaddr ~ kaddr +(block_sector_size *8)
   *********************************************/
-  size_ slot_idx = bitmap_scan_and_flip(bitmap_swap, 0, 1, false);
+  size_t slot_idx = bitmap_scan_and_flip(bitmap_swap, 0, 1, false);
   block_sector_t sector = slot_idx * BLOCK_SECTOR_CNT;
   lock_acquire(&lock_file);
   int i=0;

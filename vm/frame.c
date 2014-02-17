@@ -14,6 +14,7 @@ static struct lock lock_file;
 static struct list lru_list;
 static struct list_elem *lru_clock; //clock_head
 
+static int bytes;
 void frame_init()
 {
   lock_init(&lock_file);
@@ -24,10 +25,12 @@ void frame_init()
 void
 frame_insert_page(struct page* page)
 {
+  bytes += 4096;
+
   //printf("frame_insert_page\n");
-  //if(page->thread->tid == 4)
+  //if(page->thread->tid == 3)
   //if(page->vme->id == 548)
-   // printf("insert frame :%d\n", page->vme->id); 
+   // printf("%d, ", page->vme->id); 
   //lock_acquire(&lock_file);
   list_push_back(&lru_list, &page->lru_elem);
   //lock_release(&lock_file);
@@ -39,6 +42,7 @@ frame_insert_page(struct page* page)
 void
 frame_remove_page(struct page* page)
 {
+  bytes -= 4096;
   lru_clock = frame_get_next_clock();
   list_remove(&page->lru_elem);
   //printf("temp->thread tid: %d\n", temp->thread->tid);
@@ -65,8 +69,13 @@ frame_destroy(struct thread* thread)
 struct list_elem*
 frame_get_next_clock()
 {
+  //struct page *temp = list_entry(list_end(&lru_list), struct page, lru_elem);
+  //printf("end %d", temp->vme->id);
+  
   if(!list_empty(&lru_list))
   { 
+    //printf("size %d ", list_size(&lru_list));
+
     if(lru_clock == NULL)
     {
       lru_clock = list_begin(&lru_list);
@@ -76,6 +85,10 @@ frame_get_next_clock()
       if(lru_clock != list_end(&lru_list))
       {
         lru_clock = list_next(lru_clock);
+      }
+      if(lru_clock == list_end(&lru_list))
+      {
+        lru_clock = list_begin(&lru_list);
       }
       return lru_clock;
     }
@@ -139,9 +152,9 @@ frame_find_page(void *kaddr)
 void*
 frame_select_victim(enum palloc_flags flags)
 {
+ // printf("total bytes :%d\n", bytes);
   //printf("frame_select_victim\n");
   struct page *page = frame_get_page();
-  lru_clock = list_begin(&lru_list);
   bool bFind = false;
   while(!bFind)
   {
@@ -152,7 +165,7 @@ frame_select_victim(enum palloc_flags flags)
     //has been accessed recently,
     if(!vme->bPin)
     {
-      //printf("is_access %d\n", vme->id);
+      //printf(" is_access %d\n", vme->id);
       if(pagedir_is_accessed(t->pagedir, vme->vaddr))
       {
         pagedir_set_accessed(t->pagedir, vme->vaddr, false);
@@ -177,7 +190,7 @@ frame_select_victim(enum palloc_flags flags)
               vme->swap_slot = swap_out(page->kaddr);
               //printf("vme->swap_slot:%d\n", vme->swap_slot);
           }
-        }
+       }
         /*
         frame_remove, 
         pagedir_clear_page(pagedir, vaddr);
@@ -192,7 +205,7 @@ frame_select_victim(enum palloc_flags flags)
         palloc_free_page(page->kaddr);
         free(page->kaddr);
         */
-        //printf("thread tid:%d\n", t->tid);
+        //printf("find thread tid:%d\n", t->tid);
 
         page_free(page->kaddr);
         pagedir_clear_page(t->pagedir, vme->vaddr);
@@ -201,7 +214,9 @@ frame_select_victim(enum palloc_flags flags)
         break;
       }
     }
+    //printf("next page ");
     page = frame_get_next_page();
+    //printf("vme %d", page->vme->id);
   }
 
   //printf("kpage :%x, swap_slot:%d \n", page->kaddr, vme->swap_slot);

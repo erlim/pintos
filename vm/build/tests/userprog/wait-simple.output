@@ -32,7 +32,7 @@ child-simple: exit(81)
 wait-simple: exit(0)
 Execution of 'wait-simple' complete.
 Timer: 432 ticks
-Thread: 0 idle ticks, 350 kernel ticks, 84 user ticks
+Thread: 0 idle ticks, 351 kernel ticks, 84 user ticks
 hda2 (filesys): 124 reads, 400 writes
 hda3 (scratch): 196 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes

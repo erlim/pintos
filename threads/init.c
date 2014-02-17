@@ -126,6 +126,8 @@ main (void)
   serial_init_queue ();
   timer_calibrate ();
 
+  process_init();
+
 #ifdef VM
   page_init();
   mmap_init();

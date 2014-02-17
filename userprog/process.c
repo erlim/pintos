@@ -21,7 +21,7 @@
 #include "vm/mmap.h"
 #include "vm/frame.h"
 
-static int vme_id = 1;
+static int vme_id;
 static thread_func process_start NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
 
@@ -31,6 +31,7 @@ void process_init();
 void
 process_init()
 {
+  vme_id = 1;
   lock_init(&lock_file);
 }
 
@@ -624,7 +625,8 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 
     //2.6 modify ryoung vm(demand page)
     struct vm_entry *vme = malloc(sizeof(struct vm_entry));
-    vme->id = vme_id++;  
+    vme_id += 1;
+    vme->id = vme_id;  
     vme->type = VM_BIN;
     vme->vaddr = upage;
     vme->writable = writable;
@@ -674,7 +676,8 @@ setup_stack (void **esp)
   {
     //2.6 add ryoung vm(demand paging)
     struct vm_entry *vme = malloc(sizeof(struct vm_entry));
-    vme->id = vme_id ++;
+    vme_id += 1;
+    vme->id = vme_id;
     vme->type = VM_SWAP;
     vme->vaddr = ((uint8_t*)PHYS_BASE)- PGSIZE;
     vme->writable = true;
@@ -761,6 +764,7 @@ install_page (void *upage, void *kpage, bool writable)
 bool 
 handle_mm_fault(struct vm_entry *vme)
 {
+  bool swap = false;
   //2.14 modify ryoung
   struct page *kpage = page_alloc(PAL_USER); 
   bool success = false;
@@ -773,8 +777,12 @@ handle_mm_fault(struct vm_entry *vme)
       load_file(kpage->kaddr, vme);
       break;
     case VM_SWAP: 
+    {
+      swap = true;
       swap_in(vme->swap_slot, kpage->kaddr);
+      //printf("handle swap_in\n");
       break;
+    }
     default:
       break;
   }
@@ -783,7 +791,11 @@ handle_mm_fault(struct vm_entry *vme)
     vme->bPin = false;
     kpage->vme = vme;
     frame_insert_page(kpage);
+    //if(swap)
+      //printf("1\n");
     success = install_page(vme->vaddr, kpage->kaddr, vme->writable);
+    //if(swap)
+      //printf("2\n");
     if(!success)
     { 
       page_free(kpage->kaddr);
@@ -791,7 +803,9 @@ handle_mm_fault(struct vm_entry *vme)
     } 
     vme->bLoad = true;
     success = true;
-  } 
+  }
+  //if(swap)
+    //printf("3\n"); 
   return success;
 }
 

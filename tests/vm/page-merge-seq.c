@@ -124,7 +124,7 @@ verify (void)
         } 
     }
 
-  msg ("success %d, buf_idx=%'zu",  buf2[buf_idx], buf_idx);
+  msg ("success, buf_idx=%'zu", buf_idx);
 }
 
 void

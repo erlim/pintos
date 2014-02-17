@@ -162,7 +162,9 @@ page_fault (struct intr_frame *f)
   {
     if( (fault_addr >= f->esp-32) && (PHYS_BASE -pg_round_down(fault_addr) <= 0x800000) ) 
     {
-      expand_stack(fault_addr, f->esp);
+      //!todo
+      if(!expand_stack(fault_addr, f->esp))
+        return -1;
     }
     else
     {

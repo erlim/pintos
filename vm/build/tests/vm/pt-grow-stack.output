@@ -27,8 +27,8 @@ Executing 'pt-grow-stack':
 (pt-grow-stack) end
 pt-grow-stack: exit(0)
 Execution of 'pt-grow-stack' complete.
-Timer: 319 ticks
-Thread: 0 idle ticks, 264 kernel ticks, 58 user ticks
+Timer: 320 ticks
+Thread: 0 idle ticks, 264 kernel ticks, 59 user ticks
 hda2 (filesys): 59 reads, 224 writes
 hda3 (scratch): 109 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes

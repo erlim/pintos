@@ -30,44 +30,43 @@ swap_init()
 void
 swap_in(size_t slot_idx, void *kaddr)
 {
-  //printf("swap_in, %x %d\n",kaddr, slot_idx);
-  block_sector_t sector = slot_idx;
-
+  /********************************************
+  ex) slot_idx = 2
+  sector: 16 ~ 23
+  kaddr : kaddr ~ kaddr +(block_sector_size *8)
+  *********************************************/
+  block_sector_t sector = slot_idx * BLOCK_SECTOR_CNT;
   lock_acquire(&lock_file);
   int i =0; 
   for(; i< BLOCK_SECTOR_CNT; ++i)
   {
-    //block_read(block_swap, (slot_idx * BLOCK_SECTOR_CNT)+i, kaddr +(BLOCK_SECTOR_SIZE* i));    
-    sector += i;
+    sector += i; 
     block_read(block_swap, sector, kaddr);
-    kaddr += BLOCK_SECTOR_CNT;
+    kaddr  += BLOCK_SECTOR_SIZE;
   }
   lock_release(&lock_file);
-
   bitmap_flip(bitmap_swap, slot_idx);
-  //bitmap_set_multiple(bitmap_swap, slot_idx, 1, true);
 }
 
 size_t
 swap_out(void*kaddr)
 {
-  size_t slot_idx = bitmap_scan_and_flip(bitmap_swap, 0, 1, false);
-  //printf("swap_out, %x %d\n", kaddr, slot_idx);
-
-  block_sector_t sector = slot_idx;
-  
+   /********************************************
+  ex) slot_idx = 2
+  sector: 16 ~ 23
+  kaddr : kaddr ~ kaddr +(block_sector_size *8)
+  *********************************************/
+  size_ slot_idx = bitmap_scan_and_flip(bitmap_swap, 0, 1, false);
+  block_sector_t sector = slot_idx * BLOCK_SECTOR_CNT;
   lock_acquire(&lock_file);
   int i=0;
   for(; i<BLOCK_SECTOR_CNT; ++i)
   {
-    //block_write(block_swap, (slot_idx * BLOCK_SECTOR_CNT)+i, kaddr +(BLOCK_SECTOR_SIZE* i));    
     sector += i;
     block_write(block_swap, sector, kaddr);
     kaddr += BLOCK_SECTOR_SIZE;
   }
   lock_release(&lock_file);
-  
-  //bitmap_set_multiple(bitmap_swap, slot_idx, PG_SECTOR_CNT, true);
   
   return slot_idx;
 }

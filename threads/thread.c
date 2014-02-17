@@ -106,7 +106,7 @@ thread_init (void)
   void
 thread_start (void) 
 {
-  process_init();
+  //process_init();
   //printf("thread start\n");
 
   /* Create the idle thread. */

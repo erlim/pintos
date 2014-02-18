@@ -10,7 +10,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 13,104 sectors (6 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 147 sectors (73 kB), Pintos OS kernel (20)
+hda1: 155 sectors (77 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 216 sectors (108 kB), Pintos scratch (22)
 hda4: 8,192 sectors (4 MB), Pintos swap (23)
@@ -34,18 +34,18 @@ Executing 'page-merge-mm':
 (page-merge-mm) sort chunk 5
 child-qsort-mm: exit(-1)
 Kernel PANIC at ../../threads/synch.c:197 in lock_acquire(): assertion `!lock_held_by_current_thread (lock)' failed.
-Call stack: 0xc002860c 0xc0022db8 0xc002577d 0xc00247f4 0xc0024fa6 0xc00247f4 0xc002d562 0xc002ccb8 0xc002e364 0xc002a7d4 0xc0020f62 0xc002be5b 0xc002bb64 0xc0021ab6 0xc0021bed 0xc002503b 0xc0025881 0xc002477e 0xc0024b34 0xc002477e 0xc002d6f9 0xc002cd14 0xc002a53b 0xc002a696 0xc002bb6c 0xc0021ab6 0xc0021bed 0x8048306 0x804813a 0x80489ba.
+Call stack: 0xc002861c 0xc0022dc8 0xc002578d 0xc0024804 0xc0024fb6 0xc0024804 0xc002d6c2 0xc002ce18 0xc002e4bd 0xc002a8d0 0xc0020f72 0xc002bfbb 0xc002bcd0 0xc0021ac6 0xc0021bfd 0xc002504b 0xc0025891 0xc002478e 0xc0024b44 0xc002478e 0xc002d859 0xc002ce74 0xc002a54b 0xc002a6a5 0xc002bc8c 0xc0021ac6 0xc0021bfd 0x8048299 0x804813a 0x80489ba.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 5506 ticks
-Thread: 0 idle ticks, 317 kernel ticks, 5189 user ticks
-hda2 (filesys): 1227 reads, 3534 writes
+Timer: 5760 ticks
+Thread: 0 idle ticks, 321 kernel ticks, 5439 user ticks
+hda2 (filesys): 1294 reads, 3534 writes
 hda3 (scratch): 215 reads, 2 writes
-hda4 (swap): 0 reads, 0 writes
-Console: 1812 characters output
+hda4 (swap): 8 reads, 67 writes
+Console: 1813 characters output
 Keyboard: 0 keys pressed
-Exception: 382 page faults
+Exception: 390 page faults
 Powering off..========================================================================
                        Bochs x86 Emulator 2.6.2
                 Built from SVN snapshot on May 26, 2013

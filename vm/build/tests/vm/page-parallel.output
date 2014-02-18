@@ -10,7 +10,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 13,104 sectors (6 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 147 sectors (73 kB), Pintos OS kernel (20)
+hda1: 155 sectors (77 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 204 sectors (102 kB), Pintos scratch (22)
 hda4: 8,192 sectors (4 MB), Pintos swap (23)
@@ -33,18 +33,19 @@ Executing 'page-parallel':
 child-linear: exit(-1)
 child-linear: exit(-1)
 child-linear: exit(-1)
-child-linear: exit(-1)
-(page-parallel) wait for child 0: FAILED
+child-linear: exit(66)
+(page-parallel) wait for child 1
+(page-parallel) wait for child 1: FAILED
 page-parallel: exit(1)
 Execution of 'page-parallel' complete.
-Timer: 5098 ticks
-Thread: 0 idle ticks, 1012 kernel ticks, 4089 user ticks
-hda2 (filesys): 177 reads, 414 writes
+Timer: 11263 ticks
+Thread: 0 idle ticks, 1481 kernel ticks, 9785 user ticks
+hda2 (filesys): 207 reads, 414 writes
 hda3 (scratch): 203 reads, 2 writes
-hda4 (swap): 0 reads, 0 writes
-Console: 1350 characters output
+hda4 (swap): 80 reads, 144 writes
+Console: 1387 characters output
 Keyboard: 0 keys pressed
-Exception: 386 page faults
+Exception: 676 page faults
 Powering off...
 ========================================================================
                        Bochs x86 Emulator 2.6.2

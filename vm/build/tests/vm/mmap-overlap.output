@@ -10,7 +10,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 13,104 sectors (6 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 147 sectors (73 kB), Pintos OS kernel (20)
+hda1: 155 sectors (77 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 116 sectors (58 kB), Pintos scratch (22)
 hda4: 8,192 sectors (4 MB), Pintos swap (23)
@@ -32,8 +32,8 @@ Executing 'mmap-overlap':
 (mmap-overlap) end
 mmap-overlap: exit(0)
 Execution of 'mmap-overlap' complete.
-Timer: 342 ticks
-Thread: 0 idle ticks, 282 kernel ticks, 63 user ticks
+Timer: 347 ticks
+Thread: 0 idle ticks, 288 kernel ticks, 62 user ticks
 hda2 (filesys): 88 reads, 238 writes
 hda3 (scratch): 115 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes

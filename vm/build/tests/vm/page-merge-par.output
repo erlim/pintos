@@ -10,7 +10,7 @@ Pintos booting with 4,096 kB RAM...
 383 pages available in user pool.
 Calibrating timer...  204,600 loops/s.
 hda: 13,104 sectors (6 MB), model "BXHD00011", serial "Generic 1234"
-hda1: 147 sectors (73 kB), Pintos OS kernel (20)
+hda1: 155 sectors (77 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
 hda3: 211 sectors (105 kB), Pintos scratch (22)
 hda4: 8,192 sectors (4 MB), Pintos swap (23)
@@ -36,8 +36,8 @@ child-sort: exit(123)
 child-sort: exit(123)
 (page-merge-par) sort chunk 5
 child-sort: exit(123)
-child-sort: exit(123)
 (page-merge-par) sort chunk 6
+child-sort: exit(123)
 (page-merge-par) sort chunk 7
 child-sort: exit(123)
 (page-merge-par) wait for child 0
@@ -45,22 +45,25 @@ child-sort: exit(123)
 (page-merge-par) wait for child 1
 (page-merge-par) wait for child 2
 (page-merge-par) wait for child 3
-(page-merge-par) wait for child 4
 child-sort: exit(123)
+(page-merge-par) wait for child 4
 (page-merge-par) wait for child 5
 (page-merge-par) wait for child 6
 (page-merge-par) wait for child 7
 (page-merge-par) merge
-page-merge-par: exit(-1)
+(page-merge-par) verify
+(page-merge-par) success, buf_idx=1,048,576
+(page-merge-par) end
+page-merge-par: exit(0)
 Execution of 'page-merge-par' complete.
-Timer: 12973 ticks
-Thread: 0 idle ticks, 1551 kernel ticks, 11425 user ticks
-hda2 (filesys): 4805 reads, 6604 writes
+Timer: 21011 ticks
+Thread: 0 idle ticks, 1560 kernel ticks, 19454 user ticks
+hda2 (filesys): 4821 reads, 6604 writes
 hda3 (scratch): 210 reads, 2 writes
-hda4 (swap): 0 reads, 0 writes
-Console: 1782 characters output
+hda4 (swap): 1440 reads, 2512 writes
+Console: 1876 characters output
 Keyboard: 0 keys pressed
-Exception: 672 page faults
+Exception: 986 page faults
 Powering off...
 ========================================================================
                        Bochs x86 Emulator 2.6.2

@@ -4,23 +4,57 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BUFFER_CACHE_CNT	buffer_cache.c	14;"	d	file:
+DEPENDS	build/Makefile	/^DEPENDS = $(patsubst %.o,%.d,$(OBJECTS))$/;"	m
+DIRECT_BLOCK_CNT	inode.c	26;"	d	file:
+DOUBLE_INDIRECT	inode.c	/^  DOUBLE_INDIRECT,$/;"	e	enum:direct_t	file:
 FILESYS_DIRECTORY_H	directory.h	2;"	d
 FILESYS_FILESYS_H	filesys.h	2;"	d
 FILESYS_FILE_H	file.h	2;"	d
 FILESYS_FREE_MAP_H	free-map.h	2;"	d
 FILESYS_FSUTIL_H	fsutil.h	2;"	d
+FILESYS_H	buffer_cache.h	2;"	d
 FILESYS_INODE_H	inode.h	2;"	d
 FILESYS_OFF_T_H	off_t.h	2;"	d
 FREE_MAP_SECTOR	filesys.h	8;"	d
-INODE_MAGIC	inode.c	11;"	d	file:
+INDIRECT	inode.c	/^  INDIRECT,$/;"	e	enum:direct_t	file:
+INDIRECT_BLOCK_CNT	inode.c	15;"	d	file:
+INODE_MAGIC	inode.c	12;"	d	file:
 NAME_MAX	directory.h	12;"	d
+NORMAL_DIRECT	inode.c	/^  NORMAL_DIRECT =0, $/;"	e	enum:direct_t	file:
+OBJECTS	build/Makefile	/^OBJECTS = $(patsubst %.c,%.o,$(patsubst %.S,%.o,$(SOURCES)))$/;"	m
+OUT_LIMIT	inode.c	/^  OUT_LIMIT$/;"	e	enum:direct_t	file:
 PROTd	off_t.h	13;"	d
 ROOT_DIR_SECTOR	filesys.h	9;"	d
+SOURCES	build/Makefile	/^SOURCES = $(foreach dir,$(KERNEL_SUBDIRS),$($(dir)_SRC))$/;"	m
+SRCDIR	build/Makefile	/^SRCDIR = ..\/..$/;"	m
+_end	build/threads/kernel.lds.s	/^  _end = .;$/;"	d
+_end_bss	build/threads/kernel.lds.s	/^  _end_bss = .;$/;"	d
+_end_kernel_text	build/threads/kernel.lds.s	/^       _end_kernel_text = .; }$/;"	d
+_signature	build/threads/kernel.lds.s	/^     _signature = .; LONG(0xaa55aa55) }$/;"	d
+_start	build/threads/kernel.lds.s	/^  _start = 0xc0000000 + 0x20000;$/;"	d
+_start_bss	build/threads/kernel.lds.s	/^  _start_bss = .;$/;"	d
+access	buffer_cache.h	/^  bool access;$/;"	m	struct:buffer_head
+bc_destroy	buffer_cache.c	/^bc_destroy()$/;"	f
+bc_find	buffer_cache.c	/^bc_find(block_sector_t sector)$/;"	f
+bc_flush	buffer_cache.c	/^bc_flush()$/;"	f
+bc_flush_entry	buffer_cache.c	/^bc_flush_entry (struct buffer_head *bufe)$/;"	f
+bc_init	buffer_cache.c	/^bc_init()$/;"	f
+bc_read	buffer_cache.c	/^bc_read (block_sector_t sector_idx, void* buffer, off_t bytes_read, int chunk_size, int sector_ofs)$/;"	f
+bc_select_victim	buffer_cache.c	/^bc_select_victim()$/;"	f
+bc_write	buffer_cache.c	/^bc_write (block_sector_t sector_idx, void* buffer, off_t bytes_written, int chunk_size, int sector_ofs)$/;"	f
+buffer_cache	buffer_cache.c	/^static void* buffer_cache;      \/\/buffer cache's memory address$/;"	v	file:
+buffer_head	buffer_cache.c	/^static struct buffer_head buffer_head[BUFFER_CACHE_CNT];$/;"	v	typeref:struct:buffer_head	file:
+buffer_head	buffer_cache.h	/^struct buffer_head$/;"	s
 byte_to_sector	inode.c	/^byte_to_sector (const struct inode *inode, off_t pos) $/;"	f	file:
 bytes_to_sectors	inode.c	/^bytes_to_sectors (off_t size)$/;"	f	file:
+clock	buffer_cache.h	/^  bool clock;$/;"	m	struct:buffer_head
+clock_entry	buffer_cache.c	/^static int clock_entry;         \/\/clock for select victim entry $/;"	v	file:
+data	buffer_cache.h	/^  void* data;            \/\/buffer cache addr$/;"	m	struct:buffer_head
 data	inode.c	/^    struct inode_disk data;             \/* Inode content. *\/$/;"	m	struct:inode	typeref:struct:inode::inode_disk	file:
 deny_write	file.c	/^    bool deny_write;            \/* Has file_deny_write() been called? *\/$/;"	m	struct:file	file:
 deny_write_cnt	inode.c	/^    int deny_write_cnt;                 \/* 0: writes ok, >0: deny writes. *\/$/;"	m	struct:inode	file:
+devices_SRC	build/Makefile	/^devices_SRC  = devices\/pit.c		# Programmable interrupt timer chip.$/;"	m
 dir	directory.c	/^struct dir $/;"	s	file:
 dir_add	directory.c	/^dir_add (struct dir *dir, const char *name, block_sector_t inode_sector)$/;"	f
 dir_close	directory.c	/^dir_close (struct dir *dir) $/;"	f
@@ -33,8 +67,12 @@ dir_open_root	directory.c	/^dir_open_root (void)$/;"	f
 dir_readdir	directory.c	/^dir_readdir (struct dir *dir, char name[NAME_MAX + 1])$/;"	f
 dir_remove	directory.c	/^dir_remove (struct dir *dir, const char *name) $/;"	f
 dir_reopen	directory.c	/^dir_reopen (struct dir *dir) $/;"	f
+direct_t	inode.c	/^enum direct_t$/;"	g	file:
+directness	inode.c	/^   enum direct_t directness;$/;"	m	struct:sector_location	typeref:enum:sector_location::direct_t	file:
+dirty	buffer_cache.h	/^  bool dirty;$/;"	m	struct:buffer_head
 do_format	filesys.c	/^do_format (void)$/;"	f	file:
 elem	inode.c	/^    struct list_elem elem;              \/* Element in inode list. *\/$/;"	m	struct:inode	typeref:struct:inode::list_elem	file:
+extend_lock	inode.c	/^    struct lock extend_lock;            \/* semaphore lock *\/$/;"	m	struct:inode	typeref:struct:inode::lock	file:
 file	file.c	/^struct file $/;"	s	file:
 file_allow_write	file.c	/^file_allow_write (struct file *file) $/;"	f
 file_close	file.c	/^file_close (struct file *file) $/;"	f
@@ -49,6 +87,7 @@ file_seek	file.c	/^file_seek (struct file *file, off_t new_pos)$/;"	f
 file_tell	file.c	/^file_tell (struct file *file) $/;"	f
 file_write	file.c	/^file_write (struct file *file, const void *buffer, off_t size) $/;"	f
 file_write_at	file.c	/^file_write_at (struct file *file, const void *buffer, off_t size,$/;"	f
+filesys_SRC	build/Makefile	/^filesys_SRC  = filesys\/filesys.c	# Filesystem core.$/;"	m
 filesys_create	filesys.c	/^filesys_create (const char *name, off_t initial_size) $/;"	f
 filesys_done	filesys.c	/^filesys_done (void) $/;"	f
 filesys_init	filesys.c	/^filesys_init (bool format) $/;"	f
@@ -69,7 +108,10 @@ fsutil_cat	fsutil.c	/^fsutil_cat (char **argv)$/;"	f
 fsutil_extract	fsutil.c	/^fsutil_extract (char **argv UNUSED) $/;"	f
 fsutil_ls	fsutil.c	/^fsutil_ls (char **argv UNUSED) $/;"	f
 fsutil_rm	fsutil.c	/^fsutil_rm (char **argv) $/;"	f
+get_disk_inode	inode.c	/^static bool get_disk_inode(const struct inode *inode, struct inode_disk *inode_disk)$/;"	f	file:
 in_use	directory.c	/^    bool in_use;                        \/* In use or free? *\/$/;"	m	struct:dir_entry	file:
+index1	inode.c	/^   off_t index1;   $/;"	m	struct:sector_location	file:
+index2	inode.c	/^   off_t index2;  $/;"	m	struct:sector_location	file:
 inode	directory.c	/^    struct inode *inode;                \/* Backing store. *\/$/;"	m	struct:dir	typeref:struct:dir::inode	file:
 inode	file.c	/^    struct inode *inode;        \/* File's inode. *\/$/;"	m	struct:file	typeref:struct:file::inode	file:
 inode	inode.c	/^struct inode $/;"	s	file:
@@ -77,8 +119,9 @@ inode_allow_write	inode.c	/^inode_allow_write (struct inode *inode) $/;"	f
 inode_close	inode.c	/^inode_close (struct inode *inode) $/;"	f
 inode_create	inode.c	/^inode_create (block_sector_t sector, off_t length)$/;"	f
 inode_deny_write	inode.c	/^inode_deny_write (struct inode *inode) $/;"	f
-inode_disk	inode.c	/^struct inode_disk$/;"	s	file:
+inode_disk	inode.c	/^struct inode_disk \/\/ 512 Bytes$/;"	s	file:
 inode_get_inumber	inode.c	/^inode_get_inumber (const struct inode *inode)$/;"	f
+inode_indirect_block	inode.c	/^struct inode_indirect_block$/;"	s	file:
 inode_init	inode.c	/^inode_init (void) $/;"	f
 inode_length	inode.c	/^inode_length (const struct inode *inode)$/;"	f
 inode_open	inode.c	/^inode_open (block_sector_t sector)$/;"	f
@@ -87,16 +130,27 @@ inode_remove	inode.c	/^inode_remove (struct inode *inode) $/;"	f
 inode_reopen	inode.c	/^inode_reopen (struct inode *inode)$/;"	f
 inode_sector	directory.c	/^    block_sector_t inode_sector;        \/* Sector number of header. *\/$/;"	m	struct:dir_entry	file:
 inode_write_at	inode.c	/^inode_write_at (struct inode *inode, const void *buffer_, off_t size,$/;"	f
+kernel_SRC	build/Makefile	/^lib\/kernel_SRC  = lib\/kernel\/debug.c	# Debug helpers.$/;"	m
 length	inode.c	/^    off_t length;                       \/* File size in bytes. *\/$/;"	m	struct:inode_disk	file:
+lib_SRC	build/Makefile	/^lib_SRC  = lib\/debug.c			# Debug helpers.$/;"	m
+locate_byte	inode.c	/^static void locate_byte(off_t pos, struct sector_locaion *sec_loc)$/;"	f	file:
+lock	buffer_cache.h	/^  struct lock lock;   \/\/lock each file for therir own file(inode, disk, block)$/;"	m	struct:buffer_head	typeref:struct:buffer_head::lock
 lookup	directory.c	/^lookup (const struct dir *dir, const char *name,$/;"	f	file:
-magic	inode.c	/^    unsigned magic;                     \/* Magic number. *\/$/;"	m	struct:inode_disk	file:
+magic	inode.c	/^    unsigned magic;                     \/* Magic number. *\/       $/;"	m	struct:inode_disk	file:
+map_table	inode.c	/^  block_sector_t map_table[INDIRECT_BLOCK_CNT];$/;"	m	struct:inode_indirect_block	file:
+map_table_offset	inode.c	/^static inline off_t map_table_offset(int idx)$/;"	f	file:
 name	directory.c	/^    char name[NAME_MAX + 1];            \/* Null terminated file name. *\/$/;"	m	struct:dir_entry	file:
 off_t	off_t.h	/^typedef int32_t off_t;$/;"	t
 open_cnt	inode.c	/^    int open_cnt;                       \/* Number of openers. *\/$/;"	m	struct:inode	file:
 open_inodes	inode.c	/^static struct list open_inodes;$/;"	v	typeref:struct:list	file:
 pos	directory.c	/^    off_t pos;                          \/* Current position. *\/$/;"	m	struct:dir	file:
 pos	file.c	/^    off_t pos;                  \/* Current position. *\/$/;"	m	struct:file	file:
+register_sector	inode.c	/^static bool register_sector(struct inode_disk *inode_disk, block_sector_t new_sector, struct sector_locaion sec_loc)$/;"	f	file:
 removed	inode.c	/^    bool removed;                       \/* True if deleted, false otherwise. *\/$/;"	m	struct:inode	file:
+sector	buffer_cache.h	/^  block_sector_t sector;$/;"	m	struct:buffer_head
 sector	inode.c	/^    block_sector_t sector;              \/* Sector number of disk location. *\/$/;"	m	struct:inode	file:
-start	inode.c	/^    block_sector_t start;               \/* First data sector. *\/$/;"	m	struct:inode_disk	file:
-unused	inode.c	/^    uint32_t unused[125];               \/* Not used. *\/$/;"	m	struct:inode_disk	file:
+sector_location	inode.c	/^struct sector_location$/;"	s	file:
+start	inode.c	/^    block_sector_t start;               \/* First data sector. *\/  $/;"	m	struct:inode_disk	file:
+threads_SRC	build/Makefile	/^threads_SRC  = threads\/start.S		# Startup code.$/;"	m
+unused	inode.c	/^    uint32_t unused[125];               \/* Not used. *\/     $/;"	m	struct:inode_disk	file:
+userprog_SRC	build/Makefile	/^userprog_SRC  = userprog\/process.c	# Process loading.$/;"	m

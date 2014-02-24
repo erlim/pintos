@@ -22,6 +22,7 @@ filesys_init (bool format)
     PANIC ("No file system device found, can't initialize file system.");
 
   inode_init ();
+  bc_init();
   free_map_init ();
 
   if (format) 
@@ -35,6 +36,7 @@ filesys_init (bool format)
 void
 filesys_done (void) 
 {
+  //bc_destroy();
   free_map_close ();
 }
 
@@ -68,7 +70,7 @@ filesys_open (const char *name)
 {
   struct dir *dir = dir_open_root ();
   struct inode *inode = NULL;
-
+  
   if (dir != NULL)
     dir_lookup (dir, name, &inode);
   dir_close (dir);

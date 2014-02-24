@@ -306,6 +306,10 @@ thread_exit (void)
 {
   ASSERT (!intr_context ());
 
+#ifdef FILESYS
+  //bc_destroy();
+#endif
+
 #ifdef USERPROG
   process_exit ();
 #endif

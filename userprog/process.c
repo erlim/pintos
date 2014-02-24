@@ -11,6 +11,7 @@
 #include "filesys/directory.h"
 #include "filesys/file.h"
 #include "filesys/filesys.h"
+#include "filesys/buffer_cache.h"
 #include "threads/flags.h"
 #include "threads/init.h"
 #include "threads/interrupt.h"
@@ -57,7 +58,6 @@ process_execute (const char *file_name)
   static void
 process_start (void *file_name_)
 {
-  //printf("start process\n");
   char *file_name = file_name_;
   struct intr_frame if_;
 
@@ -201,6 +201,10 @@ process_exit (void)
 {
   struct thread *t = thread_current ();
   t->exit = true;
+
+#ifdef FILESYS
+  bc_flush();
+#endif
 
   //1.10 add ryoung (file descriptor)
   if(t->file_exec != NULL)

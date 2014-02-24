@@ -92,6 +92,7 @@ static bool
 lookup (const struct dir *dir, const char *name,
         struct dir_entry *ep, off_t *ofsp) 
 {
+  //printf("lookup\n");
   struct dir_entry e;
   size_t ofs;
   
@@ -102,12 +103,14 @@ lookup (const struct dir *dir, const char *name,
        ofs += sizeof e) 
     if (e.in_use && !strcmp (name, e.name)) 
       {
+        //printf("lookup %s %s, true\n", name, e.name);
         if (ep != NULL)
           *ep = e;
         if (ofsp != NULL)
           *ofsp = ofs;
         return true;
       }
+  //printf("lookup, false\n");
   return false;
 }
 
@@ -119,15 +122,22 @@ bool
 dir_lookup (const struct dir *dir, const char *name,
             struct inode **inode) 
 {
+  //printf("dir_lookup\n");
   struct dir_entry e;
 
   ASSERT (dir != NULL);
   ASSERT (name != NULL);
 
   if (lookup (dir, name, &e, NULL))
+  {
+    //printf("dir_lookup, true\n");
     *inode = inode_open (e.inode_sector);
+  }
   else
+  {
+    //printf("dir_lookup, false\n");
     *inode = NULL;
+  }
 
   return *inode != NULL;
 }

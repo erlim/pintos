@@ -1,1 +1,10 @@
-PASS
+FAIL
+Kernel panic in run: PANIC at ../../threads/thread.c:292 in thread_current(): assertion `is_thread (t)' failed.
+Call stack: 0xc002860c 0xc0020a7f 0xc002e1cc 0xc002bbb2 0xc0021ab6 0xc0021bed
+Translation of call stack:
+0xc002860c: debug_panic (.../../lib/kernel/debug.c:38)
+0xc0020a7f: thread_current (..../../threads/thread.c:293)
+0xc002e1cc: vme_find (...build/../../vm/page.c:101)
+0xc002bbb2: page_fault (.../userprog/exception.c:156)
+0xc0021ab6: intr_handler (..../threads/interrupt.c:375)
+0xc0021bed: intr_entry (threads/intr-stubs.S:38)

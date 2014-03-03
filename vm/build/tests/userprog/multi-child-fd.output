@@ -36,9 +36,15 @@ child-close: exit(0)
 (multi-child-fd) end
 multi-child-fd: exit(0)
 Execution of 'multi-child-fd' complete.
+<<<<<<< HEAD
 Timer: 485 ticks
 Thread: 0 idle ticks, 382 kernel ticks, 105 user ticks
 hda2 (filesys): 154 reads, 434 writes
+=======
+Timer: 459 ticks
+Thread: 0 idle ticks, 345 kernel ticks, 117 user ticks
+hda2 (filesys): 203 reads, 434 writes
+>>>>>>> addee61a7ad2e1fb60b8c1a4a44d7509ec5ef61d
 hda3 (scratch): 212 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes
 Console: 1287 characters output

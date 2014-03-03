@@ -1,0 +1,38 @@
+Copying tests/filesys/extended/dir-rm-tree.output to scratch partition...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
+PiLo hda1
+Loading..........
+Kernel command line: -q -f extract run dir-rm-tree-persistence
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+hda: 5,040 sectors (2 MB), model "BXHD00011", serial "Generic 1234"
+hda1: 163 sectors (81 kB), Pintos OS kernel (20)
+hda2: 4,096 sectors (2 MB), Pintos file system (21)
+hda3: 7 sectors (3 kB), Pintos scratch (22)
+filesys: using hda2
+scratch: using hda3
+Formatting file system...After File open... c010704c
+done.
+Boot complete.
+Extracting ustar archive from scratch device into file system...
+Putting 'dir-rm-tree.output' into the file system...
+Kernel PANIC at ../../filesys/fsutil.c:122 in fsutil_extract(): dir-rm-tree.output: create failed
+Call stack: 0xc002860c 0xc002efe0 0xc0020920.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 176 ticks
+Thread: 0 idle ticks, 176 kernel ticks, 0 user ticks
+hda2 (filesys): 4 reads, 4 writes
+hda3 (scratch): 1 reads, 0 writes
+Console: 1089 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off..========================================================================
+                       Bochs x86 Emulator 2.6.2
+                Built from SVN snapshot on May 26, 2013
+                  Compiled on Dec 28 2013 at 04:29:58
+========================================================================

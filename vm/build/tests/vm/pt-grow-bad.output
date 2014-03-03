@@ -25,9 +25,15 @@ Executing 'pt-grow-bad':
 (pt-grow-bad) begin
 pt-grow-bad: exit(-1)
 Execution of 'pt-grow-bad' complete.
+<<<<<<< HEAD
 Timer: 290 ticks
 Thread: 0 idle ticks, 258 kernel ticks, 35 user ticks
 hda2 (filesys): 61 reads, 204 writes
+=======
+Timer: 272 ticks
+Thread: 0 idle ticks, 236 kernel ticks, 39 user ticks
+hda2 (filesys): 81 reads, 204 writes
+>>>>>>> addee61a7ad2e1fb60b8c1a4a44d7509ec5ef61d
 hda3 (scratch): 99 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes
 Console: 975 characters output

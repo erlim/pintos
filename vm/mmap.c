@@ -39,10 +39,10 @@ check_is_mmaped(void *addr)
 {
   struct vm_entry vme;
   vme.vaddr = pg_round_down(addr);
-  if( NULL == hash_find(&thread_current()->vm, &vme.elem))
-    return false;
-  else
+  if( NULL != hash_find(&thread_current()->vm, &vme.elem))
     return true;
+  else
+    return false;
 }
 
 int 
@@ -137,9 +137,16 @@ do_munmap(int mapping)
             file_write_at(vme->file, vme->vaddr, vme->read_bytes, vme->offset);
             lock_release(&lock_file);
           }
+<<<<<<< HEAD
           //how to find frame->vaddr?????  hash_table??
           page_free(pagedir_get_page(t->pagedir, vme->vaddr)); //palloc_free_page(pagedir_get_page(t->pagedir, vme->vaddr));
           pagedir_clear_page(t->pagedir, vme->vaddr);  
+=======
+          //2.12 modify ryoung swap
+          page_free(vme->vaddr);
+          //palloc_free_page(pagedir_get_page(t->pagedir, vme->vaddr));
+          pagedir_clear_page(t->pagedir, vme->vaddr);
+>>>>>>> addee61a7ad2e1fb60b8c1a4a44d7509ec5ef61d
         }
         list_remove(&vme->mmap_elem);
         vme_remove(&t->vm, vme);  //unmemory

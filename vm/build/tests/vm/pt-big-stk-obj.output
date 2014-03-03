@@ -27,9 +27,15 @@ Executing 'pt-big-stk-obj':
 (pt-big-stk-obj) end
 pt-big-stk-obj: exit(0)
 Execution of 'pt-big-stk-obj' complete.
+<<<<<<< HEAD
 Timer: 601 ticks
 Thread: 0 idle ticks, 290 kernel ticks, 314 user ticks
 hda2 (filesys): 59 reads, 224 writes
+=======
+Timer: 281 ticks
+Thread: 0 idle ticks, 242 kernel ticks, 42 user ticks
+hda2 (filesys): 89 reads, 224 writes
+>>>>>>> addee61a7ad2e1fb60b8c1a4a44d7509ec5ef61d
 hda3 (scratch): 109 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes
 Console: 1050 characters output

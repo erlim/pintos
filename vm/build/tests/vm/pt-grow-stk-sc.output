@@ -30,9 +30,15 @@ Executing 'pt-grow-stk-sc':
 (pt-grow-stk-sc) read "sample.txt"
 pt-grow-stk-sc: exit(-1)
 Execution of 'pt-grow-stk-sc' complete.
+<<<<<<< HEAD
 Timer: 349 ticks
 Thread: 0 idle ticks, 263 kernel ticks, 89 user ticks
 hda2 (filesys): 94 reads, 218 writes
+=======
+Timer: 277 ticks
+Thread: 0 idle ticks, 238 kernel ticks, 42 user ticks
+hda2 (filesys): 88 reads, 210 writes
+>>>>>>> addee61a7ad2e1fb60b8c1a4a44d7509ec5ef61d
 hda3 (scratch): 102 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes
 Console: 1176 characters output

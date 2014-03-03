@@ -25,19 +25,37 @@ page_alloc(enum palloc_flags flags)
     kpage = frame_select_victim(flags);
   
   struct page *page = malloc(sizeof(struct page));
+<<<<<<< HEAD
   page->kaddr = (uint8_t*)kpage;
   //page>vme = caller 
   page->thread = thread_current();
   //printf("page->thread tid:%d\n", page->thread->tid);
   //frame_insert_page(page); 
+=======
+  page->kaddr = kpage;
+  //page>vme = caller 
+  page->thread = thread_current();
+  lru_insert_page(page); 
+>>>>>>> addee61a7ad2e1fb60b8c1a4a44d7509ec5ef61d
   return page;
 }
 
 void
 page_free(void *kaddr)
 {
+<<<<<<< HEAD
   struct page *page = frame_find_page(kaddr);
   if(page)
+=======
+  struct page *pg = lru_find_page(kaddr);
+  lru_remove_page(pg);
+
+  struct thread *t = thread_current();
+   
+  //vm->type ==VM_FILE
+  /*
+  if(pagedir_is_dirty(t->pagedir, kaddr))
+>>>>>>> addee61a7ad2e1fb60b8c1a4a44d7509ec5ef61d
   {
     frame_remove_page(page);
     palloc_free_page(kaddr);

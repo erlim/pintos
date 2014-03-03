@@ -7,6 +7,7 @@ Kernel command line: -q -f extract run 'args-multiple some arguments for you!'
 Pintos booting with 4,096 kB RAM...
 383 pages available in kernel pool.
 383 pages available in user pool.
+<<<<<<< HEAD
 Calibrating timer...  204,600 loops/s.
 hda: 13,104 sectors (6 MB), model "BXHD00011", serial "Generic 1234"
 hda1: 155 sectors (77 kB), Pintos OS kernel (20)
@@ -39,8 +40,18 @@ hda2 (filesys): 63 reads, 204 writes
 hda3 (scratch): 99 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes
 Console: 1233 characters output
+=======
+Kernel PANIC at ../../threads/thread.c:292 in thread_current(): assertion `is_thread (t)' failed.
+Call stack: 0xc002860c 0xc0020a7f 0xc002e1cc 0xc002bbb2 0xc0021ab6 0xc0021bed 0 0xc0029ec7 0xc002e1de 0xc002bbb2 0xc0021ab6 0xc0021bed 0 0xc0029ec7 0xc002e1de 0xc002bbb2 0xc0021ab6 0xc0021bed 0 0xc0029ec7 0xc002e1de 0xc002bbb2 0xc0021ab6 0xc0021bed 0 0xc0029ec7 0xc002e1de 0xc002bbb2 0xc0021ab6 0xc0021bed 0 0xc0029ec7 0xc002e1de 0xc002bbb2 0xc0021ab6 0xc0021bed 0 0xc0029ec7 0xc002e1de 0xc002bbb2 0xc0021ab6 0xc0021bed 0 0xc0029ec7 0xc002e1de 0xc002bbb2 0xc0021ab6 0xc0021bed 0 0xc0029ec7 0xc002e1de 0xc002bbb2 0xc0021ab6 0xc0021bed 0 0xc0029ec7 0xc002e1de 0xc002bbb2 0xc0021ab6 0xc0021bed 0 0xc0029ec7 0xc002e1de 0xc002bbb2 0xc0021ab6 0xc0021bed 0 0xc0029ec7 0xc002e1de 0xc002bbb2 0xc0021ab6 0xc0021bed 0 0xc0029ec7 0xc002e1de 0xc002bbb2 0xc0021ab6 0xc0021bed 0xc00246db 0xc002e9a7 0xc002082f.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 1 ticks
+Thread: 0 idle ticks, 1 kernel ticks, 0 user ticks
+Console: 1299 characters output
+>>>>>>> addee61a7ad2e1fb60b8c1a4a44d7509ec5ef61d
 Keyboard: 0 keys pressed
-Exception: 5 page faults
+Exception: 13 page faults
 Powering off...
 ========================================================================
                        Bochs x86 Emulator 2.6.2

@@ -62,9 +62,15 @@ child-rox: exit(12)
 (rox-multichild) end
 rox-multichild: exit(0)
 Execution of 'rox-multichild' complete.
+<<<<<<< HEAD
 Timer: 795 ticks
 Thread: 0 idle ticks, 422 kernel ticks, 376 user ticks
 hda2 (filesys): 285 reads, 434 writes
+=======
+Timer: 743 ticks
+Thread: 0 idle ticks, 322 kernel ticks, 424 user ticks
+hda2 (filesys): 442 reads, 434 writes
+>>>>>>> addee61a7ad2e1fb60b8c1a4a44d7509ec5ef61d
 hda3 (scratch): 212 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes
 Console: 1999 characters output

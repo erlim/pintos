@@ -25,9 +25,15 @@ Executing 'open-bad-ptr':
 (open-bad-ptr) begin
 open-bad-ptr: exit(-1)
 Execution of 'open-bad-ptr' complete.
+<<<<<<< HEAD
 Timer: 290 ticks
 Thread: 0 idle ticks, 257 kernel ticks, 36 user ticks
 hda2 (filesys): 65 reads, 204 writes
+=======
+Timer: 271 ticks
+Thread: 0 idle ticks, 234 kernel ticks, 40 user ticks
+hda2 (filesys): 87 reads, 204 writes
+>>>>>>> addee61a7ad2e1fb60b8c1a4a44d7509ec5ef61d
 hda3 (scratch): 99 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes
 Console: 981 characters output

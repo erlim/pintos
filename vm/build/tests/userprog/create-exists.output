@@ -31,9 +31,15 @@ Executing 'create-exists':
 (create-exists) end
 create-exists: exit(0)
 Execution of 'create-exists' complete.
+<<<<<<< HEAD
 Timer: 369 ticks
 Thread: 0 idle ticks, 260 kernel ticks, 112 user ticks
 hda2 (filesys): 133 reads, 226 writes
+=======
+Timer: 351 ticks
+Thread: 0 idle ticks, 237 kernel ticks, 117 user ticks
+hda2 (filesys): 155 reads, 226 writes
+>>>>>>> addee61a7ad2e1fb60b8c1a4a44d7509ec5ef61d
 hda3 (scratch): 100 reads, 2 writes
 hda4 (swap): 0 reads, 0 writes
 Console: 1193 characters output

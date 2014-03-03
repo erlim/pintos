@@ -202,10 +202,8 @@ process_exit (void)
   struct thread *t = thread_current ();
   t->exit = true;
 
-#ifdef FILESYS
-//  bc_flush();
-#endif
-
+  //bc_flush(); //3 fails
+  
   //1.10 add ryoung (file descriptor)
   if(t->file_exec != NULL)
   {

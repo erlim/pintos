@@ -1,0 +1,58 @@
+Copying tests/filesys/extended/syn-rw to scratch partition...
+Copying tests/filesys/extended/tar to scratch partition...
+Copying tests/filesys/extended/child-syn-rw to scratch partition...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
+PiLo hda1
+Loading.........
+Kernel command line: -q -f extract run syn-rw
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+hda: 1,008 sectors (504 kB), model "BXHD00011", serial "Generic 1234"
+hda1: 155 sectors (77 kB), Pintos OS kernel (20)
+hda2: 338 sectors (169 kB), Pintos scratch (22)
+hdb: 5,040 sectors (2 MB), model "BXHD00012", serial "Generic 1234"
+hdb1: 4,096 sectors (2 MB), Pintos file system (21)
+filesys: using hdb1
+scratch: using hda2
+Formatting file system...done.
+Boot complete.
+Extracting ustar archive from scratch device into file system...
+Putting 'syn-rw' into the file system...
+Putting 'tar' into the file system...
+Putting 'child-syn-rw' into the file system...
+Erasing ustar archive...
+Executing 'syn-rw':
+(syn-rw) begin
+(syn-rw) create "logfile"
+(syn-rw) open "logfile"
+(syn-rw) exec child 1 of 4: "child-syn-rw 0"
+(syn-rw) exec child 2 of 4: "child-syn-rw 1"
+(syn-rw) exec child 3 of 4: "child-syn-rw 2"
+(syn-rw) exec child 4 of 4: "child-syn-rw 3"
+child-syn-rw: exit(0)
+child-syn-rw: exit(1)
+child-syn-rw: exit(2)
+child-syn-rw: exit(3)
+(syn-rw) wait for child 1 of 4 returned 0 (expected 0)
+(syn-rw) wait for child 2 of 4 returned 1 (expected 1)
+(syn-rw) wait for child 3 of 4 returned 2 (expected 2)
+(syn-rw) wait for child 4 of 4 returned 3 (expected 3)
+(syn-rw) end
+syn-rw: exit(0)
+Execution of 'syn-rw' complete.
+Timer: 4865 ticks
+Thread: 0 idle ticks, 2058 kernel ticks, 2810 user ticks
+hdb1 (filesys): 745 reads, 705 writes
+hda2 (scratch): 337 reads, 2 writes
+Console: 1563 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...
+========================================================================
+                       Bochs x86 Emulator 2.6.2
+                Built from SVN snapshot on May 26, 2013
+                  Compiled on Dec 28 2013 at 04:29:58
+========================================================================

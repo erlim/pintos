@@ -1,4 +1,8 @@
-cscope 15 $HOME/src/pintos/filesys               0000150406
+<<<<<<< HEAD
+cscope 15 $HOME/src/pintos/filesys               0000153556
+=======
+cscope 15 $HOME/src/pintos/filesys               0000167863
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	@buffer_cache.c
 
 1 
@@ -74,7 +78,7 @@ BUFFER_CACHE_CNT
 ];
 
 20 
-	gşock_’Œy
+	gşock_hªd
 ;
 
 23 
@@ -82,10 +86,6 @@ BUFFER_CACHE_CNT
 ()
 
 25 
-	`´štf
-("bc_init\n");
-
-26 
 bufãr_ÿche
  = 
 	`m®loc
@@ -95,23 +95,29 @@ BLOCK_SECTOR_SIZE
 BUFFER_CACHE_CNT
 );
 
-27 *
+26 if(
+bufãr_ÿche
+ =ğ
+NULL
+)
+
+28 *
 d©a
  = 
 bufãr_ÿche
 ;
 
-28 
+29 
 idx
  =0;
 
-29 ; 
+30 ; 
 idx
 < 
 BUFFER_CACHE_CNT
 ; ++idx)
 
-31 
+32 
 bufãr_h—d
 [
 idx
@@ -121,7 +127,7 @@ dœty
 çl£
 ;
 
-32 
+33 
 bufãr_h—d
 [
 idx
@@ -130,16 +136,6 @@ acûss
  = 
 çl£
 ;
-
-33 
-bufãr_h—d
-[
-idx
-].
-şock
- = 
-çl£
- ;
 
 34 
 bufãr_h—d
@@ -159,13 +155,23 @@ idx
 lock
 );
 
-37 
+36 
 bufãr_h—d
 [
 idx
 ].
 d©a
  = data;
+
+37 
+bufãr_h—d
+[
+idx
+].
+şock
+ = 
+çl£
+ ;
 
 38 
 d©a
@@ -174,7 +180,7 @@ BLOCK_SECTOR_SIZE
 ;
 
 40 
-şock_’Œy
+şock_hªd
  = 0;
 
 41 
@@ -185,39 +191,35 @@ BLOCK_SECTOR_SIZE
 	$bc_de¡roy
 ()
 
-46 
+47 
 	`bc_æush
 ();
 
-47 
-bufãr_ÿche
- = 
-NULL
-;
-
 48 
+	`ä“
+(
+bufãr_ÿche
+);
+
+49 
 	}
 }
 
-51 
+52 
 	$bc_æush
 ()
 
-53 
-	`´štf
-("bc_flush\n");
-
-54 
+55 
 idx
 ;
 
-55 
+56 
 idx
  = 0; idx < 
 BUFFER_CACHE_CNT
 ; ++idx)
 
-57 if(
+58 if(
 bufãr_h—d
 [
 idx
@@ -225,21 +227,17 @@ idx
 dœty
  =ğ
 Œue
-)
+ && bufãr_h—d[idx].
+acûss
+ ==rue)
 
-58 
+59 
 	`bc_æush_’Œy
 (&
 bufãr_h—d
 [
 idx
 ]);
-
-60 
-	`ä“
-(
-bufãr_h—d
-);
 
 61 
 	}
@@ -253,9 +251,13 @@ bufãr_h—d
 buã
 )
 
-66 
-	`´štf
-("bc_flush_entry\n");
+67 
+	`lock_acquœe
+(&
+buã
+->
+lock
+);
 
 68 
 	`block_wr™e
@@ -270,6 +272,14 @@ d©a
 );
 
 69 
+	`lock_»Ëa£
+(&
+buã
+->
+lock
+);
+
+70 
 buã
 ->
 dœty
@@ -277,15 +287,15 @@ dœty
 çl£
 ;
 
-70 
+71 
 	}
 }
 
-72 
+73 
 boŞ
 
 
-73 
+74 
 	$bc_»ad
  (
 block_£ùÜ_t
@@ -303,11 +313,7 @@ chunk_size
 £ùÜ_ofs
 )
 
-75 
-	`´štf
-("bc_read\n");
-
-76 
+77 
 bufãr_h—d
  *
 buã
@@ -317,29 +323,57 @@ buã
 £ùÜ_idx
 );
 
-77 if(
+78 if(
 buã
  =ğ
 NULL
 )
 
-79 
+80 
 buã
  = 
 	`bc_£Ëù_viùim
 ();
 
-80 if(
+81 if(
 buã
  =ğ
 NULL
 )
 
-81  
+82  
 çl£
 ;
 
-82 
+83 
+	`lock_acquœe
+(&
+buã
+->
+lock
+);
+
+84 
+	`block_»ad
+(
+fs_deviû
+, 
+£ùÜ_idx
+, 
+buã
+->
+d©a
+);
+
+85 
+	`lock_»Ëa£
+(&
+buã
+->
+lock
+);
+
+86 
 buã
 ->
 dœty
@@ -347,7 +381,7 @@ dœty
 çl£
 ;
 
-83 
+87 
 buã
 ->
 acûss
@@ -355,7 +389,7 @@ acûss
 Œue
 ;
 
-84 
+88 
 buã
 ->
 £ùÜ
@@ -363,25 +397,15 @@ buã
 £ùÜ_idx
 ;
 
-86 
-	`lock_acquœe
-(&
-buã
-);
-
-87 
-	`block_»ad
-(
-fs_deviû
-, 
+90 
 buã
 ->
-£ùÜ
-, buã->
-d©a
-);
+şock
+ = 
+Œue
+;
 
-89 
+91 
 	`memıy
 (
 bufãr
@@ -391,41 +415,25 @@ by‹s_»ad
 buã
 ->
 d©a
- +
++
 £ùÜ_ofs
 , 
 chunk_size
 );
 
-90 
-	`lock_»Ëa£
-(&
-buã
-->
-lock
-);
-
-91 
-buã
-->
-şock
- = 
+93  
 Œue
 ;
 
-94  
-Œue
-;
-
-95 
+94 
 	}
 }
 
-97 
+96 
 boŞ
 
 
-98 
+97 
 	$bc_wr™e
  (
 block_£ùÜ_t
@@ -443,11 +451,7 @@ chunk_size
 £ùÜ_ofs
 )
 
-100 
-	`´štf
-("bc_write\n");
-
-101 
+100 
 bufãr_h—d
  *
 buã
@@ -457,53 +461,29 @@ buã
 £ùÜ_idx
 );
 
-102 if(
+101 if(
 buã
  =ğ
 NULL
 )
 
-104 
+103 
 buã
  = 
 	`bc_£Ëù_viùim
 ();
 
-105 ià(
+104 ià(
 buã
  =ğ
 NULL
 )
 
-106  
+105  
 çl£
 ;
 
-107 
-buã
-->
-dœty
- = 
-Œue
-;
-
-108 
-buã
-->
-acûss
- = 
-Œue
-;
-
-109 
-buã
-->
-£ùÜ
- = 
-£ùÜ_idx
-;
-
-111 
+106 
 	`lock_acquœe
 (&
 buã
@@ -511,7 +491,7 @@ buã
 lock
 );
 
-112 
+107 
 	`block_»ad
 (
 fs_deviû
@@ -523,7 +503,47 @@ buã
 d©a
 );
 
+108 
+	`lock_»Ëa£
+(&
+buã
+->
+lock
+);
+
+110 
+buã
+->
+dœty
+ = 
+Œue
+;
+
+111 
+buã
+->
+acûss
+ = 
+Œue
+;
+
+112 
+buã
+->
+£ùÜ
+ = 
+£ùÜ_idx
+;
+
 113 
+buã
+->
+şock
+ = 
+Œue
+;
+
+114 
 	`memıy
 (
 buã
@@ -539,80 +559,68 @@ by‹s_wr™‹n
 chunk_size
 );
 
-114 
-	`lock_»Ëa£
-(&
-buã
-->
-lock
-);
+116  
+Œue
+;
 
-115 
-buã
-->
+117 
+	}
+}
+
+119 
+bufãr_h—d
+*
+
+120 
+	$bc_£Ëù_viùim
+()
+
+123 
+Œue
+)
+
+125 if(
+şock_hªd
+ >ğ
+BUFFER_CACHE_CNT
+)
+
+126 
+şock_hªd
+ = 0;
+
+127 if(
+bufãr_h—d
+[
+şock_hªd
+].
+şock
+)
+
+128 
+bufãr_h—d
+[
+şock_hªd
+].
+şock
+ = 
+çl£
+;
+
+131 
+bufãr_h—d
+[
+şock_hªd
+].
 şock
  = 
 Œue
 ;
 
-117  
-Œue
-;
-
-118 
-	}
-}
-
-120 
-bufãr_h—d
-*
-
-121 
-	$bc_£Ëù_viùim
-()
-
-123 
-idx
- = 
-şock_’Œy
-;
-
-124 
-Œue
-)
-
-126 if(
-idx
- =ğ
-BUFFER_CACHE_CNT
-)
-
-127 
-idx
- = 0;
-
-128 if(
-bufãr_h—d
-[
-idx
-].
-acûss
-)
-
-129 
-bufãr_h—d
-[
-idx
-].
-acûss
- = 
-çl£
-;
-
 132 if(
 bufãr_h—d
 [
-idx
+şock_hªd
 ].
 dœty
  =ğ
@@ -624,13 +632,13 @@ dœty
 (&
 bufãr_h—d
 [
-idx
+şock_hªd
 ]);
 
 134 
 bufãr_h—d
 [
-idx
+şock_hªd
 ].
 dœty
  = 
@@ -640,7 +648,7 @@ dœty
 135 
 bufãr_h—d
 [
-idx
+şock_hªd
 ].
 acûss
  = 
@@ -650,46 +658,30 @@ acûss
 136 
 bufãr_h—d
 [
-idx
+şock_hªd
 ].
 £ùÜ
  = -1;
 
-137 
+137  &
 bufãr_h—d
 [
-idx
-].
-d©a
- = 
-NULL
-;
-
-138  &
-bufãr_h—d
-[
-idx
+şock_hªd
 ];
 
 140 
-şock_’Œy
- +=1;
+şock_hªd
+ += 1;
 
-141 
-idx
- = 
-şock_’Œy
-;
-
-143 
+142 
 	}
 }
 
-145 
+144 
 bufãr_h—d
 *
 
-146 
+145 
 	$bc_fšd
 (
 block_£ùÜ_t
@@ -697,17 +689,17 @@ block_£ùÜ_t
 £ùÜ
 )
 
-148 
+147 
 idx
 ;
 
-149 
+148 
 idx
  = 0; idx < 
 BUFFER_CACHE_CNT
 ; ++idx)
 
-151 if(
+150 if(
 bufãr_h—d
 [
 idx
@@ -715,17 +707,17 @@ idx
 £ùÜ
  == sector)
 
-153  &
+151  &
 bufãr_h—d
 [
 idx
 ];
 
-156  
+153  
 NULL
 ;
 
-157 
+154 
 	}
 }
 
@@ -1165,19 +1157,19 @@ off_t
 of¥
 )
 
-95 
+96 
 dœ_’Œy
  
 e
 ;
 
-96 
+97 
 size_t
  
 ofs
 ;
 
-98 
+99 
 	`ASSERT
  (
 dœ
@@ -1185,7 +1177,7 @@ dœ
 NULL
 );
 
-99 
+100 
 	`ASSERT
  (
 Çme
@@ -1193,7 +1185,7 @@ NULL
 NULL
 );
 
-101 
+102 
 ofs
  = 0; 
 	`šode_»ad_©
@@ -1205,13 +1197,13 @@ dœ
 e
 , ƒ, ofs) == ƒ;
 
-102 
+103 
 ofs
  +ğ 
 e
 )
 
-103 ià(
+104 ià(
 e
 .
 š_u£
@@ -1221,47 +1213,47 @@ e
 Çme
 ,ƒ.name))
 
-105 ià(
-•
- !ğ
-NULL
-)
-
-106 *
-•
- = 
-e
-;
-
 107 ià(
-of¥
+•
  !ğ
 NULL
 )
 
 108 *
+•
+ = 
+e
+;
+
+109 ià(
+of¥
+ !ğ
+NULL
+)
+
+110 *
 of¥
  = 
 ofs
 ;
 
-109  
+111  
 Œue
 ;
 
-111  
+114  
 çl£
 ;
 
-112 
+115 
 	}
 }
 
-118 
+121 
 boŞ
 
 
-119 
+122 
 	$dœ_lookup
  (cÚ¡ 
 dœ
@@ -1269,17 +1261,17 @@ dœ
 Çme
 ,
 
-120 
+123 
 šode
  **inode)
 
-122 
+126 
 dœ_’Œy
  
 e
 ;
 
-124 
+128 
 	`ASSERT
  (
 dœ
@@ -1287,7 +1279,7 @@ dœ
 NULL
 );
 
-125 
+129 
 	`ASSERT
  (
 Çme
@@ -1295,7 +1287,7 @@ NULL
 NULL
 );
 
-127 ià(
+131 ià(
 	`lookup
  (
 dœ
@@ -1307,7 +1299,7 @@ e
 NULL
 ))
 
-128 *
+134 *
 šode
  = 
 	`šode_İ’
@@ -1317,27 +1309,27 @@ e
 šode_£ùÜ
 );
 
-130 *
+139 *
 šode
  = 
 NULL
 ;
 
-132  *
+142  *
 šode
  !ğ
 NULL
 ;
 
-133 
+143 
 	}
 }
 
-141 
+151 
 boŞ
 
 
-142 
+152 
 	$dœ_add
  (
 dœ
@@ -1349,19 +1341,19 @@ block_£ùÜ_t
 šode_£ùÜ
 )
 
-144 
+154 
 dœ_’Œy
  
 e
 ;
 
-145 
+155 
 off_t
  
 ofs
 ;
 
-146 
+156 
 boŞ
  
 sucûss
@@ -1369,7 +1361,7 @@ sucûss
 çl£
 ;
 
-148 
+158 
 	`ASSERT
  (
 dœ
@@ -1377,7 +1369,7 @@ dœ
 NULL
 );
 
-149 
+159 
 	`ASSERT
  (
 Çme
@@ -1385,7 +1377,7 @@ NULL
 NULL
 );
 
-152 ià(*
+162 ià(*
 Çme
  =ğ'\0' || 
 	`¡¾’
@@ -1393,11 +1385,11 @@ NULL
 NAME_MAX
 )
 
-153  
+163  
 çl£
 ;
 
-156 ià(
+166 ià(
 	`lookup
  (
 dœ
@@ -1407,11 +1399,11 @@ dœ
 NULL
 , NULL))
 
-157 
+167 
 dÚe
 ;
 
-166 
+176 
 ofs
  = 0; 
 	`šode_»ad_©
@@ -1423,19 +1415,19 @@ dœ
 e
 , ƒ, ofs) == ƒ;
 
-167 
+177 
 ofs
  +ğ 
 e
 )
 
-168 ià(!
+178 ià(!
 e
 .
 š_u£
 )
 
-172 
+182 
 e
 .
 š_u£
@@ -1443,7 +1435,7 @@ e
 Œue
 ;
 
-173 
+183 
 	`¡¾ıy
  (
 e
@@ -1451,13 +1443,13 @@ e
 Çme
 ,‚ame, ƒ.name);
 
-174 
+184 
 e
 .
 šode_£ùÜ
  = inode_sector;
 
-175 
+185 
 sucûss
  = 
 	`šode_wr™e_©
@@ -1471,23 +1463,23 @@ e
 ofs
 ) == ƒ;
 
-177 
+187 
 dÚe
 :
 
-178  
+188  
 sucûss
 ;
 
-179 
+189 
 	}
 }
 
-184 
+194 
 boŞ
 
 
-185 
+195 
 	$dœ_»move
  (
 dœ
@@ -1495,19 +1487,19 @@ dœ
 Çme
 )
 
-187 
+197 
 dœ_’Œy
  
 e
 ;
 
-188 
+198 
 šode
  *šodğ
 NULL
 ;
 
-189 
+199 
 boŞ
  
 sucûss
@@ -1515,13 +1507,13 @@ sucûss
 çl£
 ;
 
-190 
+200 
 off_t
  
 ofs
 ;
 
-192 
+202 
 	`ASSERT
  (
 dœ
@@ -1529,7 +1521,7 @@ dœ
 NULL
 );
 
-193 
+203 
 	`ASSERT
  (
 Çme
@@ -1537,7 +1529,7 @@ NULL
 NULL
 );
 
-196 ià(!
+206 ià(!
 	`lookup
  (
 dœ
@@ -1549,11 +1541,11 @@ e
 ofs
 ))
 
-197 
+207 
 dÚe
 ;
 
-200 
+210 
 šode
  = 
 	`šode_İ’
@@ -1563,17 +1555,17 @@ e
 šode_£ùÜ
 );
 
-201 ià(
+211 ià(
 šode
  =ğ
 NULL
 )
 
-202 
+212 
 dÚe
 ;
 
-205 
+215 
 e
 .
 š_u£
@@ -1581,7 +1573,7 @@ e
 çl£
 ;
 
-206 ià(
+216 ià(
 	`šode_wr™e_©
  (
 dœ
@@ -1593,45 +1585,45 @@ e
 ofs
 ) != ƒ)
 
-207 
+217 
 dÚe
 ;
 
-210 
+220 
 	`šode_»move
  (
 šode
 );
 
-211 
+221 
 sucûss
  = 
 Œue
 ;
 
-213 
+223 
 dÚe
 :
 
-214 
+224 
 	`šode_şo£
  (
 šode
 );
 
-215  
+225  
 sucûss
 ;
 
-216 
+226 
 	}
 }
 
-221 
+231 
 boŞ
 
 
-222 
+232 
 dœ_»addœ
  (
 dœ
@@ -1641,13 +1633,13 @@ dœ
 NAME_MAX
  + 1])
 
-224 
+234 
 dœ_’Œy
  
 	ge
 ;
 
-226 
+236 
 šode_»ad_©
  (
 dœ
@@ -1659,7 +1651,7 @@ e
 pos
 ) == ƒ)
 
-228 
+238 
 dœ
 ->
 pos
@@ -1667,13 +1659,13 @@ pos
 e
 ;
 
-229 ià(
+239 ià(
 	ge
 .
 	gš_u£
 )
 
-231 
+241 
 ¡¾ıy
  (
 Çme
@@ -1683,11 +1675,11 @@ e
 NAME_MAX
  + 1);
 
-232  
+242  
 	gŒue
 ;
 
-235  
+245  
 	gçl£
 ;
 
@@ -2556,42 +2548,46 @@ NULL
  ();
 
 25 
+	`bc_š™
+();
+
+26 
 	`ä“_m­_š™
  ();
 
-27 ià(
+28 ià(
 fÜm©
 )
 
-28 
+29 
 	`do_fÜm©
  ();
 
-30 
+31 
 	`ä“_m­_İ’
  ();
 
-31 
+32 
 	}
 }
 
-36 
+37 
 	$fesys_dÚe
  ()
 
-38 
+40 
 	`ä“_m­_şo£
  ();
 
-39 
+41 
 	}
 }
 
-45 
+47 
 boŞ
 
 
-46 
+48 
 	$fesys_ü—‹
  (cÚ¡ *
 Çme
@@ -2601,19 +2597,19 @@ off_t
 š™Ÿl_size
 )
 
-48 
+50 
 block_£ùÜ_t
  
 šode_£ùÜ
  = 0;
 
-49 
+51 
 dœ
  *dœ = 
 	`dœ_İ’_roÙ
  ();
 
-50 
+52 
 boŞ
  
 sucûss
@@ -2623,13 +2619,13 @@ dœ
 NULL
 
 
-51 && 
+53 && 
 	`ä“_m­_®loÿ‹
  (1, &
 šode_£ùÜ
 )
 
-52 && 
+54 && 
 	`šode_ü—‹
  (
 šode_£ùÜ
@@ -2637,7 +2633,7 @@ NULL
 š™Ÿl_size
 )
 
-53 && 
+55 && 
 	`dœ_add
  (
 dœ
@@ -2647,61 +2643,61 @@ dœ
 šode_£ùÜ
 ));
 
-54 ià(!
+56 ià(!
 sucûss
  && 
 šode_£ùÜ
  != 0)
 
-55 
+57 
 	`ä“_m­_»Ëa£
  (
 šode_£ùÜ
 , 1);
 
-56 
+58 
 	`dœ_şo£
  (
 dœ
 );
 
-58  
+60  
 sucûss
 ;
 
-59 
+61 
 	}
 }
 
-66 
+68 
 fe
  *
 
-67 
+69 
 	$fesys_İ’
  (cÚ¡ *
 Çme
 )
 
-69 
+71 
 dœ
  *dœ = 
 	`dœ_İ’_roÙ
  ();
 
-70 
+72 
 šode
  *šodğ
 NULL
 ;
 
-72 ià(
+74 ià(
 dœ
  !ğ
 NULL
 )
 
-73 
+75 
 	`dœ_lookup
  (
 dœ
@@ -2711,39 +2707,39 @@ dœ
 šode
 );
 
-74 
+76 
 	`dœ_şo£
  (
 dœ
 );
 
-76  
+78  
 	`fe_İ’
  (
 šode
 );
 
-77 
+79 
 	}
 }
 
-83 
+85 
 boŞ
 
 
-84 
+86 
 	$fesys_»move
  (cÚ¡ *
 Çme
 )
 
-86 
+88 
 dœ
  *dœ = 
 	`dœ_İ’_roÙ
  ();
 
-87 
+89 
 boŞ
  
 sucûss
@@ -2757,51 +2753,51 @@ NULL
 Çme
 );
 
-88 
+90 
 	`dœ_şo£
  (
 dœ
 );
 
-90  
+92  
 sucûss
 ;
 
-91 
+93 
 	}
 }
 
-95 
+97 
 	$do_fÜm©
  ()
 
-97 
+99 
 	`´štf
  ("Formatting file system...");
 
-98 
+100 
 	`ä“_m­_ü—‹
  ();
 
-99 ià(!
+101 ià(!
 	`dœ_ü—‹
  (
 ROOT_DIR_SECTOR
 , 16))
 
-100 
+102 
 	`PANIC
  ("root directory creation failed");
 
-101 
+103 
 	`ä“_m­_şo£
  ();
 
-102 
+104 
 	`´štf
  ("done.\n");
 
-103 
+105 
 	}
 }
 
@@ -4184,108 +4180,170 @@ fsut_­³nd
 	)
 
 15 
-	#INDIRECT_BLOCK_CNT
- 
-BLOCK_SECTOR_SIZE
- / (
-block_£ùÜ_t
-)
+	#POINTER_SIZE
+ 4
 
 	)
 
-26 
+16 
+	#INDIRECT_BLOCK_CNT
+ 
+BLOCK_SECTOR_SIZE
+<<<<<<< HEAD
+ / 
+POINTER_SIZE
+
+
+	)
+
+17 
+=======
+ / 4
+
+	)
+
+27 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	#DIRECT_BLOCK_CNT
  123
 
 	)
 
-28 
+<<<<<<< HEAD
+18 
+	#NOT_DEFINE
+ 0
+
+19 
+
+	)
+
+20 
 	edœeù_t
 
 
-30 
-	mNORMAL_DIRECT
+22 
+	mDIRECT
  =0,
 
-31 
+23 
 	mINDIRECT
 ,
 
-32 
+24 
 	mDOUBLE_INDIRECT
 ,
 
-33 
-	mOUT_LIMIT
+25 
+	mTREBLE_INDIRECT
+,
+
+26 
+	mERROR
 
 
-36 
+29 
 	s£ùÜ_loÿtiÚ
 
 
-38 
+31 
+=======
+28 
+	#POINTER_SIZE
+ 4
+
+	)
+
+30 
+	edœeù_t
+
+
+32 
+	mNORMAL_DIRECT
+ =0,
+
+33 
+	mINDIRECT
+,
+
+34 
+	mDOUBLE_INDIRECT
+,
+
+35 
+	mTREBLE_INDIRECT
+,
+
+36 
+	mOUT_LIMIT
+
+
+39 
+	s£ùÜ_loÿtiÚ
+
+
+41 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 dœeù_t
  
-	mdœeùÃss
+	mty³
 ;
 
-39 
+<<<<<<< HEAD
+32 
+=======
+42 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 off_t
  
-	mšdex1
+	midx1
 ;
 
-40 
+<<<<<<< HEAD
+33 
+=======
+43 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 off_t
  
-	mšdex2
+	midx2
 ;
 
-43 
+<<<<<<< HEAD
+36 
+	sšdœeù_block
+
+
+38 
+=======
+46 
 	sšode_šdœeù_block
 
 
-45 
+48 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 block_£ùÜ_t
  
-	mm­_bË
+	mtbl
 [
 INDIRECT_BLOCK_CNT
 ];
 
-51 
-	sšode_disk
-
-
-54 
-block_£ùÜ_t
- 
-	m¡¬t
-;
-
-55 
-off_t
- 
-	mËngth
-;
-
-56 
-	mmagic
-;
-
-58 
-ušt32_t
- 
-	munu£d
-[125];
-
-69 
+<<<<<<< HEAD
+41 
+=======
+51 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šlše
  
 size_t
 
 
-70 
+<<<<<<< HEAD
+42 
+=======
+52 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	$by‹s_to_£ùÜs
  (
 off_t
@@ -4293,7 +4351,11 @@ off_t
 size
 )
 
-72  
+<<<<<<< HEAD
+44  
+=======
+54  
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`DIV_ROUND_UP
  (
 size
@@ -4301,125 +4363,733 @@ size
 BLOCK_SECTOR_SIZE
 );
 
-73 
+<<<<<<< HEAD
+45 
 	}
 }
 
-76 
+63 
+	sšode_disk
+
+
+65 
+=======
+55 
+	}
+}
+
+73 
+	sšode_disk
+
+
+75 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+off_t
+ 
+	mËngth
+;
+
+<<<<<<< HEAD
+66 
+	mmagic
+;
+
+67 
+block_£ùÜ_t
+ 
+	mdœeù_tbl
+=======
+76 
+	mmagic
+;
+
+77 
+block_£ùÜ_t
+ 
+	mdœeù_m­_bË
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+[
+DIRECT_BLOCK_CNT
+];
+
+<<<<<<< HEAD
+68 
+block_£ùÜ_t
+ 
+	mšdœeù1
+;
+
+69 
+block_£ùÜ_t
+ 
+	mšdœeù2
+;
+
+70 
+block_£ùÜ_t
+ 
+	mšdœeù3
+;
+
+74 
 	sšode
 
 
-78 
-li¡_–em
+76 
+=======
+78 
+block_£ùÜ_t
  
-	m–em
+	mšdœeù_block_£c
 ;
 
 79 
 block_£ùÜ_t
  
+	mdoubË_šdœeù_block_£c
+;
+
+80 
+block_£ùÜ_t
+ 
+	mŒib–_šdœeù_block_£c
+;
+
+85 
+	sšode
+
+
+87 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+li¡_–em
+ 
+	m–em
+;
+
+<<<<<<< HEAD
+77 
+=======
+88 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+block_£ùÜ_t
+ 
 	m£ùÜ
 ;
 
-80 
+<<<<<<< HEAD
+78 
 	mİ’_út
 ;
 
-81 
+79 
+=======
+89 
+	mİ’_út
+;
+
+90 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 boŞ
  
 	m»moved
 ;
 
-82 
+<<<<<<< HEAD
+80 
 	md’y_wr™e_út
 ;
 
-84 
-šode_disk
- 
-	md©a
+83 
+=======
+91 
+	md’y_wr™e_út
 ;
 
-85 
+94 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 lock
  
 	mex‹nd_lock
 ;
 
-92 
+<<<<<<< HEAD
+87 
 block_£ùÜ_t
-
-
-93 
-	$by‹_to_£ùÜ
- (cÚ¡ 
+ 
+by‹_to_£ùÜ
+=======
+98 
+boŞ
+ 
+g‘_disk_šode
+(cÚ¡ 
 šode
- *šode, 
+* inode, 
+šode_disk
+* inode_disk);
+
+99 
+loÿ‹_by‹
+(
 off_t
  
 pos
+, 
+£ùÜ_loÿtiÚ
+ *
+£c_loc
+);
+
+100 
+boŞ
+ 
+»gi¡”_£ùÜ
+ (
+šode_disk
+ *šode_disk, 
+block_£ùÜ_t
+ 
+Ãw_£ùÜ
+, 
+£ùÜ_loÿtiÚ
+ 
+£c_loc
+);
+
+101 
+block_£ùÜ_t
+ 
+by‹_to_£ùÜ
+(cÚ¡ 
+šode_disk
+ *šode_disk, 
+off_t
+ 
+pos
+);
+
+102 
+ä“_šode_£ùÜs
+(
+šode_disk
+* inode_disk);
+
+103 
+boŞ
+ 
+šode_upd©e_fe_Ëngth
+(
+šode_disk
+* inode_disk, 
+off_t
+ 
+¡¬t
+, off_ˆ
+’d
+);
+
+107 
+block_£ùÜ_t
+
+
+108 
+	$by‹_to_£ùÜ
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+(cÚ¡ 
+šode_disk
+ *šode_disk, 
+off_t
+ 
+pos
+<<<<<<< HEAD
+);
+
+88 
+g‘_£ùÜ_loÿtiÚ
+(
+off_t
+ 
+pos
+, 
+£ùÜ_loÿtiÚ
+ *
+£c_loc
+);
+
+89 
+boŞ
+ 
+g‘_šode_disk
+(cÚ¡ 
+šode
+* inode, 
+šode_disk
+* inode_disk);
+
+90 
+boŞ
+ 
+šode_disk_£t_£ùÜ
+ (
+šode_disk
+ *šode_disk, 
+block_£ùÜ_t
+ 
+Ãw_£ùÜ
+, 
+£ùÜ_loÿtiÚ
+ 
+£c_loc
+);
+
+91 
+šode_disk_ä“_£ùÜ
+(
+šode_disk
+* inode_disk);
+
+92 
+boŞ
+ 
+šode_disk_upd©e_by_fesize
+(
+šode_disk
+* inode_disk, 
+off_t
+ 
+¡¬t
+, off_ˆ
+’d
+);
+
+96 
+block_£ùÜ_t
+
+
+97 
+	$by‹_to_£ùÜ
+(cÚ¡ 
+šode_disk
+ *šode_disk, 
+off_t
+ 
+off£t
 )
 
-95 
+99 
 	`ASSERT
- (
-šode
+(
+šode_disk
  !ğ
 NULL
 );
 
-96 ià(
-pos
- < 
-šode
+100 
+block_£ùÜ_t
+ 
+»suÉ_£c
+ = 
+NOT_DEFINE
+;
+
+101 if(
+off£t
+< 
+šode_disk
 ->
-d©a
-.
 Ëngth
 )
 
-97  
-šode
-->
-d©a
-.
-¡¬t
- + 
-pos
- / 
-BLOCK_SECTOR_SIZE
+103 
+šdœeù_block
+ *
+šd_block
 ;
 
-100 
+104 
+£ùÜ_loÿtiÚ
+ 
+£c_loc
+;
+
+105 
+	`g‘_£ùÜ_loÿtiÚ
+(
+off£t
+, &
+£c_loc
+);
+
+106 
+£c_loc
+.
+ty³
+)
+
+108 
+DIRECT
+:
+
+109 
+»suÉ_£c
+ = 
+šode_disk
+->
+dœeù_tbl
+[
+£c_loc
+.
+idx1
+];
+
+111 
+INDIRECT
+:
+
+112 
+šd_block
+ = (
+šdœeù_block
+*)
+	`m®loc
+(
+BLOCK_SECTOR_SIZE
+);
+
+113 if(
+šd_block
+)
+
+115 
+	`bc_»ad
+(
+šode_disk
+->
+šdœeù1
+, 
+šd_block
+, 0, 
+BLOCK_SECTOR_SIZE
+,0);
+
+116 
+»suÉ_£c
+ = 
+šd_block
+->
+tbl
+[
+£c_loc
+.
+idx1
+];
+
+117 
+	`ä“
+(
+šd_block
+);
+
+120 
+DOUBLE_INDIRECT
+:
+
+121 
+šd_block
+ = (
+šdœeù_block
+*)
+	`m®loc
+(
+BLOCK_SECTOR_SIZE
+);
+
+122 if(
+šd_block
+)
+
+124 
+	`bc_»ad
+(
+šode_disk
+->
+šdœeù2
+, 
+šd_block
+,0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+125 
+	`bc_»ad
+(
+šd_block
+->
+tbl
+[
+£c_loc
+.
+idx1
+], ind_block, 0, 
+BLOCK_SECTOR_SIZE
+,0);
+
+126 
+»suÉ_£c
+ = 
+šd_block
+->
+tbl
+[
+£c_loc
+.
+idx2
+];
+
+127 
+=======
+)
+
+110 
+	`ASSERT
+(
+šode_disk
+ !ğ
+NULL
+);
+
+111 
+block_£ùÜ_t
+ 
+»suÉ_£c
+ = 0;
+
+112 if(
+pos
+ < 
+šode_disk
+->
+Ëngth
+)
+
+114 
+šode_šdœeù_block
+ *
+šd_block
+;
+
+115 
+£ùÜ_loÿtiÚ
+ 
+£c_loc
+;
+
+116 
+	`loÿ‹_by‹
+(
+pos
+, &
+£c_loc
+);
+
+117 
+£c_loc
+. 
+dœeùÃss
+)
+
+119 
+NORMAL_DIRECT
+:
+
+120 
+»suÉ_£c
+ = 
+šode_disk
+->
+dœeù_m­_bË
+[
+£c_loc
+.
+šdex1
+];
+
+122 
+INDIRECT
+:
+
+123 
+šd_block
+ = (
+šode_šdœeù_block
+*)
+	`m®loc
+(
+BLOCK_SECTOR_SIZE
+);
+
+124 if(
+šd_block
+)
+
+126 
+	`bc_»ad
+(
+šode_disk
+->
+šdœeù_block_£c
+, 
+šd_block
+, 0, 
+BLOCK_SECTOR_SIZE
+,0);
+
+127 
+»suÉ_£c
+ = 
+šd_block
+->
+m­_bË
+[
+£c_loc
+.
+šdex1
+];
+
+128 
+	`ä“
+(
+šd_block
+);
+
+131 
+DOUBLE_INDIRECT
+:
+
+132 
+šd_block
+ = (
+šode_šdœeù_block
+*)
+	`m®loc
+(
+BLOCK_SECTOR_SIZE
+);
+
+133 if(
+šd_block
+)
+
+135 
+	`bc_»ad
+(
+šode_disk
+->
+doubË_šdœeù_block_£c
+, 
+šd_block
+,0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+136 
+	`bc_»ad
+(
+šd_block
+->
+m­_bË
+[
+£c_loc
+.
+šdex1
+], ind_block, 0, 
+BLOCK_SECTOR_SIZE
+,0);
+
+137 
+»suÉ_£c
+ = 
+šd_block
+->
+m­_bË
+[
+£c_loc
+.
+šdex2
+];
+
+138 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+	`ä“
+(
+šd_block
+);
+
+<<<<<<< HEAD
+134  
+»suÉ_£c
+;
+
+135 
 	}
 }
 
-104 
+139 
+=======
+145  
+»suÉ_£c
+;
+
+146 
+	}
+}
+
+150 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 li¡
  
 	gİ’_šodes
 ;
 
-108 
+<<<<<<< HEAD
+143 
 	$šode_š™
  ()
 
-110 
+145 
+=======
+154 
+	$šode_š™
+ ()
+
+156 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`li¡_š™
  (&
 İ’_šodes
 );
 
-111 
+<<<<<<< HEAD
+146 
 	}
 }
 
-118 
+153 
 boŞ
 
 
-119 
+154 
+=======
+157 
+	}
+}
+
+164 
+boŞ
+
+
+165 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	$šode_ü—‹
  (
 block_£ùÜ_t
@@ -4431,15 +5101,16 @@ off_t
 Ëngth
 )
 
-121 
+<<<<<<< HEAD
+156 
+=======
+167 
 šode_disk
- *
-disk_šode
- = 
+ *šode_disk = 
 NULL
 ;
 
-122 
+168 
 boŞ
  
 sucûss
@@ -4447,137 +5118,168 @@ sucûss
 çl£
 ;
 
-124 
+170 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`ASSERT
  (
 Ëngth
  >= 0);
 
-128 
+<<<<<<< HEAD
+161 
+šode_disk
+ *šode_disk = 
+	`ÿÎoc
+ (1,  *inode_disk);
+
+162 ià(
+=======
+174 
 	`ASSERT
  ( *
-disk_šode
+šode_disk
  =ğ
 BLOCK_SECTOR_SIZE
 );
 
-130 
-disk_šode
+176 
+šode_disk
  = 
 	`ÿÎoc
- (1,  *disk_inode);
+ (1,  *inode_disk);
 
-131 ià(
-disk_šode
+177 ià(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+šode_disk
  !ğ
 NULL
 )
 
-133 
-size_t
- 
-£ùÜs
- = 
-	`by‹s_to_£ùÜs
- (
-Ëngth
-);
-
-134 
-disk_šode
+<<<<<<< HEAD
+164 
+=======
+179 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+šode_disk
 ->
 Ëngth
  =†ength;
+<<<<<<< HEAD
 
-135 
-disk_šode
+165 
+šode_disk
+->
+magic
+=======
+
+180 
+šode_disk
 ->
 magic
  = 
 INODE_MAGIC
 ;
 
-136 ià(
-	`ä“_m­_®loÿ‹
- (
-£ùÜs
-, &
-disk_šode
-->
-¡¬t
-))
-
-138 
-	`block_wr™e
- (
-fs_deviû
-, 
-£ùÜ
-, 
-disk_šode
-);
-
-139 ià(
-£ùÜs
+181 if(
+Ëngth
  > 0)
 
-141 
-z”os
-[
-BLOCK_SECTOR_SIZE
-];
+183 if(!
+	`šode_upd©e_fe_Ëngth
+(
+šode_disk
+, 0, 
+Ëngth
+-1))
 
-142 
-size_t
- 
-i
+184  
+çl£
 ;
 
-144 
-i
- = 0; i < 
-£ùÜs
-; i++)
+186 
+	`bc_wr™e
+(
+£ùÜ
+, 
+šode_disk
+, 0,
+BLOCK_SECTOR_SIZE
+, 0);
 
-145 
-	`block_wr™e
- (
-fs_deviû
-, 
-disk_šode
-->
-¡¬t
- + 
-i
-, 
-z”os
+187 
+	`ä“
+(
+šode_disk
 );
 
-147 
+188 
 sucûss
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
  = 
+INODE_MAGIC
+;
+
+<<<<<<< HEAD
+166 if(!
+	`šode_disk_upd©e_by_fesize
+(
+šode_disk
+, 0, 
+Ëngth
+-1))
+
+167  
+çl£
+;
+
+168 
+	`bc_wr™e
+(
+£ùÜ
+, 
+šode_disk
+, 0,
+BLOCK_SECTOR_SIZE
+, 0);
+
+169 
+	`ä“
+(
+šode_disk
+);
+
+170  
 Œue
 ;
 
-149 
-	`ä“
- (
-disk_šode
-);
-
-151  
-sucûss
+172  
+çl£
 ;
 
-152 
+173 
 	}
 }
 
-157 
+178 
 šode
  *
 
-158 
+179 
+=======
+190  
+sucûss
+;
+
+191 
+	}
+}
+
+196 
+šode
+ *
+
+197 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	$šode_İ’
  (
 block_£ùÜ_t
@@ -4585,17 +5287,29 @@ block_£ùÜ_t
 £ùÜ
 )
 
-160 
+<<<<<<< HEAD
+181 
+=======
+199 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 li¡_–em
  *
 e
 ;
 
-161 
+<<<<<<< HEAD
+182 
 šode
  *inode;
 
-164 
+185 
+=======
+200 
+šode
+ *inode;
+
+203 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 e
  = 
 	`li¡_begš
@@ -4605,13 +5319,21 @@ e
 	`li¡_’d
  (&open_inodes);
 
-165 
+<<<<<<< HEAD
+186 
+=======
+204 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 e
  = 
 	`li¡_Ãxt
  (e))
 
-167 
+<<<<<<< HEAD
+188 
+=======
+206 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
  = 
 	`li¡_’Œy
@@ -4621,39 +5343,67 @@ e
 –em
 );
 
-168 ià(
+<<<<<<< HEAD
+189 ià(
+=======
+207 ià(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
 ->
 £ùÜ
  == sector)
 
-170 
+<<<<<<< HEAD
+191 
+=======
+209 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`šode_»İ’
  (
 šode
 );
 
-171  
+<<<<<<< HEAD
+192  
 šode
 ;
 
-176 
+197 
+=======
+210  
+šode
+;
+
+215 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
  = 
 	`m®loc
  ( *inode);
 
-177 ià(
+<<<<<<< HEAD
+198 ià(
+=======
+216 ià(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
  =ğ
 NULL
 )
 
-178  
+<<<<<<< HEAD
+199  
 NULL
 ;
 
-181 
+202 
+=======
+217  
+NULL
+;
+
+220 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`li¡_push_äÚt
  (&
 İ’_šodes
@@ -4663,25 +5413,41 @@ NULL
 –em
 );
 
-182 
+<<<<<<< HEAD
+203 
+=======
+221 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
 ->
 £ùÜ
  = sector;
 
-183 
+<<<<<<< HEAD
+204 
+=======
+222 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
 ->
 İ’_út
  = 1;
 
-184 
+<<<<<<< HEAD
+205 
+=======
+223 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
 ->
 d’y_wr™e_út
  = 0;
 
-185 
+<<<<<<< HEAD
+206 
+=======
+224 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
 ->
 »moved
@@ -4689,95 +5455,159 @@ d’y_wr™e_út
 çl£
 ;
 
-186 
-	`block_»ad
- (
-fs_deviû
-, 
+<<<<<<< HEAD
+207 
+=======
+225 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+	`lock_š™
+(&
 šode
 ->
-£ùÜ
-, &šode->
-d©a
+ex‹nd_lock
 );
 
-187  
+<<<<<<< HEAD
+209  
 šode
 ;
 
-188 
+210 
 	}
 }
 
-191 
+213 
 šode
  *
 
-192 
+214 
+=======
+227  
+šode
+;
+
+228 
+	}
+}
+
+231 
+šode
+ *
+
+232 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	$šode_»İ’
  (
 šode
  *inode)
 
-194 ià(
+<<<<<<< HEAD
+216 ià(
+=======
+234 ià(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
  !ğ
 NULL
 )
 
-195 
+<<<<<<< HEAD
+217 
+=======
+235 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
 ->
 İ’_út
 ++;
 
-196  
+<<<<<<< HEAD
+218  
 šode
 ;
 
-197 
+219 
 	}
 }
 
-200 
+222 
 block_£ùÜ_t
 
 
-201 
+223 
+=======
+236  
+šode
+;
+
+237 
+	}
+}
+
+240 
+block_£ùÜ_t
+
+
+241 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	$šode_g‘_šumb”
  (cÚ¡ 
 šode
  *inode)
 
-203  
+<<<<<<< HEAD
+225  
+=======
+243  
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
 ->
 £ùÜ
 ;
 
-204 
+<<<<<<< HEAD
+226 
 	}
 }
 
-210 
+232 
+=======
+244 
+	}
+}
+
+250 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	$šode_şo£
  (
 šode
  *inode)
 
-213 ià(
+<<<<<<< HEAD
+235 ià(
+=======
+253 ià(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
  =ğ
 NULL
 )
 
-217 ià(--
+<<<<<<< HEAD
+239 ià(--
+=======
+257 ià(--
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
 ->
 İ’_út
  == 0)
 
-220 
+<<<<<<< HEAD
+242 
+=======
+260 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`li¡_»move
  (&
 šode
@@ -4785,57 +5615,114 @@ NULL
 –em
 );
 
-223 ià(
+<<<<<<< HEAD
+245 ià(
+=======
+263 ià(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
 ->
 »moved
 )
 
-225 
+<<<<<<< HEAD
+247 
+=======
+265 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+šode_disk
+ *šode_disk = 
+	`m®loc
+((inode_disk));
+<<<<<<< HEAD
+
+248 
+	`g‘_šode_disk
+(
+šode
+, 
+šode_disk
+);
+
+249 
+	`šode_disk_ä“_£ùÜ
+(
+šode_disk
+);
+
+250 
 	`ä“_m­_»Ëa£
- (
+(
 šode
 ->
 £ùÜ
 , 1);
 
-226 
+251 
+=======
+
+266 
+	`g‘_disk_šode
+(
+šode
+, 
+šode_disk
+);
+
+267 
+	`ä“_šode_£ùÜs
+(
+šode_disk
+);
+
+268 
 	`ä“_m­_»Ëa£
- (
+(
 šode
 ->
-d©a
-.
-¡¬t
-,
+£ùÜ
+, 1);
 
-227 
-	`by‹s_to_£ùÜs
- (
-šode
-->
-d©a
-.
-Ëngth
-));
+269 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+	`ä“
+(
+šode_disk
+);
 
-230 
+<<<<<<< HEAD
+253 
+=======
+271 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`ä“
  (
 šode
 );
 
-232 
+<<<<<<< HEAD
+255 
 	}
 }
 
-237 
+260 
+=======
+273 
+	}
+}
+
+278 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	$šode_»move
  (
 šode
  *inode)
 
-239 
+<<<<<<< HEAD
+262 
+=======
+280 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`ASSERT
  (
 šode
@@ -4843,7 +5730,11 @@ d©a
 NULL
 );
 
-240 
+<<<<<<< HEAD
+263 
+=======
+281 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
 ->
 »moved
@@ -4851,15 +5742,27 @@ NULL
 Œue
 ;
 
-241 
+<<<<<<< HEAD
+264 
 	}
 }
 
-246 
+269 
 off_t
 
 
-247 
+270 
+=======
+282 
+	}
+}
+
+287 
+off_t
+
+
+288 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	$šode_»ad_©
  (
 šode
@@ -4873,7 +5776,11 @@ size
 off£t
 )
 
-249 
+<<<<<<< HEAD
+273 
+=======
+291 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 ušt8_t
  *
 bufãr
@@ -4881,37 +5788,89 @@ bufãr
 bufãr_
 ;
 
-250 
+<<<<<<< HEAD
+274 
+=======
+292 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 off_t
  
 by‹s_»ad
  = 0;
 
-251 
-ušt8_t
- *
-bounû
- = 
+<<<<<<< HEAD
+278 
+=======
+296 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+šode_disk
+ *šode_disk = 
+	`m®loc
+((inode_disk));
+
+<<<<<<< HEAD
+279 if(
+=======
+297 if(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+šode_disk
+ =ğ
 NULL
+)
+<<<<<<< HEAD
+
+280  
+çl£
 ;
 
-253 
+281 
+	`g‘_šode_disk
+(
+šode
+=======
+
+298  
+çl£
+;
+
+299 
+	`g‘_disk_šode
+(
+šode
+, 
+šode_disk
+);
+
+301 
 size
  > 0)
 
-256 
+304 
 block_£ùÜ_t
  
 £ùÜ_idx
  = 
 	`by‹_to_£ùÜ
  (
-šode
+šode_disk
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 , 
-off£t
+šode_disk
 );
 
-257 
+<<<<<<< HEAD
+283 
+size
+ > 0)
+
+286 
+=======
+305 if(
+£ùÜ_idx
+ == 0)
+
+309 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 £ùÜ_ofs
  = 
 off£t
@@ -4919,7 +5878,11 @@ off£t
 BLOCK_SECTOR_SIZE
 ;
 
-260 
+<<<<<<< HEAD
+287 
+=======
+310 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 off_t
  
 šode_Ëá
@@ -4931,7 +5894,11 @@ off_t
 off£t
 ;
 
-261 
+<<<<<<< HEAD
+288 
+=======
+311 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 £ùÜ_Ëá
  = 
 BLOCK_SECTOR_SIZE
@@ -4939,7 +5906,11 @@ BLOCK_SECTOR_SIZE
 £ùÜ_ofs
 ;
 
-262 
+<<<<<<< HEAD
+289 
+=======
+312 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 mš_Ëá
  = 
 šode_Ëá
@@ -4947,7 +5918,11 @@ mš_Ëá
 £ùÜ_Ëá
  ? inode_left : sector_left;
 
-265 
+<<<<<<< HEAD
+292 
+=======
+315 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 chunk_size
  = 
 size
@@ -4955,113 +5930,120 @@ size
 mš_Ëá
  ? size : min_left;
 
-266 ià(
+<<<<<<< HEAD
+293 ià(
 chunk_size
  <= 0)
 
-269 ià(
-£ùÜ_ofs
- =ğ0 && 
-chunk_size
- =ğ
-BLOCK_SECTOR_SIZE
-)
+297 
+block_£ùÜ_t
+ 
+£ùÜ_idx
+ = 
+	`by‹_to_£ùÜ
+ (
+šode_disk
+, 
+off£t
+);
 
-272 
+298 if(
+£ùÜ_idx
+ == 0)
+
+301 
 	`bc_»ad
 (
 £ùÜ_idx
-, 
-fs_deviû
-, 
-by‹s_»ad
-, 
+=======
+316 ià(
 chunk_size
-,
-£ùÜ_ofs
-);
+ <= 0)
 
-280 ià(
-bounû
- =ğ
-NULL
-)
-
-282 
-bounû
- = 
-	`m®loc
- (
-BLOCK_SECTOR_SIZE
-);
-
-283 ià(
-bounû
- =ğ
-NULL
-)
-
-286 
-	`block_»ad
- (
-fs_deviû
-, 
+319 
+	`bc_»ad
+(
 £ùÜ_idx
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 , 
-bounû
-);
-
-287 
-	`memıy
- (
 bufãr
- + 
+, 
 by‹s_»ad
 , 
-bounû
- + 
-£ùÜ_ofs
-, 
 chunk_size
+, 
+£ùÜ_ofs
 );
 
-291 
+<<<<<<< HEAD
+304 
+=======
+322 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 size
  -ğ
 chunk_size
 ;
 
-292 
+<<<<<<< HEAD
+305 
+=======
+323 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 off£t
  +ğ
 chunk_size
 ;
 
-293 
+<<<<<<< HEAD
+306 
+=======
+324 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 by‹s_»ad
  +ğ
 chunk_size
 ;
 
-295 
+<<<<<<< HEAD
+308 
+=======
+326 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`ä“
- (
-bounû
+(
+šode_disk
 );
 
-297  
+<<<<<<< HEAD
+310  
 by‹s_»ad
 ;
 
-298 
+311 
 	}
 }
 
-305 
+318 
 off_t
 
 
-306 
+319 
+=======
+328  
+by‹s_»ad
+;
+
+329 
+	}
+}
+
+336 
+off_t
+
+
+337 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	$šode_wr™e_©
  (
 šode
@@ -5073,13 +6055,39 @@ off_t
 size
 ,
 
-307 
+<<<<<<< HEAD
+320 
+=======
+338 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 off_t
  
 off£t
 )
 
-309 cÚ¡ 
+<<<<<<< HEAD
+323 if(
+=======
+340 if(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+šode
+->
+d’y_wr™e_út
+)
+
+<<<<<<< HEAD
+324  
+çl£
+;
+
+326 cÚ¡ 
+=======
+341  
+çl£
+;
+
+343 cÚ¡ 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 ušt8_t
  *
 bufãr
@@ -5087,43 +6095,209 @@ bufãr
 bufãr_
 ;
 
-310 
+<<<<<<< HEAD
+327 
+=======
+344 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 off_t
  
 by‹s_wr™‹n
  = 0;
 
-311 
-ušt8_t
- *
-bounû
- = 
-NULL
-;
+<<<<<<< HEAD
+330 
+=======
+347 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+šode_disk
+ *šode_disk = 
+	`m®loc
+((inode_disk));
 
-313 ià(
-šode
-->
-d’y_wr™e_út
+<<<<<<< HEAD
+331 if(
+=======
+348 if(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+šode_disk
+ =ğ
+NULL
 )
 
-316 
-size
- > 0)
+<<<<<<< HEAD
+332  
+çl£
+;
 
-319 
+333 
+	`g‘_šode_disk
+=======
+349  
+çl£
+;
+
+350 
+	`g‘_disk_šode
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+(
+šode
+, 
+šode_disk
+);
+
+<<<<<<< HEAD
+335 
+=======
+352 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+	`lock_acquœe
+(&
+šode
+->
+ex‹nd_lock
+);
+
+<<<<<<< HEAD
+336 
+=======
+353 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+Şd_Ëngth
+ = 
+šode_disk
+->
+Ëngth
+;
+<<<<<<< HEAD
+
+337 
+Ãw_’d
+ = 
+off£t
++
+=======
+
+354 
+wr™e_’d
+ = 
+off£t
+ + 
+size
+-1;
+
+355 if(
+wr™e_’d
+ > 
+Şd_Ëngth
+-1)
+
+357 
+šode_disk
+->
+Ëngth
+ = 
+wr™e_’d
+ +1;
+
+358 if(!
+	`šode_upd©e_fe_Ëngth
+(
+šode_disk
+, 
+off£t
+, 
+wr™e_’d
+))
+
+360 
+	`ä“
+(
+šode_disk
+);
+
+361  
+çl£
+;
+
+364 
+	`lock_»Ëa£
+(&
+šode
+->
+ex‹nd_lock
+);
+
+367 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+size
+-1;
+
+<<<<<<< HEAD
+338 if(
+Ãw_’d
+ > 
+Şd_Ëngth
+-1)
+
+340 
+šode_disk
+->
+Ëngth
+ = 
+=======
+370 
 block_£ùÜ_t
  
 £ùÜ_idx
  = 
 	`by‹_to_£ùÜ
  (
-šode
+šode_disk
 , 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 off£t
+ + 
+size
+;
+
+341 if(!
+	`šode_disk_upd©e_by_fesize
+(
+šode_disk
+,
+Şd_Ëngth
+, 
+Ãw_’d
+))
+
+343 
+	`ä“
+(
+šode_disk
 );
 
-320 
+344  
+çl£
+;
+
+347 
+	`lock_»Ëa£
+(&
+šode
+->
+ex‹nd_lock
+);
+
+<<<<<<< HEAD
+350 
+size
+ > 0)
+
+353 
+=======
+373 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 £ùÜ_ofs
  = 
 off£t
@@ -5131,19 +6305,27 @@ off£t
 BLOCK_SECTOR_SIZE
 ;
 
-323 
+<<<<<<< HEAD
+354 
+=======
+374 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 off_t
  
 šode_Ëá
  = 
-	`šode_Ëngth
- (
-šode
-è- 
+šode_disk
+->
+Ëngth
+ - 
 off£t
 ;
 
-324 
+<<<<<<< HEAD
+355 
+=======
+375 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 £ùÜ_Ëá
  = 
 BLOCK_SECTOR_SIZE
@@ -5151,7 +6333,11 @@ BLOCK_SECTOR_SIZE
 £ùÜ_ofs
 ;
 
-325 
+<<<<<<< HEAD
+356 
+=======
+376 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 mš_Ëá
  = 
 šode_Ëá
@@ -5159,7 +6345,11 @@ mš_Ëá
 £ùÜ_Ëá
  ? inode_left : sector_left;
 
-328 
+<<<<<<< HEAD
+359 
+=======
+379 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 chunk_size
  = 
 size
@@ -5167,19 +6357,35 @@ size
 mš_Ëá
  ? size : min_left;
 
-329 ià(
+<<<<<<< HEAD
+360 ià(
 chunk_size
  <= 0)
 
-332 ià(
-£ùÜ_ofs
- =ğ0 && 
-chunk_size
- =ğ
-BLOCK_SECTOR_SIZE
-)
+364 
+block_£ùÜ_t
+ 
+£ùÜ_idx
+ = 
+	`by‹_to_£ùÜ
+ (
+šode_disk
+, 
+off£t
+);
 
-336 
+365 if(
+£ùÜ_idx
+ ==0)
+
+368 
+=======
+380 ià(
+chunk_size
+ <= 0)
+
+383 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`bc_wr™e
 (
 £ùÜ_idx
@@ -5193,121 +6399,103 @@ chunk_size
 £ùÜ_ofs
 );
 
-342 ià(
-bounû
- =ğ
-NULL
-)
-
-344 
-bounû
- = 
-	`m®loc
- (
-BLOCK_SECTOR_SIZE
-);
-
-345 ià(
-bounû
- =ğ
-NULL
-)
-
-352 ià(
-£ùÜ_ofs
- > 0 || 
-chunk_size
- < 
-£ùÜ_Ëá
-)
-
-353 
-	`block_»ad
- (
-fs_deviû
-, 
-£ùÜ_idx
-, 
-bounû
-);
-
-355 
-	`mem£t
- (
-bounû
-, 0, 
-BLOCK_SECTOR_SIZE
-);
-
-356 
-	`memıy
- (
-bounû
- + 
-£ùÜ_ofs
-, 
-bufãr
- + 
-by‹s_wr™‹n
-, 
-chunk_size
-);
-
-357 
-	`block_wr™e
- (
-fs_deviû
-, 
-£ùÜ_idx
-, 
-bounû
-);
-
-361 
+<<<<<<< HEAD
+371 
+=======
+386 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 size
  -ğ
 chunk_size
 ;
 
-362 
+<<<<<<< HEAD
+372 
+=======
+387 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 off£t
  +ğ
 chunk_size
 ;
 
-363 
+<<<<<<< HEAD
+373 
+=======
+388 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 by‹s_wr™‹n
  +ğ
 chunk_size
 ;
 
-365 
+<<<<<<< HEAD
+376 
+=======
+390 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+	`bc_wr™e
+(
+šode
+->
+£ùÜ
+, 
+šode_disk
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+<<<<<<< HEAD
+377 
+=======
+391 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`ä“
- (
-bounû
+(
+šode_disk
 );
 
-367  
+<<<<<<< HEAD
+379  
 by‹s_wr™‹n
 ;
 
-368 
+380 
 	}
 }
 
-373 
+385 
+=======
+393  
+by‹s_wr™‹n
+;
+
+394 
+	}
+}
+
+399 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	$šode_d’y_wr™e
  (
 šode
  *inode)
 
-375 
+<<<<<<< HEAD
+387 
+=======
+401 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
 ->
 d’y_wr™e_út
 ++;
 
-376 
+<<<<<<< HEAD
+388 
+=======
+402 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`ASSERT
  (
 šode
@@ -5317,17 +6505,29 @@ d’y_wr™e_út
 İ’_út
 );
 
-377 
+<<<<<<< HEAD
+389 
 	}
 }
 
-383 
+395 
+=======
+403 
+	}
+}
+
+409 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	$šode_®low_wr™e
  (
 šode
  *inode)
 
-385 
+<<<<<<< HEAD
+397 
+=======
+411 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`ASSERT
  (
 šode
@@ -5335,7 +6535,11 @@ d’y_wr™e_út
 d’y_wr™e_út
  > 0);
 
-386 
+<<<<<<< HEAD
+398 
+=======
+412 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`ASSERT
  (
 šode
@@ -5345,49 +6549,142 @@ d’y_wr™e_út
 İ’_út
 );
 
-387 
+<<<<<<< HEAD
+399 
+=======
+413 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode
 ->
 d’y_wr™e_út
 --;
 
-388 
+<<<<<<< HEAD
+400 
 	}
 }
 
-391 
+403 
 off_t
 
 
-392 
+404 
+=======
+414 
+	}
+}
+
+417 
+off_t
+
+
+418 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	$šode_Ëngth
  (cÚ¡ 
 šode
  *inode)
 
-394  
+<<<<<<< HEAD
+406 
+=======
+421 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+šode_disk
+ *šode_disk = 
+	`m®loc
+ ( (inode_disk));
+
+<<<<<<< HEAD
+407 ià(
+=======
+422 ià(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+šode_disk
+ =ğ
+NULL
+)
+
+<<<<<<< HEAD
+408  
+çl£
+;
+
+409 
+	`g‘_šode_disk
+=======
+423  
+çl£
+;
+
+424 
+	`g‘_disk_šode
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+ (
 šode
+, 
+šode_disk
+);
+
+<<<<<<< HEAD
+410 
+=======
+425 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+off_t
+ 
+»suÉ_Ëngth
+ = 
+šode_disk
 ->
-d©a
-.
 Ëngth
 ;
 
-395 
+<<<<<<< HEAD
+411 
+=======
+426 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+	`ä“
+ (
+šode_disk
+);
+
+<<<<<<< HEAD
+412  
+»suÉ_Ëngth
+;
+
+414 
 	}
 }
 
-399 
+417 
+=======
+427  
+»suÉ_Ëngth
+;
+
+429 
+	}
+}
+
+432 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 boŞ
  
-	$g‘_disk_šode
+	$g‘_šode_disk
 (cÚ¡ 
 šode
  *šode, 
 šode_disk
  *inode_disk)
 
-401 
+<<<<<<< HEAD
+419  
+=======
+434 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`bc_»ad
 (
 šode
@@ -5399,27 +6696,40 @@ boŞ
 BLOCK_SECTOR_SIZE
 , 0);
 
-402  
-Œue
-;
-
-403 
+<<<<<<< HEAD
+420 
 	}
 }
 
-405 
+422 
+	$g‘_£ùÜ_loÿtiÚ
+=======
+435  
+Œue
+;
+
+436 
+	}
+}
+
+438 
 	$loÿ‹_by‹
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 (
 off_t
  
 pos
 , 
-£ùÜ_loÿiÚ
+£ùÜ_loÿtiÚ
  *
 £c_loc
 )
 
-407 
+<<<<<<< HEAD
+424 
+=======
+440 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 off_t
  
 pos_£ùÜ
@@ -5429,29 +6739,45 @@ pos
 BLOCK_SECTOR_SIZE
 ;
 
-408 if(
+<<<<<<< HEAD
+425 if(
+=======
+441 if(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 pos_£ùÜ
  < 
 DIRECT_BLOCK_CNT
 )
 
-410 
+<<<<<<< HEAD
+427 
+=======
+443 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 £c_loc
 ->
-dœeùÃss
+ty³
  = 
-NORMAL_DIRECT
+DIRECT
 ;
 
-411 
+<<<<<<< HEAD
+428 
+=======
+444 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 £c_loc
 ->
-šdex1
+idx1
  = 
 pos_£ùÜ
 ;
 
-413 if(
+<<<<<<< HEAD
+430 if(
+=======
+446 if(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 pos_£ùÜ
 < (
 off_t
@@ -5461,25 +6787,37 @@ DIRECT_BLOCK_CNT
 INDIRECT_BLOCK_CNT
 )
 
-415 
+<<<<<<< HEAD
+432 
+=======
+448 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 £c_loc
 ->
-dœeùÃss
+ty³
  = 
-INDIRECCT
+INDIRECT
 ;
 
-416 
+<<<<<<< HEAD
+433 
+=======
+449 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 £c_loc
 ->
-šdex1
+idx1
  = 
 pos_£ùÜ
  - 
 DIRECT_BLOCK_CNT
 ;
 
-418 if(
+<<<<<<< HEAD
+435 if(
+=======
+451 if(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 pos_£ùÜ
  < (
 off_t
@@ -5489,15 +6827,23 @@ DIRECT_BLOCK_CNT
 INDIRECT_BLOCK_CNT
  * (INDIRECT_BLOCK_CNT +1)))
 
-420 
+<<<<<<< HEAD
+437 
+=======
+453 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 £c_loc
 ->
-dœeùÃss
+ty³
  = 
 DOUBLE_INDIRECT
 ;
 
-421 
+<<<<<<< HEAD
+438 
+=======
+454 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 pos_£ùÜ
  =…os_£ùÜ - 
 DIRECT_BLOCK_CNT
@@ -5505,39 +6851,58 @@ DIRECT_BLOCK_CNT
 INDIRECT_BLOCK_CNT
 ;
 
-422 
+<<<<<<< HEAD
+439 
+=======
+455 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 £c_loc
 ->
-šdex1
+idx1
  = 
 pos_£ùÜ
  / 
 INDIRECT_BLOCK_CNT
 ;
 
-423 
+<<<<<<< HEAD
+440 
+=======
+456 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 £c_loc
 ->
-šdex2
+idx2
  = 
 pos_£ùÜ
  % 
 INDIRECT_BLOCK_CNT
-; /
-
-427 
-£c_loc
-->
-dœeùÃss
- = 
-OUT_LIMIT
 ;
 
-429 
+<<<<<<< HEAD
+443 
+=======
+460 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+£c_loc
+->
+ty³
+ = 
+ERROR
+;
+
+<<<<<<< HEAD
+444 
 	}
 }
 
-431 
+446 
+=======
+462 
+	}
+}
+
+464 
 šlše
  
 off_t
@@ -5547,20 +6912,43 @@ off_t
 idx
 )
 
-433  
+466 
+šode_šdœeù_block
+ 
+šd_block
+;
+
+467 
+off_t
+ 
+ba£
+ = (
+ušt32_t
+è((
+ušt8_t
+*)& (
+šd_block
+.
+m­_bË
+) - (uint8_t*)&ind_block);
+
+468  
+ba£
+ + 
 idx
  * (
-off_t
+block_£ùÜ_t
 );
 
-434 
+470 
 	}
 }
 
-436 
+472 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 boŞ
  
-	$»gi¡”_£ùÜ
+	$šode_disk_£t_£ùÜ
 (
 šode_disk
  *šode_disk, 
@@ -5568,320 +6956,1354 @@ block_£ùÜ_t
  
 Ãw_£ùÜ
 , 
-£ùÜ_loÿiÚ
+£ùÜ_loÿtiÚ
  
 £c_loc
 )
 
-438 
+<<<<<<< HEAD
+449 
+šdœeù_block
+=======
+474 
 šode_šdœeù_block
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
  *
-Ãw_block
+šd_block
  = 
-NULL
-;
+	`m®loc
+((indirect_block));
 
-439 
-£c_loc
-.
-dœeùÃss
+450 if(
+šd_block
+ =ğ
+NULL
 )
 
-441 
-NORMAL_DIRECT
- :
+451  
+çl£
+;
 
-442 
+<<<<<<< HEAD
+452 
+=======
+475 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+£c_loc
+.
+ty³
+)
+
+<<<<<<< HEAD
+454 
+DIRECT
+:
+
+455 
+=======
+477 
+NORMAL_DIRECT
+:
+
+478 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode_disk
 ->
-dœeù_m­_bË
+dœeù_tbl
 [
 £c_loc
 .
-šdex1
+idx1
 ] = 
 Ãw_£ùÜ
 ;
 
-444 
+<<<<<<< HEAD
+457 
 INDIRECT
 :
 
-445 
+458 if(
+=======
+480 
+INDIRECT
+:
+
+481 
 Ãw_block
-ğ
+ = 
 	`m®loc
 (
 BLOCK_SECTOR_SIZE
 );
 
-446 ià(
+482 if(
 Ãw_block
-=ğ
+ =ğ
 NULL
 )
 
-447  
+483  
 çl£
 ;
 
-451 if(
+484 if(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode_disk
 ->
-šdœeù_block_£c
- == 0)
+šdœeù1
+ =ğ
+NOT_DEFINE
+)
 
-453 ià(
+<<<<<<< HEAD
+460 ià(
+=======
+486 ià(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`ä“_m­_®loÿ‹
  (1, &(
 šode_disk
 ->
-šdœeù_block_£c
+šdœeù1
 )))
 
-455 
+<<<<<<< HEAD
+462 
+=======
+488 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`mem£t
  (
-Ãw_block
+šd_block
 , 0, 
 BLOCK_SECTOR_SIZE
 );
 
-456 
+<<<<<<< HEAD
+463 
+šd_block
+=======
+489 
 Ãw_block
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 ->
-m­_bË
+tbl
 [
 £c_loc
 .
-šdex1
+idx1
 ] = 
 Ãw_£ùÜ
 ;
 
-457 
+<<<<<<< HEAD
+464 
+=======
+490 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`bc_wr™e
 (
 šode_disk
 ->
-šdœeù_block_£c
+šdœeù1
 , 
-Ãw_block
+šd_block
 , 0, 
 BLOCK_SECTOR_SIZE
 , 0);
 
-461 
+<<<<<<< HEAD
+469 
+=======
+494 
 	`ä“
  (
 Ãw_block
 );
 
-462  
+495  
 çl£
 ;
 
-467 
+500 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`bc_wr™e
 (
 šode_disk
 ->
-šdœeù_block_£c
+šdœeù1
 , &
 Ãw_£ùÜ
 , 0, (
 block_£ùÜ_t
 ), 
-	`m­_bË_off£t
-(
 £c_loc
 .
-šdex1
+idx1
+ * (
+off_t
 ));
 
-470 
+<<<<<<< HEAD
+472 
 DOUBLE_INDIRECT
 :
 
-471 
+473 ià(
+=======
+503 
+DOUBLE_INDIRECT
+:
+
+504 
 Ãw_block
  = 
 	`m®loc
-(
+ (
 BLOCK_SECTOR_SIZE
 );
 
-472 ià(
+505 ià(
 Ãw_block
-=ğ
+ =ğ
 NULL
 )
 
-473  
+506  
 çl£
 ;
 
-475 if(
+507 ià(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 šode_disk
 ->
-doubË_šdœeù_block_£c
- == 0)
+šdœeù2
+ =ğ
+NOT_DEFINE
+)
 
-477 ià(
+<<<<<<< HEAD
+475 ià(
+=======
+509 ià(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`ä“_m­_®loÿ‹
  (1, &(
 šode_disk
--> 
+->
+<<<<<<< HEAD
+šdœeù2
+)))
+
+477 
+=======
 doubË_šdœeù_block_£c
 )))
 
-479 
+511 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`mem£t
  (
-Ãw_block
+šd_block
 , 0, 
 BLOCK_SECTOR_SIZE
 );
 
-480 
+<<<<<<< HEAD
+478 
+=======
+512 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`bc_wr™e
 (
 šode_disk
 ->
-doubË_šdœeù_block_£c
+šdœeù2
 , 
-Ãw_block
+šd_block
 , 0, 
 BLOCK_SECTOR_SIZE
 , 0);
 
-484 
+<<<<<<< HEAD
+481 
+block_£ùÜ_t
+ 
+šdœeù2
+;
+
+482 
+=======
+516 
 	`ä“
  (
 Ãw_block
 );
 
-485 
-»tuºçl£
+517  
+çl£
 ;
 
-489 
+520 
+block_£ùÜ_t
+ 
+šdœeù2
+;
+
+521 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`bc_»ad
 (
 šode_disk
 ->
+<<<<<<< HEAD
+šdœeù2
+, &šdœeù2, 0, (
+=======
 doubË_šdœeù_block_£c
 , &
-šd_block_2nd_Ëv–
+šdœeù2
 , 0, (
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 block_£ùÜ_t
 ), 
-	`m­_bË_off£t
-(
 £c_loc
 .
-šdex1
+idx1
+ * (
+off_t
 ));
 
-492 if(
-šd_block_2nd_Ëv–
+<<<<<<< HEAD
+483 ià(
+šdœeù2
+ =ğ
+NOT_DEFINE
+)
+
+485 ià(
+=======
+522 ià(
+šdœeù2
  == 0)
 
-494 if(
+524 ià(
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`ä“_m­_®loÿ‹
  (1, &
-šd_block_2nd_Ëv–
+šdœeù2
 ))
 
-497 
+<<<<<<< HEAD
+487 
+=======
+526 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`bc_wr™e
 (
 šode_disk
 ->
+<<<<<<< HEAD
+šdœeù2
+, &šdœeù2, 0, (
+=======
 doubË_šdœeù_block_£c
 , &
-šd_block_2nd_Ëv–
+šdœeù2
 , 0, (
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 block_£ùÜ_t
 ), 
-	`m­_bË_off£t
-(
 £c_loc
 .
-šdex1
+idx1
+ * (
+off_t
 ));
 
-498 
+<<<<<<< HEAD
+488 
 	`mem£t
-(
+ (
+šd_block
+=======
+527 
+	`mem£t
+ (
 Ãw_block
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 , 0, 
 BLOCK_SECTOR_SIZE
 );
 
-499 
+<<<<<<< HEAD
+489 
+šd_block
+=======
+528 
 Ãw_block
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 ->
-m­_bË
+tbl
 [
 £c_loc
 .
-šdex2
+idx2
 ] = 
 Ãw_£ùÜ
 ;
 
-500 
+<<<<<<< HEAD
+490 
+=======
+529 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`bc_wr™e
 (
-šd_block_2nd_Ëv–
+šdœeù2
 , 
-Ãw_block
+šd_block
 , 0, 
 BLOCK_SECTOR_SIZE
 , 0);
 
-504 
-	`ä“
- (
-Ãw_block
-);
-
-505 
-»tuºçl£
-;
-
-511 
+<<<<<<< HEAD
+495 
 	`bc_wr™e
 (
-šd_block_2nd_Ëv–
+šdœeù2
 , &
 Ãw_£ùÜ
 , 0, (
 block_£ùÜ_t
 ), 
-	`m­_bË_off£t
-(
 £c_loc
 .
-šdex2
+idx2
+ * (
+off_t
 ));
 
-515  
-çl£
-;
-
-517 
+501 
+=======
+533 
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
 	`ä“
 (
-Ãw_block
+šd_block
 );
 
-518  
+<<<<<<< HEAD
+502  
 Œue
 ;
 
-519 
+503 
+	}
+}
+
+505 
+boŞ
+
+
+506 
+	$šode_disk_upd©e_by_fesize
+(
+šode_disk
+* inode_disk, 
+off_t
+ 
+¡¬t
+, off_ˆ
+’d
+)
+
+509 
+off_t
+ 
+off£t
+ = 
+¡¬t
+;
+
+510 
+size
+ = 
+’d
+- 
+¡¬t
++1;
+
+511 
+ušt8_t
+ *
+‹mp
+ = 
+	`ÿÎoc
+((ušt8_t), 
+BLOCK_SECTOR_SIZE
+);
+
+513 
+size
+>0)
+
+515 
+£ùÜ_ofs
+ = 
+off£t
+ % 
+BLOCK_SECTOR_SIZE
+;
+
+516 
+£ùÜ_Ëá
+ = 
+BLOCK_SECTOR_SIZE
+ - 
+£ùÜ_ofs
+;
+
+517 
+chunk_size
+ = 
+size
+ < 
+£ùÜ_Ëá
+ ? size : sector_left;
+
+518 if(
+chunk_size
+ <= 0 )
+
+520 
+block_£ùÜ_t
+ 
+£ùÜ_idx
+ = 
+	`by‹_to_£ùÜ
+(
+šode_disk
+, 
+off£t
+);
+
+521 if(
+£ùÜ_ofs
+ > 0)
+
+522 
+	`bc_wr™e
+(
+£ùÜ_idx
+, 
+‹mp
+, 0, 
+£ùÜ_Ëá
+, 
+£ùÜ_ofs
+);
+
+525 if(
+	`ä“_m­_®loÿ‹
+(1, &
+£ùÜ_idx
+))
+
+527 
+£ùÜ_loÿtiÚ
+ 
+£c_loc
+;
+
+528 
+	`g‘_£ùÜ_loÿtiÚ
+(
+off£t
+=======
+534  
+çl£
+;
+
+539 
+	`bc_wr™e
+(
+šdœeù2
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+, &
+£c_loc
+);
+
+529 if(!
+	`šode_disk_£t_£ùÜ
+(
+šode_disk
+, 
+£ùÜ_idx
+, 
+£c_loc
+))
+
+<<<<<<< HEAD
+531 
+	`ä“_m­_»Ëa£
+(
+£ùÜ_idx
+, 1);
+
+532 
+	`ä“
+(
+‹mp
+);
+
+533  
+çl£
+;
+
+536 
+	`bc_wr™e
+(
+£ùÜ_idx
+, 
+‹mp
+, 0, 
+BLOCK_SECTOR_SIZE
+,0);
+
+538 
+size
+ -ğ
+chunk_size
+;
+
+539 
+off£t
+ +ğ
+chunk_size
+;
+
+541 
+	`ä“
+(
+‹mp
+);
+
+542  
+Œue
+;
+
+543 
+	}
+}
+
+546 
+	$šode_disk_ä“_£ùÜ
+(
+šode_disk
+* inode_disk)
+
+548 
+šdœeù_block
+ *
+šd_block1
+ = 
+	`m®loc
+((indirect_block));
+
+549 
+šdœeù_block
+ *
+šd_block2
+ = 
+	`m®loc
+((indirect_block));
+
+550 
+i
+, 
+j
+ =0;
+
+553 if(
+šode_disk
+->
+šdœeù2
+ !ğ
+NOT_DEFINE
+)
+
+555 
+	`bc_»ad
+(
+šode_disk
+->
+šdœeù2
+, 
+šd_block1
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+556 
+i
+=0; i<
+INDIRECT_BLOCK_CNT
+; ++i)
+
+558 if(
+šd_block1
+->
+tbl
+[
+i
+] < 
+NOT_DEFINE
+)
+
+560 
+	`bc_»ad
+(
+šd_block1
+->
+tbl
+[
+i
+], 
+šd_block2
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+561 
+j
+=0; j<
+INDIRECT_BLOCK_CNT
+; ++j)
+
+563 if(
+šd_block2
+->
+tbl
+[
+j
+] < 
+NOT_DEFINE
+)
+
+565 
+	`ä“_m­_»Ëa£
+(
+šd_block2
+->
+tbl
+[
+j
+],1);
+
+567 
+	`ä“_m­_»Ëa£
+(
+šd_block1
+->
+tbl
+[
+i
+],1);
+
+569 
+	`ä“_m­_»Ëa£
+(
+šode_disk
+->
+šdœeù2
+,1);
+
+572 if(
+šode_disk
+->
+šdœeù1
+ !ğ
+NOT_DEFINE
+ )
+
+574 
+šdœeù_block
+ *
+šd_block1
+ = 
+	`m®loc
+((indirect_block));
+
+575 
+	`bc_»ad
+(
+šode_disk
+->
+šdœeù1
+, 
+šd_block1
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+576 
+i
+=0; i<
+INDIRECT_BLOCK_CNT
+; ++i)
+
+578 if(
+šd_block1
+->
+tbl
+[
+i
+] < 
+NOT_DEFINE
+)
+
+580 
+	`ä“_m­_»Ëa£
+(
+šd_block1
+->
+tbl
+[
+i
+],1);
+
+582 
+	`ä“_m­_»Ëa£
+(
+šode_disk
+->
+šdœeù1
+,1);
+
+585 
+i
+=0; i<
+INDIRECT_BLOCK_CNT
+; ++i)
+
+587 if(
+šode_disk
+->
+dœeù_tbl
+[
+i
+] =ğ
+NOT_DEFINE
+)
+
+589 
+	`ä“_m­_»Ëa£
+(
+šode_disk
+->
+dœeù_tbl
+[
+i
+],1);
+
+592 
+	`ä“
+(
+šd_block1
+);
+
+593 
+	`ä“
+(
+šd_block2
+);
+
+594 
+	}
+}
+=======
+545 
+	}
+}
+
+546 
+boŞ
+
+
+547 
+	$šode_upd©e_fe_Ëngth
+(
+šode_disk
+* inode_disk, 
+off_t
+ 
+¡¬t_pos
+, off_ˆ
+’d_pos
+)
+
+549 
+	`ASSERT
+(
+¡¬t_pos
+ <ğ
+’d_pos
+);
+
+551 
+block_£ùÜ_t
+ 
+£ùÜ_idx
+;
+
+552 
+off_t
+ 
+off£t
+ = 
+¡¬t_pos
+;
+>>>>>>> ea361cb68881b11418d72542949f61a194b48e1d
+
+553 
+size
+ = 
+’d_pos
+ - 
+¡¬t_pos
+ + 1;
+
+554 
+ušt8_t
+ *
+z”Ûs
+ = 
+	`ÿÎoc
+((ušt8_t), 
+BLOCK_SECTOR_SIZE
+);
+
+555 if(
+z”Ûs
+ =ğ
+NULL
+)
+
+556  
+çl£
+;
+
+558 
+size
+ > 0)
+
+561 
+£ùÜ_ofs
+ = 
+off£t
+ % 
+BLOCK_SECTOR_SIZE
+;
+
+564 
+£ùÜ_Ëá
+ = 
+BLOCK_SECTOR_SIZE
+ - 
+£ùÜ_ofs
+;
+
+565 
+chunk_size
+ = 
+size
+ < 
+£ùÜ_Ëá
+ ? size : sector_left;
+
+566 ià(
+chunk_size
+ <= 0)
+
+569 if(
+£ùÜ_ofs
+ > 0){
+
+570 
+£ùÜ_idx
+ = 
+	`by‹_to_£ùÜ
+(
+šode_disk
+, 
+off£t
+);
+
+571 
+	`ASSERT
+(
+£ùÜ_idx
+ != 0);
+
+573 
+	`bc_wr™e
+(
+£ùÜ_idx
+, 
+z”Ûs
+, 0, 
+£ùÜ_Ëá
+, 
+£ùÜ_ofs
+);
+
+576 if(
+	`ä“_m­_®loÿ‹
+(1, &
+£ùÜ_idx
+)){
+
+577 
+£ùÜ_loÿtiÚ
+ 
+cur_loc
+;
+
+578 
+	`loÿ‹_by‹
+(
+off£t
+, &
+cur_loc
+);
+
+579 if(!
+	`»gi¡”_£ùÜ
+(
+šode_disk
+, 
+£ùÜ_idx
+, 
+cur_loc
+))
+
+581 
+	`ä“_m­_»Ëa£
+(
+£ùÜ_idx
+, 1);
+
+582 
+	`ä“
+(
+z”Ûs
+);
+
+583  
+çl£
+;
+
+587 
+	`ä“
+(
+z”Ûs
+);
+
+588  
+çl£
+;
+
+590 
+	`bc_wr™e
+(
+£ùÜ_idx
+, 
+z”Ûs
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+594 
+size
+ -ğ
+chunk_size
+;
+
+595 
+off£t
+ +ğ
+chunk_size
+;
+
+597 
+	`ä“
+(
+z”Ûs
+);
+
+600  
+Œue
+;
+
+601 
+	}
+}
+
+604 
+	$ä“_šode_£ùÜs
+ (
+šode_disk
+ *inode_disk)
+
+606 
+i
+, 
+j
+;
+
+609 ià(
+šode_disk
+->
+doubË_šdœeù_block_£c
+ > 0)
+
+612 
+šode_šdœeù_block
+ *
+šd_block_1
+ = 
+	`m®loc
+ (
+BLOCK_SECTOR_SIZE
+);
+
+613 
+šode_šdœeù_block
+ *
+šd_block_2
+ = 
+	`m®loc
+ (
+BLOCK_SECTOR_SIZE
+);
+
+614 ià(
+šd_block_1
+ =ğ
+NULL
+ || 
+šd_block_2
+ == NULL)
+
+616 
+	`´štf
+ ("Cannot‡llocate sectorso hold ind-blocks. Free sectors failed!\n");
+
+620 
+	`bc_»ad
+ (
+šode_disk
+->
+doubË_šdœeù_block_£c
+, 
+šd_block_1
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+621 
+i
+ = 0;
+
+622 
+šd_block_1
+->
+m­_bË
+[
+i
+] > 0)
+
+625 
+	`bc_»ad
+ (
+šd_block_1
+->
+m­_bË
+[
+i
+], 
+šd_block_2
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+626 
+j
+ = 0;
+
+627 
+šd_block_2
+->
+m­_bË
+[
+j
+] > 0)
+
+629 
+	`ä“_m­_»Ëa£
+ (
+šd_block_2
+->
+m­_bË
+[
+j
+], 1);
+
+630 
+j
+++;
+
+632 
+	`ä“_m­_»Ëa£
+ (
+šd_block_1
+->
+m­_bË
+[
+i
+], 1);
+
+633 
+i
+++;
+
+635 
+	`ä“_m­_»Ëa£
+ (
+šode_disk
+->
+doubË_šdœeù_block_£c
+, 1);
+
+636 
+	`ä“
+ (
+šd_block_1
+);
+
+637 
+	`ä“
+ (
+šd_block_2
+);
+
+640 ià(
+šode_disk
+->
+šdœeù_block_£c
+ > 0)
+
+643 
+šode_šdœeù_block
+ *
+šd_block
+ = 
+	`m®loc
+ (
+BLOCK_SECTOR_SIZE
+);
+
+644 ià(
+šd_block
+ =ğ
+NULL
+)
+
+646 
+	`´štf
+ ("Cannot‡llocate‡ sectoro hold ind-blocks. Free sectors failed!\n");
+
+650 
+	`bc_»ad
+ (
+šode_disk
+->
+doubË_šdœeù_block_£c
+, 
+šd_block
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+651 
+i
+ = 0;
+
+652 
+šd_block
+->
+m­_bË
+[
+i
+] > 0)
+
+654 
+	`ä“_m­_»Ëa£
+ (
+šd_block
+->
+m­_bË
+[
+i
+], 1);
+
+655 
+i
+++;
+
+657 
+	`ä“_m­_»Ëa£
+ (
+šode_disk
+->
+šdœeù_block_£c
+, 1);
+
+658 
+	`ä“
+ (
+šd_block
+);
+
+662 
+i
+ = 0;
+
+663 
+šode_disk
+->
+dœeù_m­_bË
+[
+i
+] > 0)
+
+665 
+	`ä“_m­_»Ëa£
+ (
+šode_disk
+->
+dœeù_m­_bË
+[
+i
+], 1);
+
+666 
+i
+++;
+
+668 
 	}
 }
 
@@ -6004,6 +8426,2390 @@ off_t
  (cÚ¡ 
 šode
  *);
+
+	@inode_backup.c
+
+1 
+	~"fesys/šode.h
+"
+
+2 
+	~<li¡.h
+>
+
+3 
+	~<debug.h
+>
+
+4 
+	~<round.h
+>
+
+5 
+	~<¡ršg.h
+>
+
+6 
+	~"fesys/fesys.h
+"
+
+7 
+	~"fesys/ä“-m­.h
+"
+
+8 
+	~"fesys/bufãr_ÿche.h
+"
+
+9 
+	~"th»ads/m®loc.h
+"
+
+12 
+	#INODE_MAGIC
+ 0x494e4f44
+
+	)
+
+15 
+	#INDIRECT_BLOCK_CNT
+ 
+BLOCK_SECTOR_SIZE
+ / 4
+
+	)
+
+27 
+	#DIRECT_BLOCK_CNT
+ 123
+
+	)
+
+28 
+	#POINTER_SIZE
+ 4
+
+	)
+
+30 
+	edœeù_t
+
+
+32 
+	mNORMAL_DIRECT
+ =0,
+
+33 
+	mINDIRECT
+,
+
+34 
+	mDOUBLE_INDIRECT
+,
+
+35 
+	mTREBLE_INDIRECT
+,
+
+36 
+	mOUT_LIMIT
+
+
+39 
+	s£ùÜ_loÿtiÚ
+
+
+41 
+dœeù_t
+ 
+	mdœeùÃss
+;
+
+42 
+off_t
+ 
+	mšdex1
+;
+
+43 
+off_t
+ 
+	mšdex2
+;
+
+46 
+	sšode_šdœeù_block
+
+
+48 
+block_£ùÜ_t
+ 
+	mm­_bË
+[
+INDIRECT_BLOCK_CNT
+];
+
+51 
+šlše
+ 
+size_t
+
+
+52 
+	$by‹s_to_£ùÜs
+ (
+off_t
+ 
+size
+)
+
+54  
+	`DIV_ROUND_UP
+ (
+size
+, 
+BLOCK_SECTOR_SIZE
+);
+
+55 
+	}
+}
+
+73 
+	sšode_disk
+
+
+75 
+off_t
+ 
+	mËngth
+;
+
+76 
+	mmagic
+;
+
+77 
+block_£ùÜ_t
+ 
+	mdœeù_m­_bË
+[
+DIRECT_BLOCK_CNT
+];
+
+78 
+block_£ùÜ_t
+ 
+	mšdœeù_block_£c
+;
+
+79 
+block_£ùÜ_t
+ 
+	mdoubË_šdœeù_block_£c
+;
+
+80 
+block_£ùÜ_t
+ 
+	mŒib–_šdœeù_block_£c
+;
+
+85 
+	sšode
+
+
+87 
+li¡_–em
+ 
+	m–em
+;
+
+88 
+block_£ùÜ_t
+ 
+	m£ùÜ
+;
+
+89 
+	mİ’_út
+;
+
+90 
+boŞ
+ 
+	m»moved
+;
+
+91 
+	md’y_wr™e_út
+;
+
+94 
+lock
+ 
+	mex‹nd_lock
+;
+
+98 
+boŞ
+ 
+g‘_disk_šode
+(cÚ¡ 
+šode
+* inode, 
+šode_disk
+* inode_disk);
+
+99 
+loÿ‹_by‹
+(
+off_t
+ 
+pos
+, 
+£ùÜ_loÿtiÚ
+ *
+£c_loc
+);
+
+100 
+boŞ
+ 
+»gi¡”_£ùÜ
+ (
+šode_disk
+ *šode_disk, 
+block_£ùÜ_t
+ 
+Ãw_£ùÜ
+, 
+£ùÜ_loÿtiÚ
+ 
+£c_loc
+);
+
+101 
+block_£ùÜ_t
+ 
+by‹_to_£ùÜ
+(cÚ¡ 
+šode_disk
+ *šode_disk, 
+off_t
+ 
+pos
+);
+
+102 
+ä“_šode_£ùÜs
+(
+šode_disk
+* inode_disk);
+
+103 
+boŞ
+ 
+šode_upd©e_fe_Ëngth
+(
+šode_disk
+* inode_disk, 
+off_t
+ 
+¡¬t
+, off_ˆ
+’d
+);
+
+107 
+block_£ùÜ_t
+
+
+108 
+	$by‹_to_£ùÜ
+(cÚ¡ 
+šode_disk
+ *šode_disk, 
+off_t
+ 
+pos
+)
+
+110 
+	`ASSERT
+(
+šode_disk
+ !ğ
+NULL
+);
+
+111 
+block_£ùÜ_t
+ 
+»suÉ_£c
+ = 0;
+
+112 if(
+pos
+ < 
+šode_disk
+->
+Ëngth
+)
+
+114 
+šode_šdœeù_block
+ *
+šd_block
+;
+
+115 
+£ùÜ_loÿtiÚ
+ 
+£c_loc
+;
+
+116 
+	`loÿ‹_by‹
+(
+pos
+, &
+£c_loc
+);
+
+117 
+£c_loc
+. 
+dœeùÃss
+)
+
+119 
+NORMAL_DIRECT
+:
+
+120 
+»suÉ_£c
+ = 
+šode_disk
+->
+dœeù_m­_bË
+[
+£c_loc
+.
+šdex1
+];
+
+122 
+INDIRECT
+:
+
+123 
+šd_block
+ = (
+šode_šdœeù_block
+*)
+	`m®loc
+(
+BLOCK_SECTOR_SIZE
+);
+
+124 if(
+šd_block
+)
+
+126 
+	`bc_»ad
+(
+šode_disk
+->
+šdœeù_block_£c
+, 
+šd_block
+, 0, 
+BLOCK_SECTOR_SIZE
+,0);
+
+127 
+»suÉ_£c
+ = 
+šd_block
+->
+m­_bË
+[
+£c_loc
+.
+šdex1
+];
+
+128 
+	`ä“
+(
+šd_block
+);
+
+131 
+DOUBLE_INDIRECT
+:
+
+132 
+šd_block
+ = (
+šode_šdœeù_block
+*)
+	`m®loc
+(
+BLOCK_SECTOR_SIZE
+);
+
+133 if(
+šd_block
+)
+
+135 
+	`bc_»ad
+(
+šode_disk
+->
+doubË_šdœeù_block_£c
+, 
+šd_block
+,0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+136 
+	`bc_»ad
+(
+šd_block
+->
+m­_bË
+[
+£c_loc
+.
+šdex1
+], ind_block, 0, 
+BLOCK_SECTOR_SIZE
+,0);
+
+137 
+»suÉ_£c
+ = 
+šd_block
+->
+m­_bË
+[
+£c_loc
+.
+šdex2
+];
+
+138 
+	`ä“
+(
+šd_block
+);
+
+145  
+»suÉ_£c
+;
+
+146 
+	}
+}
+
+150 
+li¡
+ 
+	gİ’_šodes
+;
+
+154 
+	$šode_š™
+ ()
+
+156 
+	`li¡_š™
+ (&
+İ’_šodes
+);
+
+157 
+	}
+}
+
+164 
+boŞ
+
+
+165 
+	$šode_ü—‹
+ (
+block_£ùÜ_t
+ 
+£ùÜ
+, 
+off_t
+ 
+Ëngth
+)
+
+167 
+šode_disk
+ *šode_disk = 
+NULL
+;
+
+168 
+boŞ
+ 
+sucûss
+ = 
+çl£
+;
+
+170 
+	`ASSERT
+ (
+Ëngth
+ >= 0);
+
+174 
+	`ASSERT
+ ( *
+šode_disk
+ =ğ
+BLOCK_SECTOR_SIZE
+);
+
+176 
+šode_disk
+ = 
+	`ÿÎoc
+ (1,  *inode_disk);
+
+177 ià(
+šode_disk
+ !ğ
+NULL
+)
+
+179 
+šode_disk
+->
+Ëngth
+ =†ength;
+
+180 
+šode_disk
+->
+magic
+ = 
+INODE_MAGIC
+;
+
+181 if(
+Ëngth
+ > 0)
+
+183 if(!
+	`šode_upd©e_fe_Ëngth
+(
+šode_disk
+, 0, 
+Ëngth
+-1))
+
+184  
+çl£
+;
+
+186 
+	`bc_wr™e
+(
+£ùÜ
+, 
+šode_disk
+, 0,
+BLOCK_SECTOR_SIZE
+, 0);
+
+187 
+	`ä“
+(
+šode_disk
+);
+
+188 
+sucûss
+ = 
+Œue
+;
+
+190  
+sucûss
+;
+
+191 
+	}
+}
+
+196 
+šode
+ *
+
+197 
+	$šode_İ’
+ (
+block_£ùÜ_t
+ 
+£ùÜ
+)
+
+199 
+li¡_–em
+ *
+e
+;
+
+200 
+šode
+ *inode;
+
+203 
+e
+ = 
+	`li¡_begš
+ (&
+İ’_šodes
+);ƒ !ğ
+	`li¡_’d
+ (&open_inodes);
+
+204 
+e
+ = 
+	`li¡_Ãxt
+ (e))
+
+206 
+šode
+ = 
+	`li¡_’Œy
+ (
+e
+, šode, 
+–em
+);
+
+207 ià(
+šode
+->
+£ùÜ
+ == sector)
+
+209 
+	`šode_»İ’
+ (
+šode
+);
+
+210  
+šode
+;
+
+215 
+šode
+ = 
+	`m®loc
+ ( *inode);
+
+216 ià(
+šode
+ =ğ
+NULL
+)
+
+217  
+NULL
+;
+
+220 
+	`li¡_push_äÚt
+ (&
+İ’_šodes
+, &
+šode
+->
+–em
+);
+
+221 
+šode
+->
+£ùÜ
+ = sector;
+
+222 
+šode
+->
+İ’_út
+ = 1;
+
+223 
+šode
+->
+d’y_wr™e_út
+ = 0;
+
+224 
+šode
+->
+»moved
+ = 
+çl£
+;
+
+225 
+	`lock_š™
+(&
+šode
+->
+ex‹nd_lock
+);
+
+227  
+šode
+;
+
+228 
+	}
+}
+
+231 
+šode
+ *
+
+232 
+	$šode_»İ’
+ (
+šode
+ *inode)
+
+234 ià(
+šode
+ !ğ
+NULL
+)
+
+235 
+šode
+->
+İ’_út
+++;
+
+236  
+šode
+;
+
+237 
+	}
+}
+
+240 
+block_£ùÜ_t
+
+
+241 
+	$šode_g‘_šumb”
+ (cÚ¡ 
+šode
+ *inode)
+
+243  
+šode
+->
+£ùÜ
+;
+
+244 
+	}
+}
+
+250 
+	$šode_şo£
+ (
+šode
+ *inode)
+
+253 ià(
+šode
+ =ğ
+NULL
+)
+
+257 ià(--
+šode
+->
+İ’_út
+ == 0)
+
+260 
+	`li¡_»move
+ (&
+šode
+->
+–em
+);
+
+263 ià(
+šode
+->
+»moved
+)
+
+265 
+šode_disk
+ *šode_disk = 
+	`m®loc
+((inode_disk));
+
+266 
+	`g‘_disk_šode
+(
+šode
+, 
+šode_disk
+);
+
+267 
+	`ä“_šode_£ùÜs
+(
+šode_disk
+);
+
+268 
+	`ä“_m­_»Ëa£
+(
+šode
+->
+£ùÜ
+, 1);
+
+269 
+	`ä“
+(
+šode_disk
+);
+
+271 
+	`ä“
+ (
+šode
+);
+
+273 
+	}
+}
+
+278 
+	$šode_»move
+ (
+šode
+ *inode)
+
+280 
+	`ASSERT
+ (
+šode
+ !ğ
+NULL
+);
+
+281 
+šode
+->
+»moved
+ = 
+Œue
+;
+
+282 
+	}
+}
+
+287 
+off_t
+
+
+288 
+	$šode_»ad_©
+ (
+šode
+ *šode, *
+bufãr_
+, 
+off_t
+ 
+size
+, off_ˆ
+off£t
+)
+
+291 
+ušt8_t
+ *
+bufãr
+ = 
+bufãr_
+;
+
+292 
+off_t
+ 
+by‹s_»ad
+ = 0;
+
+296 
+šode_disk
+ *šode_disk = 
+	`m®loc
+((inode_disk));
+
+297 if(
+šode_disk
+ =ğ
+NULL
+)
+
+298  
+çl£
+;
+
+299 
+	`g‘_disk_šode
+(
+šode
+, 
+šode_disk
+);
+
+301 
+size
+ > 0)
+
+304 
+block_£ùÜ_t
+ 
+£ùÜ_idx
+ = 
+	`by‹_to_£ùÜ
+ (
+šode_disk
+, 
+off£t
+);
+
+305 if(
+£ùÜ_idx
+ == 0)
+
+309 
+£ùÜ_ofs
+ = 
+off£t
+ % 
+BLOCK_SECTOR_SIZE
+;
+
+310 
+off_t
+ 
+šode_Ëá
+ = 
+	`šode_Ëngth
+ (
+šode
+è- 
+off£t
+;
+
+311 
+£ùÜ_Ëá
+ = 
+BLOCK_SECTOR_SIZE
+ - 
+£ùÜ_ofs
+;
+
+312 
+mš_Ëá
+ = 
+šode_Ëá
+ < 
+£ùÜ_Ëá
+ ? inode_left : sector_left;
+
+315 
+chunk_size
+ = 
+size
+ < 
+mš_Ëá
+ ? size : min_left;
+
+316 ià(
+chunk_size
+ <= 0)
+
+319 
+	`bc_»ad
+(
+£ùÜ_idx
+, 
+bufãr
+, 
+by‹s_»ad
+, 
+chunk_size
+, 
+£ùÜ_ofs
+);
+
+322 
+size
+ -ğ
+chunk_size
+;
+
+323 
+off£t
+ +ğ
+chunk_size
+;
+
+324 
+by‹s_»ad
+ +ğ
+chunk_size
+;
+
+326 
+	`ä“
+(
+šode_disk
+);
+
+328  
+by‹s_»ad
+;
+
+329 
+	}
+}
+
+336 
+off_t
+
+
+337 
+	$šode_wr™e_©
+ (
+šode
+ *šode, cÚ¡ *
+bufãr_
+, 
+off_t
+ 
+size
+,
+
+338 
+off_t
+ 
+off£t
+)
+
+340 if(
+šode
+->
+d’y_wr™e_út
+)
+
+341  
+çl£
+;
+
+343 cÚ¡ 
+ušt8_t
+ *
+bufãr
+ = 
+bufãr_
+;
+
+344 
+off_t
+ 
+by‹s_wr™‹n
+ = 0;
+
+347 
+šode_disk
+ *šode_disk = 
+	`m®loc
+((inode_disk));
+
+348 if(
+šode_disk
+ =ğ
+NULL
+)
+
+349  
+çl£
+;
+
+350 
+	`g‘_disk_šode
+(
+šode
+, 
+šode_disk
+);
+
+352 
+	`lock_acquœe
+(&
+šode
+->
+ex‹nd_lock
+);
+
+353 
+Şd_Ëngth
+ = 
+šode_disk
+->
+Ëngth
+;
+
+354 
+wr™e_’d
+ = 
+off£t
+ + 
+size
+-1;
+
+355 if(
+wr™e_’d
+ > 
+Şd_Ëngth
+-1)
+
+357 
+šode_disk
+->
+Ëngth
+ = 
+wr™e_’d
+ +1;
+
+358 if(!
+	`šode_upd©e_fe_Ëngth
+(
+šode_disk
+, 
+off£t
+, 
+wr™e_’d
+))
+
+360 
+	`ä“
+(
+šode_disk
+);
+
+361  
+çl£
+;
+
+364 
+	`lock_»Ëa£
+(&
+šode
+->
+ex‹nd_lock
+);
+
+367 
+size
+ > 0)
+
+370 
+block_£ùÜ_t
+ 
+£ùÜ_idx
+ = 
+	`by‹_to_£ùÜ
+ (
+šode_disk
+, 
+off£t
+);
+
+373 
+£ùÜ_ofs
+ = 
+off£t
+ % 
+BLOCK_SECTOR_SIZE
+;
+
+374 
+off_t
+ 
+šode_Ëá
+ = 
+	`šode_Ëngth
+ (
+šode
+è- 
+off£t
+;
+
+375 
+£ùÜ_Ëá
+ = 
+BLOCK_SECTOR_SIZE
+ - 
+£ùÜ_ofs
+;
+
+376 
+mš_Ëá
+ = 
+šode_Ëá
+ < 
+£ùÜ_Ëá
+ ? inode_left : sector_left;
+
+379 
+chunk_size
+ = 
+size
+ < 
+mš_Ëá
+ ? size : min_left;
+
+380 ià(
+chunk_size
+ <= 0)
+
+383 
+	`bc_wr™e
+(
+£ùÜ_idx
+, (*)
+bufãr
+, 
+by‹s_wr™‹n
+, 
+chunk_size
+, 
+£ùÜ_ofs
+);
+
+386 
+size
+ -ğ
+chunk_size
+;
+
+387 
+off£t
+ +ğ
+chunk_size
+;
+
+388 
+by‹s_wr™‹n
+ +ğ
+chunk_size
+;
+
+390 
+	`bc_wr™e
+(
+šode
+->
+£ùÜ
+, 
+šode_disk
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+391 
+	`ä“
+(
+šode_disk
+);
+
+393  
+by‹s_wr™‹n
+;
+
+394 
+	}
+}
+
+399 
+	$šode_d’y_wr™e
+ (
+šode
+ *inode)
+
+401 
+šode
+->
+d’y_wr™e_út
+++;
+
+402 
+	`ASSERT
+ (
+šode
+->
+d’y_wr™e_út
+ <ğšode->
+İ’_út
+);
+
+403 
+	}
+}
+
+409 
+	$šode_®low_wr™e
+ (
+šode
+ *inode)
+
+411 
+	`ASSERT
+ (
+šode
+->
+d’y_wr™e_út
+ > 0);
+
+412 
+	`ASSERT
+ (
+šode
+->
+d’y_wr™e_út
+ <ğšode->
+İ’_út
+);
+
+413 
+šode
+->
+d’y_wr™e_út
+--;
+
+414 
+	}
+}
+
+417 
+off_t
+
+
+418 
+	$šode_Ëngth
+ (cÚ¡ 
+šode
+ *inode)
+
+421 
+šode_disk
+ *šode_disk = 
+	`m®loc
+ ( (inode_disk));
+
+422 ià(
+šode_disk
+ =ğ
+NULL
+)
+
+423  
+çl£
+;
+
+424 
+	`g‘_disk_šode
+ (
+šode
+, 
+šode_disk
+);
+
+425 
+off_t
+ 
+»suÉ_Ëngth
+ = 
+šode_disk
+->
+Ëngth
+;
+
+426 
+	`ä“
+ (
+šode_disk
+);
+
+427  
+»suÉ_Ëngth
+;
+
+429 
+	}
+}
+
+432 
+boŞ
+ 
+	$g‘_disk_šode
+(cÚ¡ 
+šode
+ *šode, 
+šode_disk
+ *inode_disk)
+
+434 
+	`bc_»ad
+(
+šode
+->
+£ùÜ
+, 
+šode_disk
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+435  
+Œue
+;
+
+436 
+	}
+}
+
+438 
+	$loÿ‹_by‹
+(
+off_t
+ 
+pos
+, 
+£ùÜ_loÿtiÚ
+ *
+£c_loc
+)
+
+440 
+off_t
+ 
+pos_£ùÜ
+ = 
+pos
+ / 
+BLOCK_SECTOR_SIZE
+;
+
+441 if(
+pos_£ùÜ
+ < 
+DIRECT_BLOCK_CNT
+)
+
+443 
+£c_loc
+->
+dœeùÃss
+ = 
+NORMAL_DIRECT
+;
+
+444 
+£c_loc
+->
+šdex1
+ = 
+pos_£ùÜ
+;
+
+446 if(
+pos_£ùÜ
+< (
+off_t
+)
+DIRECT_BLOCK_CNT
+ + 
+INDIRECT_BLOCK_CNT
+)
+
+448 
+£c_loc
+->
+dœeùÃss
+ = 
+INDIRECT
+;
+
+449 
+£c_loc
+->
+šdex1
+ = 
+pos_£ùÜ
+ - 
+DIRECT_BLOCK_CNT
+;
+
+451 if(
+pos_£ùÜ
+ < (
+off_t
+)(
+DIRECT_BLOCK_CNT
+ + 
+INDIRECT_BLOCK_CNT
+ * (INDIRECT_BLOCK_CNT +1)))
+
+453 
+£c_loc
+->
+dœeùÃss
+ = 
+DOUBLE_INDIRECT
+;
+
+454 
+pos_£ùÜ
+ =…os_£ùÜ - 
+DIRECT_BLOCK_CNT
+ - 
+INDIRECT_BLOCK_CNT
+;
+
+455 
+£c_loc
+->
+šdex1
+ = 
+pos_£ùÜ
+ / 
+INDIRECT_BLOCK_CNT
+;
+
+456 
+£c_loc
+->
+šdex2
+ = 
+pos_£ùÜ
+ % 
+INDIRECT_BLOCK_CNT
+;
+
+460 
+£c_loc
+->
+dœeùÃss
+ = 
+OUT_LIMIT
+;
+
+462 
+	}
+}
+
+464 
+šlše
+ 
+off_t
+ 
+	$m­_bË_off£t
+(
+idx
+)
+
+466  
+idx
+ * (
+off_t
+);
+
+467 
+	}
+}
+
+469 
+boŞ
+ 
+	$»gi¡”_£ùÜ
+(
+šode_disk
+ *šode_disk, 
+block_£ùÜ_t
+ 
+Ãw_£ùÜ
+, 
+£ùÜ_loÿtiÚ
+ 
+£c_loc
+)
+
+471 
+šode_šdœeù_block
+ *
+Ãw_block
+ = 
+NULL
+;
+
+472 
+£c_loc
+.
+dœeùÃss
+)
+
+474 
+NORMAL_DIRECT
+:
+
+475 
+šode_disk
+->
+dœeù_m­_bË
+[
+£c_loc
+.
+šdex1
+] = 
+Ãw_£ùÜ
+;
+
+477 
+INDIRECT
+:
+
+478 
+Ãw_block
+ = 
+	`m®loc
+(
+BLOCK_SECTOR_SIZE
+);
+
+479 if(
+Ãw_block
+ =ğ
+NULL
+)
+
+480  
+çl£
+;
+
+481 if(
+šode_disk
+->
+šdœeù_block_£c
+ == 0)
+
+483 ià(
+	`ä“_m­_®loÿ‹
+ (1, &(
+šode_disk
+->
+šdœeù_block_£c
+)))
+
+485 
+	`mem£t
+ (
+Ãw_block
+, 0, 
+BLOCK_SECTOR_SIZE
+);
+
+486 
+Ãw_block
+->
+m­_bË
+[
+£c_loc
+.
+šdex1
+] = 
+Ãw_£ùÜ
+;
+
+487 
+	`bc_wr™e
+(
+šode_disk
+->
+šdœeù_block_£c
+, 
+Ãw_block
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+491 
+	`ä“
+ (
+Ãw_block
+);
+
+492  
+çl£
+;
+
+497 
+	`bc_wr™e
+(
+šode_disk
+->
+šdœeù_block_£c
+, &
+Ãw_£ùÜ
+, 0, (
+block_£ùÜ_t
+), 
+	`m­_bË_off£t
+(
+£c_loc
+.
+šdex1
+));
+
+500 
+DOUBLE_INDIRECT
+:
+
+501 
+Ãw_block
+ = 
+	`m®loc
+ (
+BLOCK_SECTOR_SIZE
+);
+
+502 ià(
+Ãw_block
+ =ğ
+NULL
+)
+
+503  
+çl£
+;
+
+504 ià(
+šode_disk
+->
+doubË_šdœeù_block_£c
+ == 0)
+
+506 ià(
+	`ä“_m­_®loÿ‹
+ (1, &(
+šode_disk
+->
+doubË_šdœeù_block_£c
+)))
+
+508 
+	`mem£t
+ (
+Ãw_block
+, 0, 
+BLOCK_SECTOR_SIZE
+);
+
+509 
+	`bc_wr™e
+(
+šode_disk
+->
+doubË_šdœeù_block_£c
+, 
+Ãw_block
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+513 
+	`ä“
+ (
+Ãw_block
+);
+
+514  
+çl£
+;
+
+517 
+block_£ùÜ_t
+ 
+šdœeù2
+;
+
+518 
+	`bc_»ad
+(
+šode_disk
+->
+doubË_šdœeù_block_£c
+, &
+šdœeù2
+, 0, (
+block_£ùÜ_t
+), 
+	`m­_bË_off£t
+(
+£c_loc
+.
+šdex1
+));
+
+519 ià(
+šdœeù2
+ == 0)
+
+521 ià(
+	`ä“_m­_®loÿ‹
+ (1, &
+šdœeù2
+))
+
+523 
+	`bc_wr™e
+(
+šode_disk
+->
+doubË_šdœeù_block_£c
+, &
+šdœeù2
+, 0, (
+block_£ùÜ_t
+), 
+	`m­_bË_off£t
+(
+£c_loc
+.
+šdex1
+));
+
+524 
+	`mem£t
+ (
+Ãw_block
+, 0, 
+BLOCK_SECTOR_SIZE
+);
+
+525 
+Ãw_block
+->
+m­_bË
+[
+£c_loc
+.
+šdex2
+] = 
+Ãw_£ùÜ
+;
+
+526 
+	`bc_wr™e
+(
+šdœeù2
+, 
+Ãw_block
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+530 
+	`ä“
+ (
+Ãw_block
+);
+
+531  
+çl£
+;
+
+536 
+	`bc_wr™e
+(
+šdœeù2
+, &
+Ãw_£ùÜ
+, 0, (
+block_£ùÜ_t
+), 
+	`m­_bË_off£t
+(
+£c_loc
+.
+šdex2
+));
+
+542 
+	}
+}
+
+543 
+boŞ
+
+
+544 
+	$šode_upd©e_fe_Ëngth
+(
+šode_disk
+* inode_disk, 
+off_t
+ 
+¡¬t
+, off_ˆ
+’d
+)
+
+546 
+block_£ùÜ_t
+ 
+£ùÜ_idx
+;
+
+547 
+off_t
+ 
+off£t
+ = 
+¡¬t
+;
+
+548 
+size
+ = 
+’d
+- 
+¡¬t
++1;
+
+549 
+ušt8_t
+ *
+‹mp
+ = 
+	`ÿÎoc
+((ušt8_t), 
+BLOCK_SECTOR_SIZE
+);
+
+550 if(
+‹mp
+ =ğ
+NULL
+)
+
+551  
+çl£
+;
+
+553 
+size
+>0)
+
+555 
+£ùÜ_ofs
+ = 
+off£t
+ % 
+BLOCK_SECTOR_SIZE
+;
+
+556 
+£ùÜ_Ëá
+ = 
+BLOCK_SECTOR_SIZE
+ - 
+£ùÜ_ofs
+;
+
+557 
+chunk_size
+ = 
+size
+ < 
+£ùÜ_Ëá
+ ? size : sector_left;
+
+558 if(
+chunk_size
+ <= 0 )
+
+560 if(
+£ùÜ_ofs
+ > 0)
+
+562 
+£ùÜ_idx
+ = 
+	`by‹_to_£ùÜ
+(
+šode_disk
+, 
+off£t
+);
+
+563 
+	`bc_wr™e
+(
+£ùÜ_idx
+, 
+‹mp
+, 0, 
+£ùÜ_Ëá
+, 
+£ùÜ_ofs
+);
+
+567 if(
+	`ä“_m­_®loÿ‹
+(1, &
+£ùÜ_idx
+))
+
+569 
+£ùÜ_loÿtiÚ
+ 
+£c_loc
+;
+
+570 
+	`loÿ‹_by‹
+(
+off£t
+, &
+£c_loc
+);
+
+571 if(!
+	`»gi¡”_£ùÜ
+(
+šode_disk
+, 
+£ùÜ_idx
+, 
+£c_loc
+))
+
+573 
+	`ä“_m­_»Ëa£
+(
+£ùÜ_idx
+, 1);
+
+574 
+	`ä“
+(
+‹mp
+);
+
+575  
+çl£
+;
+
+580 
+	`ä“
+(
+‹mp
+);
+
+581  
+çl£
+;
+
+583 
+	`bc_wr™e
+(
+£ùÜ_idx
+, 
+‹mp
+, 0, 
+BLOCK_SECTOR_SIZE
+,0);
+
+586 
+size
+ -ğ
+chunk_size
+;
+
+587 
+off£t
+ +ğ
+chunk_size
+;
+
+589 
+	`ä“
+(
+‹mp
+);
+
+590  
+Œue
+;
+
+591 
+	}
+}
+
+594 
+	$ä“_šode_£ùÜs
+(
+šode_disk
+* inode_disk)
+
+596 
+šode_šdœeù_block
+ *
+šd_block1
+ = 
+	`m®loc
+(
+BLOCK_SECTOR_SIZE
+);
+
+597 
+šode_šdœeù_block
+ *
+šd_block2
+ = 
+	`m®loc
+(
+BLOCK_SECTOR_SIZE
+);
+
+600 if(
+šode_disk
+->
+doubË_šdœeù_block_£c
+ >0)
+
+602 
+	`bc_»ad
+(
+šode_disk
+->
+doubË_šdœeù_block_£c
+, 
+šd_block1
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+603 
+i
+ =0;
+
+604 ; 
+i
+<
+INDIRECT_BLOCK_CNT
+; ++i)
+
+606 if(
+šd_block1
+->
+m­_bË
+[
+i
+]<0)
+
+608 
+	`bc_»ad
+(
+šd_block1
+->
+m­_bË
+[
+i
+], 
+šd_block2
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+609 
+j
+=0;
+
+610 ; 
+j
+<
+INDIRECT_BLOCK_CNT
+; ++j)
+
+612 if(
+šd_block2
+->
+m­_bË
+[
+j
+]<0)
+
+614 
+	`ä“_m­_»Ëa£
+(
+šd_block2
+->
+m­_bË
+[
+j
+],1);
+
+616 
+	`ä“_m­_»Ëa£
+(
+šd_block1
+->
+m­_bË
+[
+i
+],1);
+
+618 
+	`ä“_m­_»Ëa£
+(
+šode_disk
+->
+doubË_šdœeù_block_£c
+,1);
+
+623 if(
+šode_disk
+->
+šdœeù_block_£c
+ >0)
+
+625 
+	`bc_»ad
+(
+šode_disk
+->
+šdœeù_block_£c
+, 
+šd_block1
+, 0, 
+BLOCK_SECTOR_SIZE
+, 0);
+
+626 
+i
+=0;
+
+627 ; 
+i
+<
+INDIRECT_BLOCK_CNT
+; ++i)
+
+629 if(
+šd_block1
+->
+m­_bË
+[
+i
+]<0)
+
+631 
+	`ä“_m­_»Ëa£
+(
+šd_block1
+->
+m­_bË
+[
+i
+],1);
+
+633 
+	`ä“_m­_»Ëa£
+(
+šode_disk
+->
+šdœeù_block_£c
+,1);
+
+636 
+i
+=0;
+
+637 ; 
+i
+<
+INDIRECT_BLOCK_CNT
+; ++i)
+
+639 if(
+šode_disk
+->
+dœeù_m­_bË
+[
+i
+]<0)
+
+641 
+	`ä“_m­_»Ëa£
+(
+šode_disk
+->
+dœeù_m­_bË
+[
+i
+],1);
+
+643 
+	`ä“
+(
+šd_block1
+);
+
+644 
+	`ä“
+(
+šd_block2
+);
+
+645 
+	}
+}
 
 	@off_t.h
 
@@ -27516,8 +32322,8 @@ __END_DECLS
 .
 1
 /usr/include
-33
-548
+34
+563
 buffer_cache.c
 buffer_cache.h
 build/file.bp
@@ -27533,6 +32339,7 @@ fsutil.c
 fsutil.h
 inode.c
 inode.h
+inode_backup.c
 off_t.h
 /usr/include/inttypes.h
 /usr/include/stdint.h

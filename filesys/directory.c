@@ -4,6 +4,7 @@
 #include <list.h>
 #include "filesys/filesys.h"
 #include "filesys/inode.h"
+#include "filesys/buffer_cache.h"
 #include "threads/malloc.h"
 
 /* A directory. */
@@ -26,7 +27,7 @@ struct dir_entry
 bool
 dir_create (block_sector_t sector, size_t entry_cnt)
 {
-  return inode_create (sector, entry_cnt * sizeof (struct dir_entry));
+  return inode_create (sector, entry_cnt * sizeof (struct dir_entry), true); 
 }
 
 /* Opens and returns the directory for the given INODE, of which
@@ -45,7 +46,7 @@ dir_open (struct inode *inode)
     {
       inode_close (inode);
       free (dir);
-      return NULL; 
+      return NULL;
     }
 }
 
@@ -69,6 +70,7 @@ dir_reopen (struct dir *dir)
 void
 dir_close (struct dir *dir) 
 {
+  bc_flush();
   if (dir != NULL)
     {
       inode_close (dir->inode);
@@ -92,7 +94,6 @@ static bool
 lookup (const struct dir *dir, const char *name,
         struct dir_entry *ep, off_t *ofsp) 
 {
-  //printf("lookup\n");
   struct dir_entry e;
   size_t ofs;
   
@@ -103,14 +104,12 @@ lookup (const struct dir *dir, const char *name,
        ofs += sizeof e) 
     if (e.in_use && !strcmp (name, e.name)) 
       {
-        //printf("lookup %s %s, true\n", name, e.name);
         if (ep != NULL)
           *ep = e;
         if (ofsp != NULL)
           *ofsp = ofs;
         return true;
       }
-  //printf("lookup, false\n");
   return false;
 }
 
@@ -122,22 +121,15 @@ bool
 dir_lookup (const struct dir *dir, const char *name,
             struct inode **inode) 
 {
-  //printf("dir_lookup\n");
   struct dir_entry e;
 
   ASSERT (dir != NULL);
   ASSERT (name != NULL);
 
   if (lookup (dir, name, &e, NULL))
-  {
-    //printf("dir_lookup, true\n");
     *inode = inode_open (e.inode_sector);
-  }
   else
-  {
-    //printf("dir_lookup, false\n");
     *inode = NULL;
-  }
 
   return *inode != NULL;
 }
@@ -202,6 +194,9 @@ dir_remove (struct dir *dir, const char *name)
   ASSERT (dir != NULL);
   ASSERT (name != NULL);
 
+  if(strcmp(name, ".") == 0 || strcmp(name, "..") == 0)
+    goto done;
+
   /* Find directory entry. */
   if (!lookup (dir, name, &e, &ofs))
     goto done;
@@ -238,8 +233,11 @@ dir_readdir (struct dir *dir, char name[NAME_MAX + 1])
       dir->pos += sizeof e;
       if (e.in_use)
         {
-          strlcpy (name, e.name, NAME_MAX + 1);
-          return true;
+          if(strcmp(e.name, ".") && strcmp(e.name, ".."))
+          {
+            strlcpy (name, e.name, NAME_MAX + 1);
+            return true;
+          }
         } 
     }
   return false;

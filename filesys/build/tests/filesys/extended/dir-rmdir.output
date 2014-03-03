@@ -1,0 +1,45 @@
+Copying tests/filesys/extended/dir-rmdir to scratch partition...
+Copying tests/filesys/extended/tar to scratch partition...
+warning: can't find squish-pty, so terminal input will fail
+bochs -q
+PiLo hda1
+Loading.........
+Kernel command line: -q -f extract run dir-rmdir
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+hda: 1,008 sectors (504 kB), model "BXHD00011", serial "Generic 1234"
+hda1: 155 sectors (77 kB), Pintos OS kernel (20)
+hda2: 223 sectors (111 kB), Pintos scratch (22)
+hdb: 5,040 sectors (2 MB), model "BXHD00012", serial "Generic 1234"
+hdb1: 4,096 sectors (2 MB), Pintos file system (21)
+filesys: using hdb1
+scratch: using hda2
+Formatting file system...done.
+Boot complete.
+Extracting ustar archive from scratch device into file system...
+Putting 'dir-rmdir' into the file system...
+Putting 'tar' into the file system...
+Erasing ustar archive...
+Executing 'dir-rmdir':
+(dir-rmdir) begin
+(dir-rmdir) mkdir "a"
+(dir-rmdir) rmdir "a"
+(dir-rmdir) chdir "a" (must return false)
+(dir-rmdir) end
+dir-rmdir: exit(0)
+Execution of 'dir-rmdir' complete.
+Timer: 1438 ticks
+Thread: 0 idle ticks, 1275 kernel ticks, 166 user ticks
+hdb1 (filesys): 479 reads, 461 writes
+hda2 (scratch): 222 reads, 2 writes
+Console: 1084 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...
+========================================================================
+                       Bochs x86 Emulator 2.6.2
+                Built from SVN snapshot on May 26, 2013
+                  Compiled on Dec 28 2013 at 04:29:58
+========================================================================

@@ -203,7 +203,7 @@ process_exit (void)
   t->exit = true;
 
 #ifdef FILESYS
-  bc_flush();
+//  bc_flush();
 #endif
 
   //1.10 add ryoung (file descriptor)
@@ -217,6 +217,7 @@ process_exit (void)
     process_close_file(t->last_fd);
   }
   palloc_free_page(t->fd_tbl);
+  dir_close(t->dir);  //add ryoung
 
   uint32_t *pd;
   /* Destroy the current process's page directory and switch back

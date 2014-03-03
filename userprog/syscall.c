@@ -5,6 +5,8 @@
 #include "threads/interrupt.h"
 #include "threads/thread.h"
 #include "filesys/filesys.h"
+#include "filesys/file.h"
+#include "filesys/inode.h"
 
 static void syscall_handler (struct intr_frame *);
 
@@ -24,8 +26,18 @@ void seek(int fd, unsigned position);
 unsigned tell (int fd);
 void close (int fd);
 
+//2.25 add ryoung
+//project 4(filesystem)
+bool chdir (const char *dir);
+bool mkdir (const char *dir);
+#ifndef READDIR_MAX_LEN
+#define READDIR_MAX_LEN 14
+#endif
+bool readdir (int fd, char* name);
+bool isdir (int fd);
+int inumber (int fd);
 
-  void
+void
 syscall_init (void) 
 {
   intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
@@ -80,6 +92,21 @@ syscall_handler (struct intr_frame *f UNUSED)
     case SYS_CLOSE :
       get_argument(f->esp, &arg,1);
       close(arg[0]);                                  break;
+    case SYS_CHDIR :
+      get_argument(f->esp, &arg,1);     
+      f->eax = chdir((char*)arg[0]);                           break;
+    case SYS_MKDIR :
+      get_argument(f->esp, &arg,1);
+      f->eax = mkdir((char*)arg[0]);                           break;
+    case SYS_READDIR :
+      get_argument(f->esp, &arg,2); 
+      f->eax = readdir(arg[0], (char*)arg[1]);                  break;
+    case SYS_ISDIR :
+      get_argument(f->esp, &arg,1);
+      f->eax = isdir(arg[0]);                                  break;
+    case SYS_INUMBER :
+      get_argument(f->esp, &arg, 1);
+      f->eax = inumber(arg[0]);                                break;
     default :
       printf("failed to syscall, cuz of invailed syscall\n");
       thread_exit(); 
@@ -108,6 +135,7 @@ void get_argument(void *esp, int *arg, int argc)
 
 void halt(void)
 {
+  printf("system halt\n");
   shutdown_power_off();
 }
 
@@ -122,7 +150,6 @@ void exit(int status)
 
 pid_t exec(const char *file)
 {
-  //printf("syscall exec\n");
   pid_t pid = process_execute(file);
   struct thread *child = process_get_child(pid);
   if(!child)
@@ -137,7 +164,6 @@ pid_t exec(const char *file)
 
 int wait(pid_t pid)
 {
-  //printf("syscall wait:%d\n", pid);
   return process_wait(pid);
 }
 
@@ -222,12 +248,14 @@ int write(int fd, const void *buffer, unsigned length)
   lock_acquire(&lock_file);
   int ret = 0;
   struct file *f = process_get_file(fd);
-  if( !f)
+  if(!f)
+    ret = -1;
+  if(inode_is_dir(file_get_inode(f))) //add ryoung
     ret = -1;
   else
-    ret = file_write(f, buffer, length); 
+    ret = file_write(f, buffer, length);  
+ 
   lock_release(&lock_file);
-
   return ret;
 }
 
@@ -238,7 +266,7 @@ void seek(int fd, unsigned position)
     file_seek(f, position);
 }
 
-  unsigned
+unsigned
 tell(int fd)
 { 
   struct file *f = process_get_file(fd);
@@ -253,3 +281,51 @@ void close(int fd)
   process_close_file(fd);
 }
 
+bool chdir(const char *dir_name) //change directory
+{
+  struct file *f = filesys_open(dir_name);
+  if(f == NULL) 
+    return false;
+
+  struct inode *inode = inode_reopen(file_get_inode(f));
+  file_close(f);
+
+  struct dir *dir = dir_open(inode);
+  if(dir == NULL)
+    return false;
+
+  dir_close(thread_current()->dir);
+  thread_current()->dir = dir;
+
+  return true;
+}
+
+bool mkdir(const char *dir)
+{
+  return filesys_create_dir(dir); 
+}
+
+bool readdir(int fd, char *name)
+{
+  struct dir *dir = NULL;
+  if(isdir(fd))
+    dir = (struct dir*)process_get_file(fd);
+  return dir_readdir(dir, name);
+}
+
+bool isdir(int fd)
+{
+  struct file *f = process_get_file(fd);
+  if(!f)
+    return -1;
+ 
+  return inode_is_dir(file_get_inode(f));
+}
+int inumber(int fd)
+{
+  struct file* f =process_get_file(fd);
+  if(!f)
+    return -1;
+ 
+  return inode_get_inumber(file_get_inode(f));
+}

@@ -126,17 +126,12 @@ main (void)
   ide_init ();
   locate_block_devices ();
   filesys_init (format_filesys);
-  //bc_init();
 #endif
 
   printf ("Boot complete.\n");
   
   /* Run actions specified on kernel command line. */
   run_actions (argv);
-
-#ifdef FILESYS
-  //bc_destroy();
-#endif
 
   /* Finish up. */
   shutdown ();

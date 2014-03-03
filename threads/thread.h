@@ -5,6 +5,8 @@
 #include <list.h>
 #include <stdint.h>
 #include "synch.h"
+#include "filesys/directory.h"
+
 /* States in a thread's life cycle. */
 enum thread_status
   {
@@ -122,6 +124,12 @@ struct thread
   int last_fd; 
   struct file *file_exec;             /* running file */
   //----------------------------------------------------
+
+#ifdef FILESYS
+  //----------------- File system ---------------------
+  struct dir *dir;
+  //--------------------------------------------------
+#endif
 };
 
 /* If false (default), use round-robin scheduler.

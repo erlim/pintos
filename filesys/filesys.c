@@ -143,20 +143,18 @@ filesys_remove (const char *name)
   if(inode_is_dir(inode)) //directory
   {
     struct dir *dir_child = dir_open(inode);
-    bool bExist = true; //check directory has file
+    bool bExist = false; //check directory has file
     char dir_name[NAME_MAX +1];
     while(dir_readdir(dir_child, dir_name))
     {
-      if(strcmp(dir_name, ".") == 0 || strcmp(dir_name, "..") == 0)
-        continue;
-      else
+      if(strcmp(dir_name, ".") != 0 && strcmp(dir_name, "..") != 0)
       {
-        bExist = false;
+        bExist = true;
         break;
       }
     }
     dir_close(dir_child);
-    if(bExist)
+    if(!bExist)
       dir_remove(dir, file_name);
     else
       return false;

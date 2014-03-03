@@ -283,10 +283,9 @@ void close(int fd)
 
 bool chdir(const char *dir_name) //change directory
 {
-  struct file *f = filesys_open(dir_name);
+  struct file *f = filesys_open(dir_name); //file open with name
   if(f == NULL) 
     return false;
-
   struct inode *inode = inode_reopen(file_get_inode(f));
   file_close(f);
 
@@ -309,8 +308,10 @@ bool readdir(int fd, char *name)
 {
   struct dir *dir = NULL;
   if(isdir(fd))
-    dir = (struct dir*)process_get_file(fd);
-  return dir_readdir(dir, name);
+  {
+    struct dir *dir = process_get_file(fd);
+    return dir_readdir(dir, name);
+  } 
 }
 
 bool isdir(int fd)
